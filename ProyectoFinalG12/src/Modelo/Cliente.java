@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
-/**
- *
- * @author Lulim
- */
 public class Cliente {
     private int codCli;             //Int AutoIncremental Clave Primaria
     private String dni;              // Varchar Unique
@@ -18,12 +10,10 @@ public class Cliente {
     private boolean estado;          // Boolean 
     
     //Constructor vacio 
-
     public Cliente() {
     }
  
-    //Cosntructor 
-    
+    //Cosntructor
     public Cliente(int codCli, String dni, String nombreCompleto, String telefono, int edad, String afecciones, boolean estado) {
         this.codCli = codCli;
         this.dni = dni;

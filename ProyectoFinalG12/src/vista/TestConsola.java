@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package vista;
 
 import Modelo.Cliente;
@@ -9,15 +5,8 @@ import Modelo.Conexion;
 import Persistencia.ClienteData;
 import java.util.List;
 
-/**
- *
- * @author Lulim
- */
 public class TestConsola {
 
-    /**
-     * @param args the command line arguments
-     */ 
     public static void main(String[] args) {
         //Probamos conexion
         Conexion.getConexion(); 
