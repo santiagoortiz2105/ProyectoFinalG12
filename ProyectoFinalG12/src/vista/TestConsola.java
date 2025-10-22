@@ -15,7 +15,14 @@ public class TestConsola {
         ClienteData cd = new ClienteData();
 
         //Crear un cliente nuevo
-        Cliente cli = new Cliente();
+        Cliente cli = new Cliente(
+        "43839685", 
+        "Ortiz Lourdes",
+        "2657642111",
+        23, 
+        "sin afecciones", 
+         true       
+        );
         
         
         //Guardar clientes en la base de datos 
