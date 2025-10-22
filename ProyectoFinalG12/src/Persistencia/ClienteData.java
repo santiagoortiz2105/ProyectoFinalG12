@@ -145,13 +145,13 @@ public class ClienteData {
         }
     }
     
-    public Cliente clienteXDni(int dni) {
+    public Cliente clienteXDni(String dni) {
         Cliente cliente = null;
         String sql = "SELECT * FROM cliente WHERE dni=?";
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, dni);
+            ps.setString(1, dni);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {

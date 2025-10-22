@@ -14,7 +14,7 @@ public class Cliente {
     }
  
     //Cosntructor
-    public Cliente(String dni, String nombreCompleto, String telefono, int codCli, String afecciones, boolean estado) {
+    public Cliente(String dni, String nombreCompleto, String telefono, int edad, String afecciones, boolean estado) {
         this.dni = dni;
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
