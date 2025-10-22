@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="ProyectoFinal">
+  <ClassDiagramComponents>
+    <Class name="Cliente" package="" visibility="public" xPosition="45.0" yPosition="601.0">
+      <Fields>
+        <Field name="codCli" type="Int" visibility="private"/>
+        <Field name="dni" type="String" visibility="private"/>
+        <Field name="nombreCompleto" type="String" visibility="private"/>
+        <Field name="telefono" type="String" visibility="private"/>
+        <Field name="edad" type="Int" visibility="private"/>
+        <Field name="afecciones" type="String" visibility="private"/>
+        <Field name="estado" type="Boolean" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Consultorio" package="" visibility="public" xPosition="59.0" yPosition="78.0">
+      <Fields>
+        <Field name="nroConsultorio" type="Int" visibility="private"/>
+        <Field name="usos" type="String" visibility="private"/>
+        <Field name="equipamiento" type="String" visibility="private"/>
+        <Field name="apto" type="Boolean" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Dia_de_Spa" package="" visibility="public" xPosition="468.0" yPosition="611.0">
+      <Fields>
+        <Field name="codPack" type="Int" visibility="private"/>
+        <Field name="fechaHora" type="LocalDateTime" visibility="private"/>
+        <Field name="preferencias" type="String" visibility="private"/>
+        <Field name="codCli" type="Int" visibility="private"/>
+        <Field name="estado" type="Boolean" visibility="private"/>
+        <Field name="monto" type="Double" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Instalacion" package="" visibility="public" xPosition="877.0" yPosition="458.0">
+      <Fields>
+        <Field name="codInstal" type="Int" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="detalledeuso" type="String" visibility="private"/>
+        <Field name="precio30m" type="Double" visibility="private"/>
+        <Field name="estado" type="Boolean" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Masajista" package="" visibility="public" xPosition="45.0" yPosition="326.0">
+      <Fields>
+        <Field name="matricula" type="Int" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="apellido" type="String" visibility="private"/>
+        <Field name="telefono" type="String" visibility="private"/>
+        <Field name="especialidad" type="String" visibility="private"/>
+        <Field name="estado" type="Boolean" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Sesion" package="" visibility="public" xPosition="454.0" yPosition="91.0">
+      <Fields>
+        <Field name="codSesion" type="String" visibility="private"/>
+        <Field name="fechaHoraInicio" type="LocalDateTime" visibility="private"/>
+        <Field name="fechaHoraFin" type="LocalDateTime" visibility="private"/>
+        <Field name="codTratam" type="Int" visibility="private"/>
+        <Field name="nroConsultorio" type="Int" visibility="private"/>
+        <Field name="matricula" type="Int" visibility="private"/>
+        <Field name="codPack" type="Int" visibility="private"/>
+        <Field name="estado" type="Boolean" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Tratamiento " package="" visibility="public" xPosition="877.0" yPosition="59.0">
+      <Fields>
+        <Field name="codTratam" type="Int" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="tipo" type="String" visibility="private"/>
+        <Field name="detalle" type="String" visibility="private"/>
+        <Field name="duracion_min" type="Int" visibility="private"/>
+        <Field name="activo" type="Boolean" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="Puede usar" source="Sesion" target="Instalacion" type="Default" sourceCardinality="0..1" targetCardinality="1..*" collectionType="List"/>
+    <HasRelation name="Contrata" source="Cliente" target="Dia_de_Spa" type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="Incluye" source="Dia_de_Spa" target="Sesion" type="Aggregation" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="Ocupa" source="Consultorio" target="Sesion" type="Default" sourceCardinality="0..1" targetCardinality="1..*" collectionType="List"/>
+    <HasRelation name="Incluye" source="Sesion" target="Tratamiento " type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="Efectua" source="Masajista" target="Sesion" type="Default" sourceCardinality="0..1" targetCardinality="1..*" collectionType="List"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
