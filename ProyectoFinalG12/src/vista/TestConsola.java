@@ -4,9 +4,9 @@
  */
 package vista;
 
+import Modelo.Cliente;
 import Modelo.Conexion;
-import Modelo.Entidad;
-import Persistencia.EntidadData;
+import Persistencia.ClienteData;
 import java.util.List;
 
 /**
@@ -20,21 +20,26 @@ public class TestConsola {
      */ 
     public static void main(String[] args) {
         //Probamos conexion
-        Conexion.getConexion();
+        Conexion.getConexion(); 
+        
+         //Crear instancia de ClienteData
+        ClienteData cd = new ClienteData();
 
-        EntidadData data = new EntidadData();
-        Entidad e1 = new Entidad(0, "Masaje Relajante", "Tratamiento corporal básico", true);
+        //Crear un cliente nuevo
+        Cliente cli = new Cliente();
+        
+        
+        //Guardar clientes en la base de datos 
+        cd.guardarCliente(cli);
 
-        //Guardar nueva entidad
-        data.guardarEntidad(e1);
-
-        //Lista de entidades que ya existan
-        List<Entidad> lista = data.listarEntidades();
-        for (Entidad e : lista) {
-            System.out.println(e);
+        // Lista de los clientes ya existentes
+        System.out.println("Lista de clientes:");
+        List<Cliente> lista = cd.listarClientes();
+        for (Cliente c : lista) {
+            System.out.println(c);
         }
 
-        //Que cierre la conexion
+        //Cerrar Conexion 
         Conexion.cerrarConexion();
     }
     }
