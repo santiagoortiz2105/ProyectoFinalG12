@@ -17,6 +17,8 @@ public class Consultorio {
     
     //Constructor vacio
      public Consultorio() {
+         
+         
         this.apto = true;
     }
     
