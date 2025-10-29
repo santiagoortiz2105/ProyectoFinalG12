@@ -77,10 +77,10 @@ public class SesionData {
                 s.setEstado(rs.getBoolean("estado"));
 
                 // Relaciones
-                s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam")));
+                s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam"))); 
                 s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
                 s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
-                s.setDiadeSpa(diaSpaData.buscarPorId(rs.getInt("codPack")));
+                s.setDiadeSpa(diaSpaData.buscarPorId(rs.getInt("codPack"))); 
 
                 sesiones.add(s);
             }
