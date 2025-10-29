@@ -177,5 +177,32 @@ public class ClienteData {
 
         return cliente;
     }
+    
+    public Cliente buscarClientePorid(int codCli) {
+    Cliente cliente = null;
+    String sql = "SELECT * FROM cliente WHERE codCli=?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codCli);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            cliente = new Cliente();
+            cliente.setCodCli(rs.getInt("codCli"));
+            cliente.setDni(rs.getString("dni"));
+            cliente.setNombreCompleto(rs.getString("nombreCompleto"));
+            cliente.setTelefono(rs.getString("telefono"));
+            cliente.setEdad(rs.getInt("edad"));
+            cliente.setAfecciones(rs.getString("afecciones"));
+            cliente.setEstado(rs.getBoolean("estado"));
+        } else {
+            System.out.println("No se encontró el cliente con codCli: " + codCli);
+        }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al acceder a la tabla Cliente: " + ex.getMessage());
+    }
+    return cliente;
+}
       
 }

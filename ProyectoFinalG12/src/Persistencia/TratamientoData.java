@@ -132,31 +132,31 @@ public class TratamientoData {
         }
     }
 
-    //Buscar tratamiento por nombre 
-      public Tratamiento buscarPorNombre(String nombre) {
-        Tratamiento t = null;
-        String sql = "SELECT * FROM tratamiento WHERE nombre = ?";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, nombre);
-            ResultSet rs = ps.executeQuery();
+    //Buscar tratamiento por id 
+      public Tratamiento buscarPorId(int id) {
+    Tratamiento t = null;
+    String sql = "SELECT * FROM tratamiento WHERE codTratam = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                t = new Tratamiento();
-                t.setCodTratam(rs.getInt("codTratam"));
-                t.setNombre(rs.getString("nombre"));
-                t.setTipo(rs.getString("tipo"));
-                t.setDetalle(rs.getString("detalle"));
-                t.setDuracion_min(rs.getInt("duracion_min"));
-                t.setCosto(rs.getDouble("costo"));
-                t.setActivo(rs.getBoolean("activo"));
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al buscar tratamiento: " + ex.getMessage());
+        if (rs.next()) {
+            t = new Tratamiento();
+            t.setCodTratam(rs.getInt("codTratam"));
+            t.setNombre(rs.getString("nombre"));
+            t.setTipo(rs.getString("tipo"));
+            t.setDetalle(rs.getString("detalle"));
+            t.setDuracion_min(rs.getInt("duracion_min"));
+            t.setCosto(rs.getDouble("costo"));
+            t.setActivo(rs.getBoolean("activo"));
         }
-        return t;
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al buscar tratamiento por ID: " + ex.getMessage());
     }
+    return t;
+}
     
    
 }
