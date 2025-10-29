@@ -77,10 +77,10 @@ public class SesionData {
                 s.setEstado(rs.getBoolean("estado"));
 
                 // Relaciones
-                s.setTratamiento(tratData.buscarPorNombre(rs.getInt("codTratam")));
+                s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam")));
                 s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
                 s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
-                s.setDiaDeSpa(diaSpaData.buscarPorId(rs.getInt("codPack")));
+                s.setDiadeSpa(diaSpaData.buscarPorId(rs.getInt("codPack")));
 
                 sesiones.add(s);
             }
@@ -171,7 +171,7 @@ public class SesionData {
                 s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam")));
                 s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
                 s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
-                s.setDiaDeSpa(diaSpaData.(rs.getInt("codPack")));
+                s.setDiadeSpa(diaSpaData.buscarPorId(rs.getInt("codPack")));
             }
             ps.close();
         } catch (SQLException ex) {
