@@ -18,6 +18,8 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
      */
     public frmMenuPrincipal() {
         initComponents();
+        this.setTitle("Menú Principal - Spa Entre Dedos");
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -29,21 +31,120 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jfrmCliente = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jfrmMasajista = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jfrmConsultorio = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
+        jMenu9 = new javax.swing.JMenu();
+
+        jMenu1.setText("jMenu1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 599, Short.MAX_VALUE)
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 313, Short.MAX_VALUE)
+        );
+
+        jMenu2.setText("Cliente");
+
+        jfrmCliente.setText("frmCliente");
+        jfrmCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jfrmClienteActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jfrmCliente);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Masajista");
+
+        jfrmMasajista.setText("frmMasajista");
+        jfrmMasajista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jfrmMasajistaActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jfrmMasajista);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Consultorio ");
+
+        jfrmConsultorio.setText("frmConsultorio ");
+        jfrmConsultorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jfrmConsultorioActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jfrmConsultorio);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setText("Tratamiento ");
+        jMenuBar1.add(jMenu5);
+
+        jMenu6.setText("Instalacion ");
+        jMenuBar1.add(jMenu6);
+
+        jMenu7.setText("Sesion ");
+        jMenuBar1.add(jMenu7);
+
+        jMenu8.setText("Dia de Spa");
+        jMenuBar1.add(jMenu8);
+
+        jMenu9.setText("Salir ");
+        jMenuBar1.add(jMenu9);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jfrmClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmClienteActionPerformed
+         frmCliente ventana = new frmCliente();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jfrmClienteActionPerformed
+
+    private void jfrmMasajistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmMasajistaActionPerformed
+        frmMasajista ventana = new frmMasajista();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jfrmMasajistaActionPerformed
+
+    private void jfrmConsultorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmConsultorioActionPerformed
+       frmConsultorio ventana = new frmConsultorio();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jfrmConsultorioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -71,5 +172,19 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jfrmCliente;
+    private javax.swing.JMenuItem jfrmConsultorio;
+    private javax.swing.JMenuItem jfrmMasajista;
     // End of variables declaration//GEN-END:variables
 }

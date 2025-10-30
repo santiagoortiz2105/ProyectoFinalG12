@@ -8,12 +8,12 @@ package vista;
  *
  * @author thefl
  */
-public class Consultorio extends javax.swing.JInternalFrame {
+public class frmConsultorio extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Consultorio
      */
-    public Consultorio() {
+    public frmConsultorio() {
         initComponents();
     }
 
@@ -43,6 +43,11 @@ public class Consultorio extends javax.swing.JInternalFrame {
         jbBuscar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtConsultorio = new javax.swing.JTable();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         tfnroconsultorio.setEditable(false);
 

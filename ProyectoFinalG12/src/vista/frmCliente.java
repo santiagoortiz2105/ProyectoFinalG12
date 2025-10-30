@@ -8,12 +8,12 @@ package vista;
  *
  * @author thefl
  */
-public class Cliente extends javax.swing.JInternalFrame {
+public class frmCliente extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Cliente
      */
-    public Cliente() {
+    public frmCliente() {
         initComponents();
     }
 
@@ -49,6 +49,11 @@ public class Cliente extends javax.swing.JInternalFrame {
         jbNuevo = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtCliente = new javax.swing.JTable();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("Cliente");
@@ -139,13 +144,13 @@ public class Cliente extends javax.swing.JInternalFrame {
                             .addComponent(jLabel8))
                         .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tfCodigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfdni, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfNombreCompleto)
                             .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1)
-                            .addComponent(cbEstado)))
+                            .addComponent(cbEstado)
+                            .addComponent(tfCodigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(190, 190, 190)
                         .addComponent(jLabel2))
