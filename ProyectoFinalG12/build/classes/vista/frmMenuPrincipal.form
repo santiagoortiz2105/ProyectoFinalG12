@@ -62,6 +62,16 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Tratamiento "/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jfrmTratamiento">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="frmTratamiento"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jfrmTratamientoActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu6">
           <Properties>
