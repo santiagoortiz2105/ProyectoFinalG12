@@ -43,6 +43,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jfrmTratamiento = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
+        jfrmInstalacion = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
         jMenu9 = new javax.swing.JMenu();
@@ -111,6 +112,15 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu5);
 
         jMenu6.setText("Instalacion ");
+
+        jfrmInstalacion.setText("frmInstalacion ");
+        jfrmInstalacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jfrmInstalacionActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jfrmInstalacion);
+
         jMenuBar1.add(jMenu6);
 
         jMenu7.setText("Sesion ");
@@ -162,6 +172,12 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_jfrmTratamientoActionPerformed
 
+    private void jfrmInstalacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmInstalacionActionPerformed
+        frmInstalacion ventana = new frmInstalacion();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jfrmInstalacionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -201,6 +217,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jfrmCliente;
     private javax.swing.JMenuItem jfrmConsultorio;
+    private javax.swing.JMenuItem jfrmInstalacion;
     private javax.swing.JMenuItem jfrmMasajista;
     private javax.swing.JMenuItem jfrmTratamiento;
     // End of variables declaration//GEN-END:variables

@@ -40,13 +40,13 @@
                       </Group>
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="tfdni" min="-2" pref="120" max="-2" attributes="0"/>
                           <Component id="tfNombreCompleto" alignment="0" max="32767" attributes="0"/>
-                          <Component id="tfTelefono" alignment="0" min="-2" pref="122" max="-2" attributes="0"/>
-                          <Component id="tfEdad" min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                           <Component id="cbEstado" min="-2" max="-2" attributes="0"/>
-                          <Component id="tfCodigoCliente" alignment="0" min="-2" pref="98" max="-2" attributes="0"/>
+                          <Component id="tfTelefono" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfdni" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfCodigoCliente" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfEdad" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">

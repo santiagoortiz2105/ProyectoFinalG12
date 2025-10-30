@@ -77,6 +77,16 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Instalacion "/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jfrmInstalacion">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="frmInstalacion "/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jfrmInstalacionActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu7">
           <Properties>
