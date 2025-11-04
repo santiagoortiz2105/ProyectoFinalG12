@@ -3,18 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+import Modelo.Instalacion;
+import Persistencia.InstalacionData;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Lulim
  */
 public class frmInstalacion extends javax.swing.JInternalFrame {
-
+     private InstalacionData instalacionData = new InstalacionData();
+     private DefaultTableModel modeloTabla;
     /**
      * Creates new form frmInstalacion
      */
     public frmInstalacion() {
         initComponents();
+        modeloTabla = (DefaultTableModel) jTable1.getModel();
+        jTextField1.setEnabled(false); 
+        cargarTabla();
     }
 
     /**
@@ -37,14 +46,14 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBoxEstado = new javax.swing.JCheckBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jBotonGuardar = new javax.swing.JButton();
+        jBotonModificar = new javax.swing.JButton();
+        jBotonEliminar = new javax.swing.JButton();
+        jBotonNuevo = new javax.swing.JButton();
+        jBotonBuscar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -82,10 +91,10 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel6.setText("Estado: ");
 
-        jCheckBox1.setText("Activo");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxEstado.setText("Activo");
+        jCheckBoxEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jCheckBoxEstadoActionPerformed(evt);
             }
         });
 
@@ -102,20 +111,45 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(jTable1);
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/saveas_5165.png"))); // NOI18N
-        jButton6.setText("Guardar");
+        jBotonGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/saveas_5165.png"))); // NOI18N
+        jBotonGuardar.setText("Guardar");
+        jBotonGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonGuardarActionPerformed(evt);
+            }
+        });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/create_edit_modify_icon_176960.png"))); // NOI18N
-        jButton1.setText("Modificar");
+        jBotonModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/create_edit_modify_icon_176960.png"))); // NOI18N
+        jBotonModificar.setText("Modificar");
+        jBotonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonModificarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/trash_bin_icon-icons.com_67981 2.png"))); // NOI18N
-        jButton2.setText("Eliminar");
+        jBotonEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/trash_bin_icon-icons.com_67981 2.png"))); // NOI18N
+        jBotonEliminar.setText("Eliminar");
+        jBotonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonEliminarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add-new-page_icon-icons.com_71788.png"))); // NOI18N
-        jButton3.setText("Nuevo");
+        jBotonNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add-new-page_icon-icons.com_71788.png"))); // NOI18N
+        jBotonNuevo.setText("Nuevo");
+        jBotonNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonNuevoActionPerformed(evt);
+            }
+        });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/search_icon_125165.png"))); // NOI18N
-        jButton4.setText("Buscar");
+        jBotonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/search_icon_125165.png"))); // NOI18N
+        jBotonBuscar.setText("Buscar");
+        jBotonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,7 +170,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
                             .addGap(32, 32, 32)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jCheckBox1)
+                                .addComponent(jCheckBoxEstado)
                                 .addComponent(jLabel2)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -149,15 +183,15 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton6)
+                                .addComponent(jBotonGuardar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1)
+                                .addComponent(jBotonModificar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)
+                                .addComponent(jBotonEliminar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3)
+                                .addComponent(jBotonNuevo)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton4)))))
+                                .addComponent(jBotonBuscar)))))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -184,15 +218,15 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
                         .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jCheckBox1)))
+                            .addComponent(jCheckBoxEstado)))
                     .addComponent(jLabel4))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jBotonGuardar)
+                    .addComponent(jBotonModificar)
+                    .addComponent(jBotonEliminar)
+                    .addComponent(jBotonNuevo)
+                    .addComponent(jBotonBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
@@ -201,18 +235,124 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void jCheckBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEstadoActionPerformed
+       if (jCheckBoxEstado.isSelected()) {
+            jCheckBoxEstado.setText("Activo");
+        } else {
+            jCheckBoxEstado.setText("Inactivo");
+        }
+    }//GEN-LAST:event_jCheckBoxEstadoActionPerformed
 
+    private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
+        try {
+            String nombre = jTextField2.getText();
+            String detalle = jTextArea1.getText();
+            double precio = Double.parseDouble(jTextField3.getText());
+            boolean estado = jCheckBoxEstado.isSelected();
 
+            if (nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un nombre.");
+                return;
+            }
+
+            Instalacion nueva = new Instalacion(nombre, detalle, precio, estado);
+            instalacionData.guardarInstalacion(nueva);
+            JOptionPane.showMessageDialog(this, "Instalación guardada correctamente.");
+            cargarTabla();
+            limpiarCampos();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un precio válido.");
+        }
+    }//GEN-LAST:event_jBotonGuardarActionPerformed
+
+    private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
+          int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            int codigo = (int) jTable1.getValueAt(fila, 0);
+            String nombre = jTextField2.getText();
+            String detalle = jTextArea1.getText();
+            double precio = Double.parseDouble(jTextField3.getText());
+            boolean estado = jCheckBoxEstado.isSelected();
+
+            Instalacion i = new Instalacion(nombre, detalle, precio, estado);
+            i.setCodInstal(codigo);
+            instalacionData.editarInstalacion(i);
+            JOptionPane.showMessageDialog(this, "Instalación modificada correctamente.");
+            cargarTabla();
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una instalación de la tabla.");
+        }
+    }//GEN-LAST:event_jBotonModificarActionPerformed
+
+    private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            int codigo = (int) jTable1.getValueAt(fila, 0);
+            instalacionData.deshabilitarInstalacion(codigo);
+            JOptionPane.showMessageDialog(this, "Instalación deshabilitada.");
+            cargarTabla();
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una instalación para eliminar.");
+        }
+    }//GEN-LAST:event_jBotonEliminarActionPerformed
+
+    private void jBotonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonNuevoActionPerformed
+        limpiarCampos();
+    }//GEN-LAST:event_jBotonNuevoActionPerformed
+
+    private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
+         String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre de la instalación:");
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            Instalacion i = instalacionData.buscarPorNombre(nombre.trim());
+            if (i != null && i.isEstado()) {
+                jTextField1.setText(String.valueOf(i.getCodInstal()));
+                jTextField2.setText(i.getNombre());
+                jTextArea1.setText(i.getDetalleUso());
+                jTextField3.setText(String.valueOf(i.getPrecio30m()));
+                jCheckBoxEstado.setSelected(i.isEstado());
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró una instalación activa con ese nombre.");
+            }
+        }
+    }//GEN-LAST:event_jBotonBuscarActionPerformed
+
+    private void cargarTabla() {
+        List<Instalacion> lista = instalacionData.listarInstalaciones();
+        modeloTabla.setRowCount(0);
+        for (Instalacion i : lista) {
+            if (i.isEstado()) { 
+                modeloTabla.addRow(new Object[]{
+                    i.getCodInstal(),
+                    i.getNombre(),
+                    i.getDetalleUso(),
+                    i.getPrecio30m(),
+                    "Activo"
+                });
+            }
+        }
+    }
+    
+      private void limpiarCampos() {
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextArea1.setText("");
+        jTextField3.setText("");
+        jCheckBoxEstado.setSelected(true);
+    }
+
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton jBotonBuscar;
+    private javax.swing.JButton jBotonEliminar;
+    private javax.swing.JButton jBotonGuardar;
+    private javax.swing.JButton jBotonModificar;
+    private javax.swing.JButton jBotonNuevo;
+    private javax.swing.JCheckBox jCheckBoxEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
