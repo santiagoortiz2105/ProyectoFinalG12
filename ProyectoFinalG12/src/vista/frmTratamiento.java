@@ -331,7 +331,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         try {
         int cod = Integer.parseInt(jTextField1.getText());
         tratamientoData.deshabilitarTratamiento(cod);
-        JOptionPane.showMessageDialog(this, "Tratamiento deshabilitado (inactivo).");
+        JOptionPane.showMessageDialog(this, "Tratamiento Eliminado.");
         limpiarCampos();
         cargarTabla();
     } catch (NumberFormatException e) {

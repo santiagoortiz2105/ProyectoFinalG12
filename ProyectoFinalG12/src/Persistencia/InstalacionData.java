@@ -27,24 +27,27 @@ public class InstalacionData {
     
     //Guardar Instalacion
     public void guardarInstalacion(Instalacion i) {
-        String sql = "INSERT INTO instalacion(nombre, detalleUso, precio30m, estado) VALUES (?, ?, ?, ?)";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, i.getNombre());
-            ps.setString(2, i.getDetalleUso());
-            ps.setDouble(3, i.getPrecio30m());
-            ps.setBoolean(4, i.isEstado());
-            ps.executeUpdate();
+        String sql = "INSERT INTO instalacion(nombre, detalledeuso, precio30m, estado) VALUES (?, ?, ?, ?)";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, i.getNombre());
+        ps.setString(2, i.getdetalledeuso());
+        ps.setDouble(3, i.getPrecio30m());
+        ps.setBoolean(4, i.isEstado());
+        ps.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                i.setCodInstal(rs.getInt(1));
-            }
-            ps.close();
-            System.out.println("Instalación guardada correctamente.");
-        } catch (SQLException ex) {
-            System.out.println("Error al guardar instalación: " + ex.getMessage());
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            i.setCodInstal(rs.getInt(1));
         }
+
+        ps.close();
+        System.out.println("Instalación guardada correctamente en la base de datos.");
+
+    } catch (SQLException ex) {
+        System.out.println("Error al guardar instalación: " + ex.getMessage());
+        JOptionPane.showMessageDialog(null, "Error al guardar instalación: " + ex.getMessage());
+    }
     }
 
     
@@ -59,7 +62,7 @@ public class InstalacionData {
             while (rs.next()) {
                 Instalacion i = new Instalacion(
                         rs.getString("nombre"),
-                        rs.getString("detalleUso"),
+                        rs.getString("detalledeuso"),
                         rs.getDouble("precio30m"),
                         rs.getBoolean("estado")
                 );
@@ -74,11 +77,11 @@ public class InstalacionData {
     }
     //Editar Instalacion 
     public void editarInstalacion(Instalacion i) {
-        String sql = "UPDATE instalacion SET nombre=?, detalleUso=?, precio30m=?, estado=? WHERE codInstal=?";
+        String sql = "UPDATE instalacion SET nombre=?, detalledeuso=?, precio30m=?, estado=? WHERE codInstal=?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, i.getNombre());
-            ps.setString(2, i.getDetalleUso());
+            ps.setString(2, i.getdetalledeuso());
             ps.setDouble(3, i.getPrecio30m());
             ps.setBoolean(4, i.isEstado());
             ps.setInt(5, i.getCodInstal());
@@ -97,22 +100,24 @@ public class InstalacionData {
     }
     //Deshabilitar Instalacion 
     public void deshabilitarInstalacion(int id) {
-        String sql = "UPDATE instalacion SET estado = 0 WHERE codInstal = ? AND estado = 1";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            int fila = ps.executeUpdate();
+        String sql = "DELETE FROM instalacion WHERE codInstal = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        int fila = ps.executeUpdate();
 
-            if (fila == 1) {
-                System.out.println("Instalación deshabilitada correctamente.");
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al deshabilitar instalación: " + ex.getMessage());
+        if (fila == 1) {
+            System.out.println("Instalación eliminada correctamente.");
+        } else {
+            System.out.println("No se encontró una instalación con ese código.");
         }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al eliminar instalación: " + ex.getMessage());
+    }
     }
 
-    //Habilitar Instaacion 
+    //Habilitar Instalacion 
      public void habilitarInstalacion(int id) {
         String sql = "UPDATE instalacion SET estado = 1 WHERE codInstal = ? AND estado = 0";
         try {
@@ -130,25 +135,50 @@ public class InstalacionData {
     }
     //Buscar Instalacion por id
      public Instalacion buscarPorNombre(String nombre) {
-        Instalacion i = null;
-        String sql = "SELECT * FROM instalacion WHERE nombre = ?";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, nombre);
-            ResultSet rs = ps.executeQuery();
+          Instalacion i = null;
+    String sql = "SELECT * FROM instalacion WHERE nombre = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, nombre);
+        ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                i = new Instalacion();
-                i.setCodInstal(rs.getInt("codInstal"));
-                i.setNombre(rs.getString("nombre"));
-                i.setDetalleUso(rs.getString("detalleUso"));
-                i.setPrecio30m(rs.getDouble("precio30m"));
-                i.setEstado(rs.getBoolean("estado"));
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al buscar instalación: " + ex.getMessage());
+        if (rs.next()) {
+            i = new Instalacion();
+            i.setCodInstal(rs.getInt("codInstal"));
+            i.setNombre(rs.getString("nombre"));
+            i.setdetalledeuso(rs.getString("detalledeuso")); 
+            i.setPrecio30m(rs.getDouble("precio30m"));
+            i.setEstado(rs.getBoolean("estado"));
         }
-        return i;
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al buscar instalación: " + ex.getMessage());
     }
+    return i;
+    }
+     
+     //Buscar instalacion por codigo 
+     public Instalacion buscarPorCodigo(int codInstal) {
+    Instalacion i = null;
+    String sql = "SELECT * FROM instalacion WHERE codInstal = ?";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codInstal);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            i = new Instalacion();
+            i.setCodInstal(rs.getInt("codInstal"));
+            i.setNombre(rs.getString("nombre"));
+            i.setdetalledeuso(rs.getString("detalledeuso"));
+            i.setPrecio30m(rs.getDouble("precio30m"));
+            i.setEstado(rs.getBoolean("estado"));
+        }
+        rs.close();
+        ps.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al buscar instalación por código: " + e.getMessage());
+    }
+    return i;
+}
 }

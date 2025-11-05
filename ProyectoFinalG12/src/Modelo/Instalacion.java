@@ -11,7 +11,7 @@ package Modelo;
 public class Instalacion {
     private int codInstal;
     private String nombre;
-    private String detalleUso;
+    private String detalledeuso;
     private double precio30m;
     private boolean estado;
     
@@ -22,9 +22,9 @@ public class Instalacion {
        
     //Constructor
        
-    public Instalacion(String nombre, String detalleUso, double precio30m, boolean estado) {
+    public Instalacion(String nombre, String detalledeuso, double precio30m, boolean estado) {
         this.nombre = nombre;
-        this.detalleUso = detalleUso;
+        this.detalledeuso = detalledeuso;
         this.precio30m = precio30m;
         this.estado = estado;
     }
@@ -47,12 +47,12 @@ public class Instalacion {
         this.nombre = nombre;
     }
 
-    public String getDetalleUso() {
-        return detalleUso;
+    public String getdetalledeuso() {
+        return detalledeuso;
     }
 
-    public void setDetalleUso(String detalleUso) {
-        this.detalleUso = detalleUso;
+    public void setdetalledeuso(String detalledeuso) {
+        this.detalledeuso = detalledeuso;
     }
 
     public double getPrecio30m() {
