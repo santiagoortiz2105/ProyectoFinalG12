@@ -64,6 +64,8 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         jLabel4.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel4.setText("Preferencias:");
 
+        jScrollPane1.setHorizontalScrollBar(null);
+
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
