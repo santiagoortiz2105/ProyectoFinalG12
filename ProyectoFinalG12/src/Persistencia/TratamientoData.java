@@ -50,7 +50,7 @@ public class TratamientoData {
     //Listar tratamiento
     public List<Tratamiento> listarTratamientos() {
         List<Tratamiento> tratamientos = new ArrayList<>();
-    String sql = "SELECT * FROM tratamiento WHERE activo = 1"; 
+    String sql = "SELECT * FROM tratamiento"; 
 
     try {
         PreparedStatement ps = con.prepareStatement(sql);

@@ -393,18 +393,16 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     List<Tratamiento> lista = tratamientoData.listarTratamientos();
 
     for (Tratamiento t : lista) {
-        if (t.isActivo()) { 
-            modeloTabla.addRow(new Object[]{
-                t.getCodTratam(),
-                t.getNombre(),
-                t.getTipo(),
-                t.getDetalle(),
-                t.getDuracion_min(),
-                t.getCosto(),
-                t.isActivo() ? "Activo" : "Inactivo"
-            });
-        }
-    }
+    modeloTabla.addRow(new Object[]{
+        t.getCodTratam(),
+        t.getNombre(),
+        t.getTipo(),
+        t.getDetalle(),
+        t.getDuracion_min(),
+        t.getCosto(),
+        t.isActivo() ? "Activo" : "Inactivo"
+    });
+}
 }
     
     private void limpiarCampos() {
