@@ -22,7 +22,8 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     public frmInstalacion() {
         initComponents();
         modeloTabla = (DefaultTableModel) jTable1.getModel();
-        jTextField1.setEnabled(false); 
+        jTextField1.setEnabled(true);
+        jTextField1.setEditable(true);
         cargarTabla();
     }
 
@@ -68,6 +69,11 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         jLabel1.setText("Codigo:");
 
         jTextField1.setForeground(new java.awt.Color(0, 0, 0));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel3.setText("Nombre:");
@@ -156,43 +162,40 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(114, 114, 114)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1))
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5))
-                            .addGap(32, 32, 32)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jCheckBoxEstado)
-                                .addComponent(jLabel2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(80, 80, 80)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jBotonGuardar)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jBotonModificar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBotonEliminar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBotonNuevo)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBotonBuscar)))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                                .addComponent(jBotonBuscar))
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBoxEstado)
+                            .addComponent(jLabel2)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jBotonGuardar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBotonModificar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBotonEliminar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBotonNuevo)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 46, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +205,8 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jBotonBuscar))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,11 +229,10 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
                     .addComponent(jBotonGuardar)
                     .addComponent(jBotonModificar)
                     .addComponent(jBotonEliminar)
-                    .addComponent(jBotonNuevo)
-                    .addComponent(jBotonBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                    .addComponent(jBotonNuevo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -244,26 +247,34 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jCheckBoxEstadoActionPerformed
 
     private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
-        try {
-            String nombre = jTextField2.getText();
-            String detalle = jTextArea1.getText();
-            double precio = Double.parseDouble(jTextField3.getText());
-            boolean estado = jCheckBoxEstado.isSelected();
-
-            if (nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Debe ingresar un nombre.");
-                return;
-            }
-
-            Instalacion nueva = new Instalacion(nombre, detalle, precio, estado);
-            instalacionData.guardarInstalacion(nueva);
-            JOptionPane.showMessageDialog(this, "Instalación guardada correctamente.");
-            cargarTabla();
-            limpiarCampos();
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Ingrese un precio válido.");
+         try {
+        if (jTextField2.getText().trim().isEmpty() ||
+            jTextArea1.getText().trim().isEmpty() ||
+            jTextField3.getText().trim().isEmpty()) {
+            
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar completos.");
+            return;
         }
+        String nombre = jTextField2.getText();
+        String detalleUso = jTextArea1.getText();
+        double precio = Double.parseDouble(jTextField3.getText());
+        boolean estado = jCheckBoxEstado.isSelected();
+
+        Instalacion i = new Instalacion(nombre, detalleUso, precio, estado);
+
+        instalacionData.guardarInstalacion(i);
+
+        jTextField1.setText(String.valueOf(i.getCodInstal()));
+
+        JOptionPane.showMessageDialog(this, "Instalación guardada correctamente.");
+        cargarTabla();
+        limpiarCampos();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar la instalación: " + e.getMessage());
+    }
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
@@ -291,7 +302,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         if (fila != -1) {
             int codigo = (int) jTable1.getValueAt(fila, 0);
             instalacionData.deshabilitarInstalacion(codigo);
-            JOptionPane.showMessageDialog(this, "Instalación deshabilitada.");
+            JOptionPane.showMessageDialog(this, "Instalación Eliminada.");
             cargarTabla();
             limpiarCampos();
         } else {
@@ -304,35 +315,61 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBotonNuevoActionPerformed
 
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
-         String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre de la instalación:");
-        if (nombre != null && !nombre.trim().isEmpty()) {
-            Instalacion i = instalacionData.buscarPorNombre(nombre.trim());
-            if (i != null && i.isEstado()) {
-                jTextField1.setText(String.valueOf(i.getCodInstal()));
-                jTextField2.setText(i.getNombre());
-                jTextArea1.setText(i.getDetalleUso());
-                jTextField3.setText(String.valueOf(i.getPrecio30m()));
-                jCheckBoxEstado.setSelected(i.isEstado());
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró una instalación activa con ese nombre.");
-            }
+         try {
+        String textoCodigo = jTextField1.getText().trim();
+        String nombreTexto = jTextField2.getText().trim();
+        Instalacion i = null;
+
+        if (!textoCodigo.isEmpty()) {
+            // Buscar por código si se escribió uno
+            int codigo = Integer.parseInt(textoCodigo);
+            i = instalacionData.buscarPorCodigo(codigo);
+        } else if (!nombreTexto.isEmpty()) {
+            // Si no hay código, busca por nombre
+            i = instalacionData.buscarPorNombre(nombreTexto);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingrese un código o nombre para buscar.");
+            return;
         }
+
+        if (i == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró una instalación con esos datos.");
+            return;
+        }
+
+        jTextField1.setText(String.valueOf(i.getCodInstal()));
+        jTextField2.setText(i.getNombre());
+        jTextArea1.setText(i.getdetalledeuso());
+        jTextField3.setText(String.valueOf(i.getPrecio30m()));
+        jCheckBoxEstado.setSelected(i.isEstado());
+        if (!i.isEstado()) {
+            JOptionPane.showMessageDialog(this, "La instalación existe pero está desactivada.");
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El código debe ser un número válido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al buscar instalación: " + e.getMessage());
+    }
     }//GEN-LAST:event_jBotonBuscarActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void cargarTabla() {
         List<Instalacion> lista = instalacionData.listarInstalaciones();
-        modeloTabla.setRowCount(0);
-        for (Instalacion i : lista) {
-            if (i.isEstado()) { 
-                modeloTabla.addRow(new Object[]{
-                    i.getCodInstal(),
-                    i.getNombre(),
-                    i.getDetalleUso(),
-                    i.getPrecio30m(),
-                    "Activo"
-                });
-            }
-        }
+    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+    modelo.setRowCount(0); 
+    for (Instalacion i : lista) {
+        modelo.addRow(new Object[]{
+            i.getCodInstal(),
+            i.getNombre(),
+            i.getdetalledeuso(),
+            i.getPrecio30m(),
+            i.isEstado() ? "Activo" : "Inactivo"
+        });
+    }
     }
     
       private void limpiarCampos() {

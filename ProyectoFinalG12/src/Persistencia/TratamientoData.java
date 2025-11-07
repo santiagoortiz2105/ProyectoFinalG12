@@ -50,28 +50,29 @@ public class TratamientoData {
     //Listar tratamiento
     public List<Tratamiento> listarTratamientos() {
         List<Tratamiento> tratamientos = new ArrayList<>();
-        String sql = "SELECT * FROM tratamiento";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+    String sql = "SELECT * FROM tratamiento"; 
 
-            while (rs.next()) {
-                Tratamiento t = new Tratamiento(
-                        rs.getString("nombre"),
-                        rs.getString("tipo"),
-                        rs.getString("detalle"),
-                        rs.getInt("duracion_min"),
-                        rs.getDouble("costo"),
-                        rs.getBoolean("activo")
-                );
-                t.setCodTratam(rs.getInt("codTratam"));
-                tratamientos.add(t);
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al listar tratamientos: " + ex.getMessage());
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Tratamiento t = new Tratamiento(
+                    rs.getString("nombre"),
+                    rs.getString("tipo"),
+                    rs.getString("detalle"),
+                    rs.getInt("duracion_min"),
+                    rs.getDouble("costo"),
+                    rs.getBoolean("activo")
+            );
+            t.setCodTratam(rs.getInt("codTratam"));
+            tratamientos.add(t);
         }
-        return tratamientos;
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al listar tratamientos: " + ex.getMessage());
+    }
+    return tratamientos;
     }
     //Editar tratamiento
     public void editarTratamiento(Tratamiento t) {
@@ -101,19 +102,21 @@ public class TratamientoData {
 
     //Deshabilitar tratamiento
     public void deshabilitarTratamiento(int id) {
-        String sql = "UPDATE tratamiento SET activo = 0 WHERE codTratam = ? AND activo = 1";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            int fila = ps.executeUpdate();
+        String sql = "DELETE FROM tratamiento WHERE codTratam = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        int fila = ps.executeUpdate();
 
-            if (fila == 1) {
-                System.out.println("Tratamiento deshabilitado correctamente.");
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al deshabilitar tratamiento: " + ex.getMessage());
+        if (fila == 1) {
+            System.out.println("Tratamiento eliminado correctamente.");
+        } else {
+            System.out.println("No se encontró el tratamiento con ese ID.");
         }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al eliminar tratamiento: " + ex.getMessage());
+    }
     }
     //Habilitar tratamiento 
     public void habilitarTratamiento(int id) {
