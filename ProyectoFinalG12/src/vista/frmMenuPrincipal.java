@@ -46,6 +46,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jfrmInstalacion = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jSalir = new javax.swing.JMenuItem();
 
@@ -128,6 +129,15 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu7);
 
         jMenu8.setText("Dia de Spa");
+
+        jMenuItem1.setText("Spa");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem1);
+
         jMenuBar1.add(jMenu8);
 
         jMenu9.setText("Salir ");
@@ -192,6 +202,13 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
           System.exit(0);
     }//GEN-LAST:event_jSalirActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        FrmDiaDeSpa ventana = new FrmDiaDeSpa();
+     jDesktopPane1.add(ventana);
+     ventana.setVisible(true);
+     ventana.toFront();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -229,6 +246,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jSalir;
     private javax.swing.JMenuItem jfrmCliente;
     private javax.swing.JMenuItem jfrmConsultorio;

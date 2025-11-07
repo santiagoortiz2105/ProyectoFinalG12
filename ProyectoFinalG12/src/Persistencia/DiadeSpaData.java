@@ -24,12 +24,11 @@ import javax.swing.JOptionPane;
 public class DiadeSpaData {
     private Connection con;
     private ClienteData clienteData;
-    private SesionData sesionData;
+    private SesionData SesionData;
 
     public DiadeSpaData() {
         con = Conexion.getConexion();
         clienteData = new ClienteData();
-        sesionData = new SesionData();
     }
     
     //Guardar DiadeSpa
