@@ -120,19 +120,21 @@ public class SesionData {
 
     // Deshabilitar Sesión
     public void deshabilitarSesion(int codSesion) {
-        String sql = "UPDATE sesion SET estado = 0 WHERE codSesion = ? AND estado = 1";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, codSesion);
-            int fila = ps.executeUpdate();
+        String sql = "DELETE FROM sesion WHERE codSesion = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codSesion);
+        int fila = ps.executeUpdate();
 
-            if (fila == 1) {
-                System.out.println("Sesión deshabilitada correctamente.");
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al deshabilitar sesión: " + ex.getMessage());
+        if (fila == 1) {
+            System.out.println("Sesión eliminada correctamente.");
+        } else {
+            System.out.println("No se encontró la sesión con ese código.");
         }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al eliminar sesión: " + ex.getMessage());
+    }
     }
 
     // Habilitar Sesión
