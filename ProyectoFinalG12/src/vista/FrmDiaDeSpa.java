@@ -63,12 +63,13 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
    }
     @SuppressWarnings("unchecked")
     
+    
     private LocalDateTime convertirFecha() {
-try {
-return LocalDateTime.parse(jTextField2.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-} catch (Exception e) {
-JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto. Use: yyyy-MM-dd HH:mm");
-return null;
+      try {
+        return LocalDateTime.parse(jTextField2.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+         } catch (Exception e) {
+             JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto. Use: dd/MM/yyyy HH:mm");
+        return null;
 }
 }
 
@@ -243,10 +244,11 @@ return null;
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton5)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jButton5)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -286,7 +288,7 @@ return null;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        if (jTextField1.getText().isEmpty()) return;
-   LocalDateTime fecha = convertirFecha();
+       LocalDateTime fecha = convertirFecha();
    if (fecha == null) return;
    DiadeSpa d = new DiadeSpa();
    d.setCodPack(Integer.parseInt(jTextField1.getText()));
@@ -318,9 +320,11 @@ return null;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (jTextField1.getText().isEmpty()) return;
-    diaData.deshabilitarDiaDeSpa(Integer.parseInt(jTextField1.getText()));
+         if (jTextField1.getText().isEmpty()) return;
+    int codPack = Integer.parseInt(jTextField1.getText());
+    diaData.deshabilitarDiaDeSpa(codPack);
     cargarTabla();
+    limpiarCampos();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -331,7 +335,7 @@ return null;
         if (jTextField1.getText().isEmpty()) return;
     DiadeSpa d = diaData.buscarPorId(Integer.parseInt(jTextField1.getText()));
     if (d != null) {
-    jTextField2.setText(d.getFechaHora().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    jTextField2.setText(d.getFechaHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
     jTextArea1.setText(d.getPreferencias());
     jTextField3.setText(String.valueOf(d.getMonto()));
     jCheckBox1.setSelected(d.isEstado());

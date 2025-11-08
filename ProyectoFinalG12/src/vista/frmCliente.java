@@ -3,18 +3,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
-
+import Modelo.Cliente;
+import Persistencia.ClienteData;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author thefl
  */
 public class frmCliente extends javax.swing.JInternalFrame {
+    
+    private ClienteData clienteData = new ClienteData();
+    private DefaultTableModel modelo = new DefaultTableModel();
 
     /**
      * Creates new form Cliente
      */
     public frmCliente() {
         initComponents();
+        cargarTabla();
     }
 
     /**
@@ -87,26 +95,56 @@ public class frmCliente extends javax.swing.JInternalFrame {
 
         cbEstado.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         cbEstado.setText("Activo");
+        cbEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbEstadoActionPerformed(evt);
+            }
+        });
 
         jbGuardar.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         jbGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/saveas_5165.png"))); // NOI18N
         jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jbBuscar.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         jbBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/search_icon_125165.png"))); // NOI18N
         jbBuscar.setText("Buscar");
+        jbBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbBuscarActionPerformed(evt);
+            }
+        });
 
         jbModificar.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         jbModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/create_edit_modify_icon_176960.png"))); // NOI18N
         jbModificar.setText("Modificar");
+        jbModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbModificarActionPerformed(evt);
+            }
+        });
 
         jbEliminar.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         jbEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/trash_bin_icon-icons.com_67981 2.png"))); // NOI18N
         jbEliminar.setText("Eliminar");
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarActionPerformed(evt);
+            }
+        });
 
         jbNuevo.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         jbNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add-new-page_icon-icons.com_71788.png"))); // NOI18N
         jbNuevo.setText("Nuevo");
+        jbNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNuevoActionPerformed(evt);
+            }
+        });
 
         jtCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -184,7 +222,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
                     .addComponent(tfCodigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(tfdni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -220,6 +258,147 @@ public class frmCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
+        if (tfCodigoCliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el código del cliente a buscar.");
+            return;
+        }
+
+        try {
+            int cod = Integer.parseInt(tfCodigoCliente.getText());
+            Cliente c = clienteData.buscarClientePorid(cod);
+
+            if (c != null) {
+                tfdni.setText(c.getDni());
+                tfNombreCompleto.setText(c.getNombreCompleto());
+                tfTelefono.setText(c.getTelefono());
+                tfEdad.setText(String.valueOf(c.getEdad()));
+                taAfecciones.setText(c.getAfecciones());
+                cbEstado.setSelected(c.isEstado());
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el cliente.");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar cliente: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jbBuscarActionPerformed
+
+    private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
+         limpiarCampos();
+        JOptionPane.showMessageDialog(this, "Campos listos para nuevo cliente.");
+    }//GEN-LAST:event_jbNuevoActionPerformed
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+       if (tfCodigoCliente.getText().isEmpty()) return; 
+    int cod = Integer.parseInt(tfCodigoCliente.getText());
+    ClienteData clienteData = new ClienteData();
+    clienteData.deshabilitarCliente(cod);
+    cargarTabla();
+    limpiarCampos();
+    }//GEN-LAST:event_jbEliminarActionPerformed
+
+    private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
+      if (tfCodigoCliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un código de cliente para modificar.");
+            return;
+        }
+
+        try {
+            Cliente c = new Cliente();
+            c.setCodCli(Integer.parseInt(tfCodigoCliente.getText()));
+            c.setDni(tfdni.getText());
+            c.setNombreCompleto(tfNombreCompleto.getText());
+            c.setTelefono(tfTelefono.getText());
+            c.setEdad(Integer.parseInt(tfEdad.getText()));
+            c.setAfecciones(taAfecciones.getText());
+            c.setEstado(cbEstado.isSelected());
+
+            clienteData.editarCliente(c);
+            cargarTabla();
+            limpiarCampos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al modificar cliente: " + e.getMessage());
+        } 
+    }//GEN-LAST:event_jbModificarActionPerformed
+
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+         try {
+            String dni = tfdni.getText();
+            String nombre = tfNombreCompleto.getText();
+            String telefono = tfTelefono.getText();
+            int edad = Integer.parseInt(tfEdad.getText());
+            String afecciones = taAfecciones.getText();
+            boolean estado = cbEstado.isSelected();
+
+            if (dni.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete los campos obligatorios (DNI y Nombre).");
+                return;
+            }
+
+            Cliente c = new Cliente(dni, nombre, telefono, edad, afecciones, estado);
+            clienteData.guardarCliente(c);
+            cargarTabla();
+            limpiarCampos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar cliente: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jbGuardarActionPerformed
+
+    private void cbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoActionPerformed
+        if (tfCodigoCliente.getText().isEmpty()) {
+        return; 
+    }
+
+       int cod = Integer.parseInt(tfCodigoCliente.getText());
+        boolean activo = cbEstado.isSelected();
+
+    if (activo) {
+        clienteData.habilitarCliente(cod);
+    } else {
+        clienteData.deshabilitarCliente(cod);
+    }
+
+    cargarTabla();
+    }//GEN-LAST:event_cbEstadoActionPerformed
+
+    
+     private void cargarTabla() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Código");
+        modelo.addColumn("DNI");
+        modelo.addColumn("Nombre Completo");
+        modelo.addColumn("Teléfono");
+        modelo.addColumn("Edad");
+        modelo.addColumn("Afecciones");
+        modelo.addColumn("Estado");
+
+        List<Cliente> lista = clienteData.listarClientes();
+        for (Cliente c : lista) {
+            modelo.addRow(new Object[]{
+                c.getCodCli(),
+                c.getDni(),
+                c.getNombreCompleto(),
+                c.getTelefono(),
+                c.getEdad(),
+                c.getAfecciones(),
+                c.isEstado() ? "Activo" : "Inactivo"
+            });
+        }
+        jtCliente.setModel(modelo);
+    }
+
+    private void limpiarCampos() {
+        tfCodigoCliente.setText("");
+        tfdni.setText("");
+        tfNombreCompleto.setText("");
+        tfTelefono.setText("");
+        tfEdad.setText("");
+        taAfecciones.setText("");
+        cbEstado.setSelected(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox cbEstado;

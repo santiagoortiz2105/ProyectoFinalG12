@@ -11,9 +11,6 @@
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Modelo/DiadeSpa.java</file>
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Modelo/Sesion.java</file>
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Modelo/Conexion.java</file>
-            <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Persistencia/ClienteData.java</file>
-            <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Persistencia/MasajistaData.java</file>
-            <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Persistencia/ConsultorioData.java</file>
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Persistencia/TratamientoData.java</file>
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Persistencia/InstalacionData.java</file>
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/Persistencia/DiadeSpaData.java</file>
@@ -24,6 +21,8 @@
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/vista/frmConsultorio.java</file>
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/vista/frmTratamiento.java</file>
             <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/vista/frmInstalacion.java</file>
+            <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/vista/FrmDiaDeSpa.java</file>
+            <file>file:/C:/Users/Lulim.LOURDES/Documents/GitHub/ProyectoFinalG12/ProyectoFinalG12/src/vista/FrmSesion.java</file>
         </group>
     </open-files>
 </project-private>

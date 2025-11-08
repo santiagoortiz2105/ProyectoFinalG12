@@ -103,24 +103,22 @@ public class ClienteData {
     }
     
     public void deshabilitarCliente(int id) {
-        try {
-            String sql = "UPDATE cliente SET estado = 0 WHERE codCli = ? AND estado = ? ";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.setBoolean(2, true);
-            int fila = ps.executeUpdate();
+         String sql = "DELETE FROM cliente WHERE codCli = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        int fila = ps.executeUpdate();
 
-            if (fila == 1) {
-                System.out.println("El cliente se deshabilitó exitosamente.");
-                //para cuando haya vistas
-                //JOptionPane.showMessageDialog(null, "El cliente se deshabilitó exitosamente.");
-            }
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println("Error al acceder a la tabla Cliente.");
-            //para cuando haya vistas
-            //JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Cliente. "+ ex.getMessage());
+        if (fila == 1) {
+            System.out.println("El cliente se eliminó exitosamente.");
+        } else {
+            System.out.println("No se encontró el cliente con ese ID.");
         }
+
+        ps.close();
+    } catch (SQLException e) {
+        System.out.println("Error al eliminar cliente: " + e.getMessage());
+    }
     }
     
     public void habilitarCliente(int id) {

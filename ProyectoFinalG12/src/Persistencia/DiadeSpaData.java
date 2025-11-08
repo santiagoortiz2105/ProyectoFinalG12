@@ -104,19 +104,21 @@ public class DiadeSpaData {
     }
     //Deshabilitar DiadeSpa
     public void deshabilitarDiaDeSpa(int codPack) {
-        String sql = "UPDATE dia_de_spa SET estado = 0 WHERE codPack = ? AND estado = 1";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, codPack);
-            int fila = ps.executeUpdate();
+          String sql = "DELETE FROM dia_de_spa WHERE codPack = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codPack);
+        int fila = ps.executeUpdate();
 
-            if (fila == 1) {
-                System.out.println("Día de Spa deshabilitado correctamente.");
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al deshabilitar Día de Spa: " + ex.getMessage());
+        if (fila == 1) {
+            JOptionPane.showMessageDialog(null, "Día de Spa eliminado correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el registro para eliminar.");
         }
+        ps.close();
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al eliminar Día de Spa: " + ex.getMessage());
+    }
     }
     //Habilitar DiadeSpa
     public void habilitarDiaDeSpa(int codPack) {
