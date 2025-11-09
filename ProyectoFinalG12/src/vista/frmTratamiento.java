@@ -411,7 +411,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     jTextArea2.setText("");
     jTextField3.setText("");
     jTextField4.setText("");
-    jCheckBoxEstado.setSelected(true);
+    jCheckBoxEstado.setSelected(false);
 }
     
     

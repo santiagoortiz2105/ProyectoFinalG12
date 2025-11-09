@@ -4,6 +4,21 @@
  */
 package vista;
 
+import Modelo.Sesion;
+import Modelo.Tratamiento;
+import Modelo.Consultorio;
+import Modelo.Masajista;
+import Modelo.DiadeSpa;
+import Persistencia.SesionData;
+import Persistencia.TratamientoData;
+import Persistencia.ConsultorioData;
+import Persistencia.MasajistaData;
+import Persistencia.DiadeSpaData;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author santi
@@ -13,9 +28,95 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     /**
      * Creates new form FrmSesion
      */
+    
+
+    private SesionData sesionData;
+    private TratamientoData tratData;
+    private ConsultorioData consulData;
+    private MasajistaData masData;
+    private DiadeSpaData diaSpaData;
+    private DefaultTableModel modelo;
+    
     public FrmSesion() {
         initComponents();
+        sesionData = new SesionData();
+        tratData = new TratamientoData();
+        consulData = new ConsultorioData();
+        masData = new MasajistaData();
+        diaSpaData = new DiadeSpaData();
+        
+        modelo = new DefaultTableModel();
+        jTable1.setModel(modelo);
+        armarTabla();
+        cargarCombos();
+        cargarTabla();
     }
+       private void armarTabla() {
+       modelo.addColumn("Código");
+       modelo.addColumn("Inicio");
+       modelo.addColumn("Fin");
+       modelo.addColumn("Tratamiento");
+       modelo.addColumn("Consultorio");
+       modelo.addColumn("Masajista");
+       modelo.addColumn("Pack Spa");
+       modelo.addColumn("Estado");
+    }
+       
+       private void limpiarCampos() {
+    jTextField1.setText("");
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jCheckBox1.setSelected(false);
+    jComboBox1.setSelectedIndex(0);
+    jComboBox2.setSelectedIndex(0);
+    jComboBox3.setSelectedIndex(0);
+    jComboBox4.setSelectedIndex(0);
+    }
+       
+     private void cargarCombos() {
+
+    jComboBox1.removeAllItems();
+    for (Tratamiento t : tratData.listarTratamientos()) {
+        jComboBox1.addItem(t.getNombre());
+    }
+
+    jComboBox2.removeAllItems();
+    for (Consultorio c : consulData.listarConsultorios()) {
+        jComboBox2.addItem(String.valueOf(c.getNroConsultorio()));
+    }
+
+    jComboBox3.removeAllItems();
+    for (Masajista m : masData.listarMasajistas()) {
+        jComboBox3.addItem(m.getNombre());
+    }
+
+    jComboBox4.removeAllItems();
+    for (DiadeSpa d : diaSpaData.listarDiasDeSpa()) {
+        jComboBox4.addItem(String.valueOf(d.getCodPack()));
+    }
+}
+      private void limpiarTabla() {
+    int filas = modelo.getRowCount() - 1;
+    for (; filas >= 0; filas--) {
+        modelo.removeRow(filas);
+    }
+}
+      private void cargarTabla() {
+    limpiarTabla();
+    for (Sesion s : sesionData.listarSesiones()) {
+        modelo.addRow(new Object[]{
+            s.getCodSesion(),
+            s.getFechaHoraInicio(),
+            s.getFechaHoraFin(),
+            s.getTratamiento().getNombre(),
+            s.getConsultorio().getNroConsultorio(),
+            s.getMasajista().getNombre(),
+            s.getDiadeSpa().getCodPack(),
+            s.isEstado() ? "Activo" : "Inactivo"
+        });
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,11 +163,21 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
         jButton6.setText("Buscar");
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Sesión");
 
         jLabel2.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel2.setText("Codigo:");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel3.setText("Hora Inicio:");
@@ -77,12 +188,15 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel5.setText("Tratamiento:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel6.setText("Consultorio:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -92,12 +206,20 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jLabel7.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel7.setText("Masajista:");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel8.setText("Dia de Spa:");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jLabel9.setText("Estado");
@@ -107,6 +229,11 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/saveas_5165.png"))); // NOI18N
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/create_edit_modify_icon_176960.png"))); // NOI18N
         jButton3.setText("Modificar");
@@ -118,12 +245,27 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/trash_bin_icon-icons.com_67981 2.png"))); // NOI18N
         jButton4.setText("Eliminar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add-new-page_icon-icons.com_71788.png"))); // NOI18N
         jButton5.setText("Nuevo");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/search_icon_125165.png"))); // NOI18N
         jButton7.setText("Buscar");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -266,8 +408,75 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        if (jTextField1.getText().isEmpty()) return;
+    Sesion s = new Sesion();
+    s.setCodSesion(Integer.parseInt(jTextField1.getText()));
+    s.setFechaHoraInicio(LocalDateTime.parse(jTextField2.getText()));
+    s.setFechaHoraFin(LocalDateTime.parse(jTextField3.getText()));
+    s.setEstado(jCheckBox1.isSelected());
+    s.setTratamiento((Tratamiento) jComboBox1.getSelectedItem());
+    s.setConsultorio((Consultorio) jComboBox2.getSelectedItem());
+    s.setMasajista((Masajista) jComboBox3.getSelectedItem());
+    s.setDiadeSpa((DiadeSpa) jComboBox4.getSelectedItem());
+    
+    sesionData.editarSesion(s);
+    cargarTabla();                       
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Sesion s = new Sesion();
+    s.setFechaHoraInicio(LocalDateTime.parse(jTextField2.getText()));
+    s.setFechaHoraFin(LocalDateTime.parse(jTextField3.getText()));
+    s.setEstado(jCheckBox1.isSelected());
+    s.setTratamiento((Tratamiento) jComboBox1.getSelectedItem());
+    s.setConsultorio((Consultorio) jComboBox2.getSelectedItem());
+    s.setMasajista((Masajista) jComboBox3.getSelectedItem());
+    s.setDiadeSpa((DiadeSpa) jComboBox4.getSelectedItem());
+    
+    sesionData.guardarSesion(s);
+    cargarTabla();                  
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if (jTextField1.getText().isEmpty()) return;
+    sesionData.deshabilitarSesion(Integer.parseInt(jTextField1.getText()));
+    cargarTabla();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+     limpiarCampos();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+         if (jTextField1.getText().isEmpty()) return;
+    Sesion s = sesionData.buscarPorCodSesion(Integer.parseInt(jTextField1.getText()));
+    
+    if (s != null) {
+        jTextField2.setText(s.getFechaHoraInicio().toString());
+        jTextField3.setText(s.getFechaHoraFin().toString());
+        jCheckBox1.setSelected(s.isEstado());
+        jComboBox1.setSelectedItem(s.getTratamiento());
+        jComboBox2.setSelectedItem(s.getConsultorio());
+        jComboBox3.setSelectedItem(s.getMasajista());
+        jComboBox4.setSelectedItem(s.getDiadeSpa());
+    }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
