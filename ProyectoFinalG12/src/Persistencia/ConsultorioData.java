@@ -92,19 +92,20 @@ public class ConsultorioData {
 
     // Deshabilitar consultorio
     public void deshabilitarConsultorio(int id) {
-        String sql = "UPDATE consultorio SET apto = 0 WHERE nroConsultorio = ? AND apto = 1";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            int fila = ps.executeUpdate();
-
-            if (fila == 1) {
-                System.out.println("Consultorio deshabilitado correctamente.");
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            System.out.println("Error al deshabilitar consultorio: " + ex.getMessage());
+        String sql = "DELETE FROM consultorio WHERE nroConsultorio = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        int fila = ps.executeUpdate();
+        if (fila == 1) {
+            System.out.println("Consultorio eliminado correctamente.");
+        } else {
+            System.out.println("No se encontró el consultorio.");
         }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al eliminar consultorio: " + ex.getMessage());
+    }
     }
 
     // Habilitar consultorio

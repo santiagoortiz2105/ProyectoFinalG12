@@ -98,17 +98,17 @@ public class MasajistaData {
 
    //Deshabilitar masajista
     public void deshabilitarMasajista(int matricula){
-         String sql = "UPDATE masajista SET estado=0 WHERE matricula=? AND estado=1"; 
-         try {
+        String sql = "DELETE FROM masajista WHERE matricula = ?";
+    try {
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, matricula);
         int fila = ps.executeUpdate();
         ps.close();
         if (fila == 1) {
-            System.out.println("El masajista se deshabilitó exitosamente.");
+            System.out.println("El masajista fue eliminado completamente.");
         }
     } catch (SQLException ex) {
-        System.out.println("Error al deshabilitar masajista: " + ex.getMessage());
+        System.out.println("Error al eliminar masajista: " + ex.getMessage());
     }
     }
    
