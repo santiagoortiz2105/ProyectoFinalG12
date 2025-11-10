@@ -3,18 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
-
+import Modelo.Consultorio;
+import Persistencia.ConsultorioData;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author thefl
  */
 public class frmConsultorio extends javax.swing.JInternalFrame {
-
+    private ConsultorioData cData = new ConsultorioData();
+    private DefaultTableModel modelo;
     /**
      * Creates new form Consultorio
      */
     public frmConsultorio() {
         initComponents();
+        modelo = (DefaultTableModel) jtConsultorio.getModel(); 
+        cargarTabla();
+        limpiarCampos();
     }
 
     /**
@@ -219,29 +226,82 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-        // TODO add your handling code here:
+          String usos = tfUsos.getText();
+          String equipamiento = taEquipamiento.getText();
+          boolean apto = jbApto.isSelected();
+
+        if (usos.isEmpty() || equipamiento.isEmpty()) {
+        return;
+    }
+        Consultorio c = new Consultorio(usos, equipamiento, apto);
+        cData.guardarConsultorio(c);
+
+        cargarTabla();
+        limpiarCampos();
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-        // TODO add your handling code here:
+        if (tfnroconsultorio.getText().isEmpty()) return;
+         int id = Integer.parseInt(tfnroconsultorio.getText());
+         String usos = tfUsos.getText();
+         String equipamiento = taEquipamiento.getText();
+         boolean apto = jbApto.isSelected();
+    Consultorio c = new Consultorio(usos, equipamiento, apto);
+    c.setNroConsultorio(id);
+    cData.editarConsultorio(c);
+    cargarTabla();
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-        // TODO add your handling code here:
+        if (tfnroconsultorio.getText().isEmpty()) return;
+        int id = Integer.parseInt(tfnroconsultorio.getText());
+        cData.deshabilitarConsultorio(id);
+        
+    cargarTabla();
+    limpiarCampos();
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        // TODO add your handling code here:
+        limpiarCampos();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-        // TODO add your handling code here:
+       if (tfnroconsultorio.getText().isEmpty()) return;
+       int id = Integer.parseInt(tfnroconsultorio.getText());
+       Consultorio c = cData.buscarConsultorioPorId(id);
+
+    if (c != null) {
+        tfUsos.setText(c.getUsos());
+        taEquipamiento.setText(c.getEquipamiento());
+        jbApto.setSelected(c.isApto());
+    }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbAptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAptoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbAptoActionPerformed
+    
+    private void cargarTabla() {
+     modelo.setRowCount(0); 
 
+    List<Consultorio> lista = cData.listarConsultorios();
+
+    for (Consultorio c : lista) {
+        modelo.addRow(new Object[]{
+            c.getNroConsultorio(),
+            c.getUsos(),
+            c.getEquipamiento(),
+            c.isApto() ? "Sí" : "No"
+        });
+    }
+}
+    
+    private void limpiarCampos() {
+    tfnroconsultorio.setText("");
+    tfUsos.setText("");
+    taEquipamiento.setText("");
+    jbApto.setSelected(false);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
