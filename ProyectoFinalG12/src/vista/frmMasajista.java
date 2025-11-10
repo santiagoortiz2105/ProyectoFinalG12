@@ -3,18 +3,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+import Modelo.Masajista;
+import Persistencia.MasajistaData;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author thefl
  */
 public class frmMasajista extends javax.swing.JInternalFrame {
+    private MasajistaData masajistaData;
+    private DefaultTableModel modelo;
 
     /**
      * Creates new form Masajista
      */
     public frmMasajista() {
         initComponents();
+         masajistaData = new MasajistaData();  
+         modelo = (DefaultTableModel) jtMasajista.getModel();  
+         cargarTabla();
+         limpiarCampos();
     }
 
     /**
@@ -114,6 +124,11 @@ public class frmMasajista extends javax.swing.JInternalFrame {
         jbGuardar.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         jbGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/saveas_5165.png"))); // NOI18N
         jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jbBuscar.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
         jbBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/search_icon_125165.png"))); // NOI18N
@@ -239,29 +254,134 @@ public class frmMasajista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbEspecialidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecialidadActionPerformed
-        // TODO add your handling code here:
+  
     }//GEN-LAST:event_cbEspecialidadActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-        // TODO add your handling code here:
+           try {
+        int matricula = Integer.parseInt(tfMatricula.getText());
+
+        String nombre = tfNombre.getText();
+        String apellido = tfApellido.getText();
+        String telefono = tfTelefono.getText();
+        String especialidad = (String) cbEspecialidad.getSelectedItem();
+        boolean estado = jbEstado.isSelected(); 
+
+        Masajista m = new Masajista();
+        m.setMatricula(matricula);
+        m.setNombre(nombre);
+        m.setApellido(apellido);
+        m.setTelefono(telefono);
+        m.setEspecialidad(especialidad);
+        m.setEstado(estado);
+
+        masajistaData.editarMasajista(m);
+
+        cargarTabla();   
+        limpiarCampos(); 
+
+    } catch (NumberFormatException ex) {
+        System.out.println("El número de matrícula no es válido.");
+    }
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-        // TODO add your handling code here:
+        try {
+        int matricula = Integer.parseInt(tfMatricula.getText());
+
+        masajistaData.deshabilitarMasajista(matricula); 
+
+        cargarTabla();
+        limpiarCampos();
+
+    } catch (NumberFormatException e) {
+        System.out.println("Debe seleccionar un masajista para eliminar.");
+    }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        // TODO add your handling code here:
+         limpiarCampos();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-        // TODO add your handling code here:
+        try {
+        if (tfMatricula.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese una matrícula.");
+            return;
+        }
+
+        int matricula = Integer.parseInt(tfMatricula.getText());
+
+        Masajista m = masajistaData.buscarPorMatricula(matricula);
+
+        if (m != null) {
+            tfNombre.setText(m.getNombre());
+            tfApellido.setText(m.getApellido());
+            tfTelefono.setText(m.getTelefono());
+            cbEspecialidad.setSelectedItem(m.getEspecialidad());
+            jbEstado.setSelected(m.isEstado());
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró el masajista.");
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "La matrícula debe ser un número.");
+    }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEstadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbEstadoActionPerformed
 
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+         try {
+        String nombre = tfNombre.getText();
+        String apellido = tfApellido.getText();
+        String telefono = tfTelefono.getText();
+        String especialidad = cbEspecialidad.getSelectedItem().toString();
+        boolean estado = jbEstado.isSelected();
+
+        if (nombre.isEmpty() || apellido.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos.");
+            return;
+        }
+
+        Masajista m = new Masajista(nombre, apellido, telefono, especialidad, estado);
+
+        masajistaData.guardarMasajista(m);
+        cargarTabla();
+        limpiarCampos();
+
+        JOptionPane.showMessageDialog(this, "Masajista guardado correctamente.");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jbGuardarActionPerformed
+    
+     private void cargarTabla() {
+        modelo.setRowCount(0);
+
+        for (Masajista m : masajistaData.listarMasajistas()) {
+            modelo.addRow(new Object[]{
+                m.getMatricula(),
+                m.getNombre(),
+                m.getApellido(),
+                m.getTelefono(),
+                m.getEspecialidad(),
+                m.isEstado() ? "Activo" : "Inactivo"
+            });
+        }
+    }
+     
+      private void limpiarCampos() {
+        tfMatricula.setText("");
+        tfNombre.setText("");
+        tfApellido.setText("");
+        tfTelefono.setText("");
+        cbEspecialidad.setSelectedIndex(0);
+        jbEstado.setSelected(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbEspecialidad;
