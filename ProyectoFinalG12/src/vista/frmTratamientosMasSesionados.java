@@ -8,12 +8,12 @@ package vista;
  *
  * @author santi
  */
-public class frmTramientosMasSesionados extends javax.swing.JInternalFrame {
+public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frmTramientosMasSesionados
      */
-    public frmTramientosMasSesionados() {
+    public frmTratamientosMasSesionados() {
         initComponents();
     }
 

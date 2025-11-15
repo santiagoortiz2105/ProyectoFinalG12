@@ -8,12 +8,12 @@ package vista;
  *
  * @author santi
  */
-public class FrmInstalacionesMasSolicitas extends javax.swing.JInternalFrame {
+public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form FrmInstalacionesMasSolicitas
      */
-    public FrmInstalacionesMasSolicitas() {
+    public FrmInstalacionesMasSolicitadas() {
         initComponents();
     }
 
