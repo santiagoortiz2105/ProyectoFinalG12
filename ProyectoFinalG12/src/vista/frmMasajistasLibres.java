@@ -4,6 +4,8 @@
  */
 package vista;
 
+import java.awt.Color;
+
 /**
  *
  * @author santi
@@ -15,6 +17,7 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
      */
     public frmMasajistasLibres() {
         initComponents();
+         this.getContentPane().setBackground(new Color(245, 242, 232));
     }
 
     /**

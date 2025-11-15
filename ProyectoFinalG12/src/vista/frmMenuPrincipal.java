@@ -1,5 +1,6 @@
 package vista;
 
+import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
 
 public class frmMenuPrincipal extends javax.swing.JFrame {
@@ -28,6 +29,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jfrmCliente = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jfrmMasajista = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jfrmConsultorio = new javax.swing.JMenuItem();
@@ -75,7 +77,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
         jMenu3.setText("Masajista");
 
-        jfrmMasajista.setText("frmMasajista");
+        jfrmMasajista.setText("Masajista");
         jfrmMasajista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jfrmMasajistaActionPerformed(evt);
@@ -83,7 +85,15 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jfrmMasajista);
 
-        jMenuItem5.setText("Masajistas Libres");
+        jMenuItem6.setText("Especialidad");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem6);
+
+        jMenuItem5.setText("Libres");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
@@ -201,30 +211,35 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         frmCliente ventana = new frmCliente();
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
+        centrarVentana(ventana);
     }//GEN-LAST:event_jfrmClienteActionPerformed
 
     private void jfrmMasajistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmMasajistaActionPerformed
         frmMasajista ventana = new frmMasajista();
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
+        centrarVentana(ventana);
     }//GEN-LAST:event_jfrmMasajistaActionPerformed
 
     private void jfrmConsultorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmConsultorioActionPerformed
         frmConsultorio ventana = new frmConsultorio();
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
+        centrarVentana(ventana);
     }//GEN-LAST:event_jfrmConsultorioActionPerformed
 
     private void jfrmTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmTratamientoActionPerformed
         frmTratamiento ventana = new frmTratamiento();
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
+        centrarVentana(ventana);
     }//GEN-LAST:event_jfrmTratamientoActionPerformed
 
     private void jfrmInstalacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmInstalacionActionPerformed
         frmInstalacion ventana = new frmInstalacion();
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
+        centrarVentana(ventana);
     }//GEN-LAST:event_jfrmInstalacionActionPerformed
 
     private void jSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSalirActionPerformed
@@ -236,6 +251,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         ventana.toFront();
+        centrarVentana(ventana);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -243,6 +259,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         ventana.toFront();
+        centrarVentana(ventana);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -250,6 +267,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         ventana.toFront();
+        centrarVentana(ventana);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -257,6 +275,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         ventana.toFront();
+        centrarVentana(ventana);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -264,8 +283,22 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         ventana.toFront();
+        centrarVentana(ventana);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        frmMasajistaEspecialidad ventana = new frmMasajistaEspecialidad();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+        ventana.toFront();
+        centrarVentana(ventana);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    public void centrarVentana(JInternalFrame frame) {
+    int x = (jDesktopPane1.getWidth() - frame.getWidth()) / 2;
+    int y = (jDesktopPane1.getHeight() - frame.getHeight()) / 2;
+    frame.setLocation(x, y);
+}
     /**
      * @param args the command line arguments
      */
@@ -320,6 +353,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jSalir;
     private javax.swing.JMenuItem jfrmCliente;
     private javax.swing.JMenuItem jfrmConsultorio;

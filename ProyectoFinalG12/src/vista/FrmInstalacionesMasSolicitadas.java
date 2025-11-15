@@ -4,6 +4,8 @@
  */
 package vista;
 
+import java.awt.Color;
+
 /**
  *
  * @author santi
@@ -15,6 +17,7 @@ public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
      */
     public FrmInstalacionesMasSolicitadas() {
         initComponents();
+         this.getContentPane().setBackground(new Color(245, 242, 232));
     }
 
     /**
