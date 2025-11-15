@@ -28,7 +28,7 @@ public class Sesion {
     }
       
     //Constructor
-      public Sesion(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Tratamiento tratamiento, Consultorio consultorio, Masajista masajista, DiadeSpa diadeSpa, boolean estado, List<Instalacion> instalaciones) {
+      public Sesion(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Tratamiento tratamiento, Consultorio consultorio, Masajista masajista, DiadeSpa diadeSpa, boolean estado) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
         this.tratamiento = tratamiento;
@@ -36,7 +36,7 @@ public class Sesion {
         this.masajista = masajista;
         this.diadeSpa = diadeSpa;
         this.estado = estado;
-        this.instalaciones = instalaciones;
+        this.instalaciones = new ArrayList<>();
     
     }
      

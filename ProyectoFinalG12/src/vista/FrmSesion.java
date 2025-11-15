@@ -17,6 +17,7 @@ import Persistencia.DiadeSpaData;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -150,11 +151,11 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jComboBox4 = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        jBotonGuardar = new javax.swing.JButton();
+        jBotonModificar = new javax.swing.JButton();
+        jBotonEliminar = new javax.swing.JButton();
+        jBotonNuevo = new javax.swing.JButton();
+        jBotonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jInternalFrame1 = new javax.swing.JInternalFrame();
@@ -271,58 +272,58 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jCheckBox1.setText("Activo");
         jCheckBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jButton1.setBackground(new java.awt.Color(33, 150, 243));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/saveas_5165.png"))); // NOI18N
-        jButton1.setText("Guardar");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBotonGuardar.setBackground(new java.awt.Color(33, 150, 243));
+        jBotonGuardar.setForeground(new java.awt.Color(0, 0, 0));
+        jBotonGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/saveas_5165.png"))); // NOI18N
+        jBotonGuardar.setText("Guardar");
+        jBotonGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jBotonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBotonGuardarActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(143, 191, 159));
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/create_edit_modify_icon_176960.png"))); // NOI18N
-        jButton3.setText("Modificar");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jBotonModificar.setBackground(new java.awt.Color(143, 191, 159));
+        jBotonModificar.setForeground(new java.awt.Color(0, 0, 0));
+        jBotonModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/create_edit_modify_icon_176960.png"))); // NOI18N
+        jBotonModificar.setText("Modificar");
+        jBotonModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jBotonModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jBotonModificarActionPerformed(evt);
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(245, 76, 64));
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/trash_bin_icon-icons.com_67981 2.png"))); // NOI18N
-        jButton4.setText("Eliminar");
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jBotonEliminar.setBackground(new java.awt.Color(245, 76, 64));
+        jBotonEliminar.setForeground(new java.awt.Color(0, 0, 0));
+        jBotonEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/trash_bin_icon-icons.com_67981 2.png"))); // NOI18N
+        jBotonEliminar.setText("Eliminar");
+        jBotonEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jBotonEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jBotonEliminarActionPerformed(evt);
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(143, 191, 159));
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add-new-page_icon-icons.com_71788.png"))); // NOI18N
-        jButton5.setText("Nuevo");
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jBotonNuevo.setBackground(new java.awt.Color(143, 191, 159));
+        jBotonNuevo.setForeground(new java.awt.Color(0, 0, 0));
+        jBotonNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add-new-page_icon-icons.com_71788.png"))); // NOI18N
+        jBotonNuevo.setText("Nuevo");
+        jBotonNuevo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jBotonNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jBotonNuevoActionPerformed(evt);
             }
         });
 
-        jButton7.setBackground(new java.awt.Color(143, 191, 159));
-        jButton7.setForeground(new java.awt.Color(0, 0, 0));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/search_icon_125165.png"))); // NOI18N
-        jButton7.setText("Buscar");
-        jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        jBotonBuscar.setBackground(new java.awt.Color(143, 191, 159));
+        jBotonBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        jBotonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/search_icon_125165.png"))); // NOI18N
+        jBotonBuscar.setText("Buscar");
+        jBotonBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jBotonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                jBotonBuscarActionPerformed(evt);
             }
         });
 
@@ -533,10 +534,11 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
+                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField4)
-                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel11)
+                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -589,13 +591,13 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                         .addGap(125, 125, 125)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(jBotonGuardar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3)
+                                .addComponent(jBotonModificar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jBotonNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton4))
+                                .addComponent(jBotonEliminar))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
@@ -618,7 +620,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                                             .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jComboBox4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton7))
+                                        .addComponent(jBotonBuscar))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(64, 64, 64)
                                         .addComponent(jCheckBox1)))))
@@ -655,7 +657,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jBotonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -674,10 +676,10 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                     .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(jBotonGuardar)
+                    .addComponent(jBotonModificar)
+                    .addComponent(jBotonEliminar)
+                    .addComponent(jBotonNuevo))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
@@ -701,67 +703,232 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (jTextField1.getText().isEmpty()) {
+    private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
+         try {
+        // 1. Validar y obtener código de sesión
+        int codigo = Integer.parseInt(jTextField1.getText().trim());
+        Sesion sesionExistente = sesionData.buscarPorCodSesion(codigo);
+
+        if (sesionExistente == null) {
+            mostrarError("No se encontró una sesión con el código: " + codigo, "Error de Búsqueda");
             return;
         }
-        Sesion s = new Sesion();
-        s.setCodSesion(Integer.parseInt(jTextField1.getText()));
-        s.setFechaHoraInicio(LocalDateTime.parse(jTextField2.getText()));
-        s.setFechaHoraFin(LocalDateTime.parse(jTextField3.getText()));
-        s.setEstado(jCheckBox1.isSelected());
-        s.setTratamiento((Tratamiento) jComboBox1.getSelectedItem());
-        s.setConsultorio((Consultorio) jComboBox2.getSelectedItem());
-        s.setMasajista((Masajista) jComboBox3.getSelectedItem());
-        s.setDiadeSpa((DiadeSpa) jComboBox4.getSelectedItem());
 
-        sesionData.editarSesion(s);
-        cargarTabla();
-    }//GEN-LAST:event_jButton3ActionPerformed
+        // 2. Obtener objetos seleccionados usando tus métodos auxiliares
+        Tratamiento tratamiento = obtenerTratamientoSeleccionado();
+        Consultorio consultorio = obtenerConsultorioSeleccionado();
+        Masajista masajista = obtenerMasajistaSeleccionado();
+        DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Sesion s = new Sesion();
-        s.setFechaHoraInicio(LocalDateTime.parse(jTextField2.getText()));
-        s.setFechaHoraFin(LocalDateTime.parse(jTextField3.getText()));
-        s.setEstado(jCheckBox1.isSelected());
-        s.setTratamiento((Tratamiento) jComboBox1.getSelectedItem());
-        s.setConsultorio((Consultorio) jComboBox2.getSelectedItem());
-        s.setMasajista((Masajista) jComboBox3.getSelectedItem());
-        s.setDiadeSpa((DiadeSpa) jComboBox4.getSelectedItem());
-
-        sesionData.guardarSesion(s);
-        cargarTabla();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (jTextField1.getText().isEmpty()) {
+        if (tratamiento == null || consultorio == null || masajista == null || diadeSpa == null) {
+            mostrarError("No se pudo encontrar uno o más objetos seleccionados.", "Error de Búsqueda");
             return;
         }
-        sesionData.deshabilitarSesion(Integer.parseInt(jTextField1.getText()));
-        cargarTabla();
-    }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // 3. Validar fechas
+        String inicioStr = jTextField2.getText().trim();
+        String finStr = jTextField3.getText().trim();
+        if (inicioStr.isEmpty() || finStr.isEmpty()) {
+            mostrarError("Las fechas y horas no pueden estar vacías.", "Error de Datos");
+            return;
+        }
+
+        LocalDateTime[] fechas;
+        try {
+            fechas = parsearFechas(inicioStr, finStr);
+            if (fechas[0].isAfter(fechas[1])) {
+                mostrarError("La fecha/hora de inicio debe ser anterior a la de fin.", "Error de Validación");
+                return;
+            }
+        } catch (DateTimeParseException ex) {
+            mostrarError("Formato de Fecha/Hora inválido. Use el formato: dd-MM-yyyy HH:mm", "Error de Formato");
+            return;
+        }
+
+        // 4. Actualizar sesión existente
+        sesionExistente.setFechaHoraInicio(fechas[0]);
+        sesionExistente.setFechaHoraFin(fechas[1]);
+        sesionExistente.setTratamiento(tratamiento);
+        sesionExistente.setConsultorio(consultorio);
+        sesionExistente.setMasajista(masajista);
+        sesionExistente.setDiadeSpa(diadeSpa);
+        sesionExistente.setEstado(jCheckBox1.isSelected());
+
+        // 5. Guardar cambios
+        sesionData.editarSesion(sesionExistente);
+        mostrarMensaje("Sesión con código " + codigo + " modificada exitosamente.", "Modificación Exitosa");
         limpiarCampos();
-    }//GEN-LAST:event_jButton5ActionPerformed
+        cargarTabla();
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (jTextField1.getText().isEmpty()) {
+    } catch (NumberFormatException e) {
+        mostrarError("Debe ingresar un código de sesión válido.", "Error de Entrada");
+    } catch (Exception e) {
+        mostrarError("Error al modificar la sesión: " + e.getMessage(), "Error de Base de Datos");
+    }
+    }//GEN-LAST:event_jBotonModificarActionPerformed
+
+    private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
+         // 1. Obtener objetos seleccionados
+    Tratamiento tratamiento = obtenerTratamientoSeleccionado();
+    Consultorio consultorio = obtenerConsultorioSeleccionado();
+    Masajista masajista = obtenerMasajistaSeleccionado();
+    DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
+
+    // 2. Validar selección de objetos
+    if (tratamiento == null || consultorio == null || masajista == null || diadeSpa == null) {
+        mostrarError("Debe seleccionar todos los campos relacionados.", "Error de Datos");
+        return;
+    }
+
+    // 3. Validar fechas
+    String inicioStr = jTextField2.getText().trim();
+    String finStr = jTextField3.getText().trim();
+    if (inicioStr.isEmpty() || finStr.isEmpty()) {
+        mostrarError("Las fechas y horas no pueden estar vacías.", "Error de Datos");
+        return;
+    }
+
+    // 4. Parsear fechas
+    LocalDateTime[] fechas;
+    try {
+        fechas = parsearFechas(inicioStr, finStr);
+        if (fechas[0].isAfter(fechas[1])) {
+            mostrarError("La fecha/hora de inicio debe ser anterior a la de fin.", "Error de Validación");
             return;
         }
-        Sesion s = sesionData.buscarPorCodSesion(Integer.parseInt(jTextField1.getText()));
+    } catch (DateTimeParseException ex) {
+        mostrarError("Formato de Fecha/Hora inválido. Use el formato: dd-MM-yyyy HH:mm", "Error de Formato");
+        return;
+    }
 
-        if (s != null) {
-            jTextField2.setText(s.getFechaHoraInicio().toString());
-            jTextField3.setText(s.getFechaHoraFin().toString());
-            jCheckBox1.setSelected(s.isEstado());
-            jComboBox1.setSelectedItem(s.getTratamiento());
-            jComboBox2.setSelectedItem(s.getConsultorio());
-            jComboBox3.setSelectedItem(s.getMasajista());
-            jComboBox4.setSelectedItem(s.getDiadeSpa());
+    // 5. Crear y guardar nueva sesión
+    Sesion nuevaSesion = new Sesion(
+        fechas[0],
+        fechas[1],
+        tratamiento,
+        consultorio,
+        masajista,
+        diadeSpa,
+        jCheckBox1.isSelected()
+    );
+    try {
+        sesionData.guardarSesion(nuevaSesion);
+        mostrarMensaje("Sesión guardada exitosamente con código: " + nuevaSesion.getCodSesion(), "Guardar Sesión");
+        limpiarCampos();
+        cargarTabla();
+    } catch (Exception e) {
+        mostrarError("Error al guardar la sesión: " + e.getMessage(), "Error de Base de Datos");
+    }
+    }//GEN-LAST:event_jBotonGuardarActionPerformed
+
+    private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
+        try {
+        int codigo = Integer.parseInt(jTextField1.getText().trim());
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro de que desea ELIMINAR la sesión con código " + codigo + "?", 
+            "Confirmar Eliminación", 
+            JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            sesionData.deshabilitarSesion(codigo); 
+            JOptionPane.showMessageDialog(this, "Sesión eliminada correctamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+            cargarTabla();
         }
-    }//GEN-LAST:event_jButton7ActionPerformed
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar el código de la sesión a eliminar.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar la sesión. Revise la consola por el detalle SQL.", "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_jBotonEliminarActionPerformed
 
+    private void jBotonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonNuevoActionPerformed
+        limpiarCampos();
+    }//GEN-LAST:event_jBotonNuevoActionPerformed
+
+    private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
+        try {
+            String codigoStr = jTextField1.getText().trim();
+            if (codigoStr.isEmpty()) {
+                 JOptionPane.showMessageDialog(this, "Debe ingresar un código para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                 return;
+            }
+            int codigo = Integer.parseInt(codigoStr);
+            Sesion s = sesionData.buscarPorCodSesion(codigo);
+
+            if (s != null) {
+                // Cargar los datos simples
+                jTextField2.setText(s.getFechaHoraInicio().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm")));
+                jTextField3.setText(s.getFechaHoraFin().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm")));
+                jCheckBox1.setSelected(s.isEstado());
+                jComboBox1.setSelectedItem(s.getTratamiento().getNombre());
+                jComboBox2.setSelectedItem(String.valueOf(s.getConsultorio().getNroConsultorio()));
+                jComboBox3.setSelectedItem(s.getMasajista().getNombre());
+                jComboBox4.setSelectedItem(String.valueOf(s.getDiadeSpa().getCodPack()));
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró ninguna sesión con el código: " + codigo, "Búsqueda Fallida", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un código de sesión válido (número).", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al buscar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jBotonBuscarActionPerformed
+
+    private Tratamiento obtenerTratamientoSeleccionado() {
+    String nombreTratamiento = (String) jComboBox1.getSelectedItem();
+    return tratData.listarTratamientos().stream()
+           .filter(t -> t.getNombre().equals(nombreTratamiento))
+           .findFirst().orElse(null);
+}
+
+    private Consultorio obtenerConsultorioSeleccionado() {
+    String nroConsultorioStr = (String) jComboBox2.getSelectedItem();
+    if (nroConsultorioStr == null || nroConsultorioStr.isEmpty()) return null;
+    try {
+        int nroConsultorio = Integer.parseInt(nroConsultorioStr);
+        return consulData.listarConsultorios().stream()
+               .filter(c -> c.getNroConsultorio() == nroConsultorio)
+               .findFirst().orElse(null);
+    } catch (NumberFormatException e) { return null; }
+}
+
+    private Masajista obtenerMasajistaSeleccionado() {
+    String nombreMasajista = (String) jComboBox3.getSelectedItem();
+    return masData.listarMasajistas().stream()
+           .filter(m -> m.getNombre().equals(nombreMasajista))
+           .findFirst().orElse(null);
+}
+
+    private DiadeSpa obtenerDiadeSpaSeleccionado() {
+    String codPackStr = (String) jComboBox4.getSelectedItem();
+    if (codPackStr == null || codPackStr.isEmpty()) return null;
+    try {
+        int codPack = Integer.parseInt(codPackStr);
+        return diaSpaData.listarDiasDeSpa().stream()
+               .filter(d -> d.getCodPack() == codPack)
+               .findFirst().orElse(null);
+    } catch (NumberFormatException e) { return null; }
+}
+    
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+    private void mostrarError(String mensaje, String titulo) {
+    JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.ERROR_MESSAGE);
+}
+
+    private void mostrarMensaje(String mensaje, String titulo) {
+    JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
+}
+
+    private LocalDateTime[] parsearFechas(String inicioStr, String finStr) throws DateTimeParseException {
+      LocalDateTime inicio = LocalDateTime.parse(inicioStr, FORMATTER);
+    LocalDateTime fin = LocalDateTime.parse(finStr, FORMATTER);
+    return new LocalDateTime[]{inicio, fin};
+}
+  
+    
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -828,16 +995,16 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBotonBuscar;
+    private javax.swing.JButton jBotonEliminar;
+    private javax.swing.JButton jBotonGuardar;
+    private javax.swing.JButton jBotonModificar;
+    private javax.swing.JButton jBotonNuevo;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JCheckBox jCheckBox1;
