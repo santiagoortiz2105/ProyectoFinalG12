@@ -33,6 +33,10 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+
         jLabel1.setFont(new java.awt.Font("Century", 1, 24)); // NOI18N
         jLabel1.setText("Masajistas libres de 15 a 16");
 
