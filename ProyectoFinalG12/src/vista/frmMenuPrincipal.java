@@ -35,6 +35,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jfrmConsultorio = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jfrmTratamiento = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jfrmInstalacion = new javax.swing.JMenuItem();
@@ -124,6 +125,14 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu5.add(jfrmTratamiento);
+
+        jMenuItem7.setText("Tratamiento segun Tipo");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem7);
 
         jMenuItem3.setText("Tratamientos Solicitados");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -294,6 +303,14 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         centrarVentana(ventana);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        frmTratamientosegunTipo ventana = new frmTratamientosegunTipo();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+        ventana.toFront();
+        centrarVentana(ventana);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
     public void centrarVentana(JInternalFrame frame) {
     int x = (jDesktopPane1.getWidth() - frame.getWidth()) / 2;
     int y = (jDesktopPane1.getHeight() - frame.getHeight()) / 2;
@@ -354,6 +371,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jSalir;
     private javax.swing.JMenuItem jfrmCliente;
     private javax.swing.JMenuItem jfrmConsultorio;
