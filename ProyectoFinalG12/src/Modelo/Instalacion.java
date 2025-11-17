@@ -20,6 +20,12 @@ public class Instalacion {
         this.estado = true;
     }
        
+    //Constructor con id
+    public Instalacion(int codInstal) {
+        this.codInstal = codInstal;
+    }
+    
+       
     //Constructor
        
     public Instalacion(String nombre, String detalledeuso, double precio30m, boolean estado) {

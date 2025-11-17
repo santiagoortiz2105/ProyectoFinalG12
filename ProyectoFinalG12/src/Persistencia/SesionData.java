@@ -3,12 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Persistencia;
+
 import Modelo.Conexion;
 import Modelo.Sesion;
 import Modelo.Tratamiento;
 import Modelo.Consultorio;
 import Modelo.Masajista;
 import Modelo.DiadeSpa;
+import Modelo.Instalacion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,12 +19,14 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author Lulim
  */
 public class SesionData {
-     private Connection con;
+
+    private Connection con;
     private TratamientoData tratData;
     private ConsultorioData consulData;
     private MasajistaData masajistaData;
@@ -35,7 +39,7 @@ public class SesionData {
         masajistaData = new MasajistaData();
         diaSpaData = new DiadeSpaData();
     }
-    
+
     // Guardar Sesión
     public void guardarSesion(Sesion s) {
         String sql = "INSERT INTO sesion(fechaHoraInicio, fechaHoraFin, codTratam, nroConsultorio, matricula, codPack, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -56,8 +60,37 @@ public class SesionData {
             }
             ps.close();
             System.out.println("Sesión guardada correctamente.");
+            
+            //aca guardamos las instalaciones asociadas
+            guardarInstalacionesDeSesion(s);
         } catch (SQLException ex) {
             System.out.println("Error al guardar sesión: " + ex.getMessage());
+        }
+    }
+
+    private void guardarInstalacionesDeSesion(Sesion s) {
+        if (s.getInstalaciones() == null || s.getInstalaciones().isEmpty()) {
+            return; // no hay instalaciones
+        }
+
+        String sql = "INSERT INTO sesion_instalacion(codSesion, codInstalacion) VALUES (?, ?)";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            for (Instalacion inst : s.getInstalaciones()) {
+                ps.setInt(1, s.getCodSesion());
+                ps.setInt(2, inst.getCodInstal());
+                ps.addBatch();
+            }
+
+            ps.executeBatch();
+            ps.close();
+
+            System.out.println("Instalaciones asociadas guardadas correctamente.");
+
+        } catch (SQLException ex) {
+            System.out.println("Error al guardar instalaciones: " + ex.getMessage());
         }
     }
 
@@ -77,7 +110,7 @@ public class SesionData {
                 s.setEstado(rs.getBoolean("estado"));
 
                 // Relaciones
-                s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam"))); 
+                s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam")));
                 s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
                 s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
                 s.setDiadeSpa(diaSpaData.buscarPorId(rs.getInt("codPack")));
@@ -121,20 +154,20 @@ public class SesionData {
     // Deshabilitar Sesión
     public void deshabilitarSesion(int codSesion) {
         String sql = "DELETE FROM sesion WHERE codSesion = ?";
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, codSesion);
-        int fila = ps.executeUpdate();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, codSesion);
+            int fila = ps.executeUpdate();
 
-        if (fila == 1) {
-            System.out.println("Sesión eliminada correctamente.");
-        } else {
-            System.out.println("No se encontró la sesión con ese código.");
+            if (fila == 1) {
+                System.out.println("Sesión eliminada correctamente.");
+            } else {
+                System.out.println("No se encontró la sesión con ese código.");
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al eliminar sesión: " + ex.getMessage());
         }
-        ps.close();
-    } catch (SQLException ex) {
-        System.out.println("Error al eliminar sesión: " + ex.getMessage());
-    }
     }
 
     // Habilitar Sesión
@@ -169,7 +202,7 @@ public class SesionData {
                 s.setFechaHoraInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
                 s.setFechaHoraFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
                 s.setEstado(rs.getBoolean("estado"));
-                
+
                 s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam")));
                 s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
                 s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
