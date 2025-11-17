@@ -222,11 +222,12 @@
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Facial"/>
-            <StringItem index="1" value="Corporal"/>
-            <StringItem index="2" value="Relajacion "/>
-            <StringItem index="3" value="Estetico"/>
+          <StringArray count="5">
+            <StringItem index="0" value="Seleccione una opcion"/>
+            <StringItem index="1" value="Facial"/>
+            <StringItem index="2" value="Corporal"/>
+            <StringItem index="3" value="Relajacion "/>
+            <StringItem index="4" value="Estetico"/>
           </StringArray>
         </Property>
       </Properties>

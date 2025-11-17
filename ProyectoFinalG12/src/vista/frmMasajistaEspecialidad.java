@@ -26,6 +26,7 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
         jTable1.setModel(modelo);
         this.getContentPane().setBackground(new Color(245, 242, 232));
         cargarEspecialidades();
+        limpiarTabla();
     }
 
     /**
@@ -118,14 +119,24 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
-        String especialidad = (String) jComboBox1.getSelectedItem();
-        MasajistaData md = new MasajistaData();
-        List<Masajista> lista = md.listarPorEspecialidad(especialidad);
-        if (especialidad.equals("Seleccione una opción")) {
+         String especialidad = (String) jComboBox1.getSelectedItem();
+
+    if (especialidad.equals("Seleccione una opción")) {
         JOptionPane.showMessageDialog(this, "Debe seleccionar una especialidad.");
         return;
     }
-       cargarTabla(lista);
+
+    MasajistaData md = new MasajistaData();
+    List<Masajista> lista = md.listarPorEspecialidad(especialidad);
+
+    if (lista.isEmpty()) {
+        JOptionPane.showMessageDialog(this, 
+            "No se encontraron masajistas con la especialidad: " + especialidad);
+        limpiarTabla();
+        return;
+    }
+
+    cargarTabla(lista);
     }//GEN-LAST:event_jBotonBuscarActionPerformed
     
     private void cargarTabla(List<Masajista> lista) {
@@ -151,6 +162,10 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
         jComboBox1.addItem("Relajación");
         jComboBox1.addItem("Estético");
     }
+    private void limpiarTabla() {
+    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+    modelo.setRowCount(0);
+}
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

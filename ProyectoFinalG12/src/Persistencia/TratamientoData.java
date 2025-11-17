@@ -160,6 +160,33 @@ public class TratamientoData {
     }
     return t;
 }
+    public List<Tratamiento> listarTratamientosPorTipo(String tipo) {
+    List<Tratamiento> tratamientos = new ArrayList<>();
+    String sql = "SELECT * FROM tratamiento WHERE tipo = ? AND activo = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, tipo);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Tratamiento t = new Tratamiento(
+                rs.getString("nombre"),
+                rs.getString("tipo"),
+                rs.getString("detalle"),
+                rs.getInt("duracion_min"),
+                rs.getDouble("costo"),
+                rs.getBoolean("activo")
+            );
+            t.setCodTratam(rs.getInt("codTratam"));
+            tratamientos.add(t);
+        }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al listar tratamientos por tipo: " + ex.getMessage());
+    }
+    return tratamientos;
+}
     
    
 }

@@ -5,19 +5,26 @@
 package vista;
 
 import java.awt.Color;
-
+import Persistencia.TratamientoData;
+import Modelo.Tratamiento;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Lulim
  */
 public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
-
+      private DefaultTableModel modelo = new DefaultTableModel();
+      private TratamientoData tData = new TratamientoData();
     /**
      * Creates new form frmTratamientosegunTipo
      */
     public frmTratamientosegunTipo() {
         initComponents();
         this.getContentPane().setBackground(new Color(245, 242, 232));
+        cargarCombo();
+        armarTabla();
+        limpiarTabla();
     }
 
     /**
@@ -31,7 +38,7 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jBotonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -46,9 +53,14 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setText("Seleccione: ");
 
-        jButton1.setBackground(new java.awt.Color(143, 191, 159));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Buscar");
+        jBotonBuscar.setBackground(new java.awt.Color(143, 191, 159));
+        jBotonBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        jBotonBuscar.setText("Buscar");
+        jBotonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonBuscarActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,7 +88,7 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
                 .addGap(40, 40, 40)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jBotonBuscar)
                 .addGap(51, 51, 51))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,7 +108,7 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jButton1)
+                    .addComponent(jBotonBuscar)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -106,9 +118,60 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
+         String tipo = (String) jComboBox1.getSelectedItem();
+
+    if (tipo.equals("Seleccione un tipo")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo primero.");
+        return;
+    }
+
+    limpiarTabla();
+
+    List<Tratamiento> lista = tData.listarTratamientosPorTipo(tipo);
+
+    if (lista.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No se encontraron tratamientos de tipo: " + tipo);
+        return;
+    }
+
+    for (Tratamiento t : lista) {
+        modelo.addRow(new Object[]{
+            t.getCodTratam(),
+            t.getNombre(),
+            t.getTipo(),
+            t.getDuracion_min(),
+            t.getCosto()
+        });
+    }
+    }//GEN-LAST:event_jBotonBuscarActionPerformed
+
+    private void cargarCombo() {
+    jComboBox1.removeAllItems();
+    jComboBox1.addItem("Seleccione un tipo");
+    jComboBox1.addItem("Facial");
+    jComboBox1.addItem("Corporal");
+    jComboBox1.addItem("Relajacion ");
+    jComboBox1.addItem("Estetico");
+}
+    private void armarTabla() {
+    modelo.setColumnCount(0);
+    modelo.setRowCount(0);
+
+    modelo.addColumn("Código");
+    modelo.addColumn("Nombre");
+    modelo.addColumn("Tipo");
+    modelo.addColumn("Duración (min)");
+    modelo.addColumn("Costo");
+    
+    jTable1.setModel(modelo);
+}
+    private void limpiarTabla() {
+    modelo.setRowCount(0);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBotonBuscar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

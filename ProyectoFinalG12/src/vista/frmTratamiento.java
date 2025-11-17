@@ -22,6 +22,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         initComponents();
         modeloTabla = (DefaultTableModel) jTable2.getModel();
         cargarTabla();
+        cargarCombo();
     }
 
     /**
@@ -95,7 +96,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         jLabel4.setText("Tipo: ");
 
         jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Facial", "Corporal", "Relajacion ", "Estetico" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opcion", "Facial", "Corporal", "Relajacion ", "Estetico" }));
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel5.setText("Detalle: ");
@@ -421,7 +422,16 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     jTextField3.setText("");
     jTextField4.setText("");
     jCheckBoxEstado.setSelected(false);
-}
+}   
+    private void cargarCombo() {
+        jComboBox1.removeAllItems();
+    jComboBox1.addItem("Seleccione un tipo");
+    jComboBox1.addItem("Facial");
+    jComboBox1.addItem("Corporal");
+    jComboBox1.addItem("Relajacion ");
+    jComboBox1.addItem("Estetico");
+    }
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
