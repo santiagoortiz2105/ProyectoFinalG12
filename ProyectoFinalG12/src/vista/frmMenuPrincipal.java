@@ -221,6 +221,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         centrarVentana(ventana);
+        mostrarVentana(new frmCliente());
     }//GEN-LAST:event_jfrmClienteActionPerformed
 
     private void jfrmMasajistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmMasajistaActionPerformed
@@ -228,6 +229,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         centrarVentana(ventana);
+        mostrarVentana(new frmMasajista());
     }//GEN-LAST:event_jfrmMasajistaActionPerformed
 
     private void jfrmConsultorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmConsultorioActionPerformed
@@ -235,6 +237,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         centrarVentana(ventana);
+        mostrarVentana(new frmConsultorio());
     }//GEN-LAST:event_jfrmConsultorioActionPerformed
 
     private void jfrmTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmTratamientoActionPerformed
@@ -242,6 +245,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         centrarVentana(ventana);
+        mostrarVentana(new frmTratamiento());
     }//GEN-LAST:event_jfrmTratamientoActionPerformed
 
     private void jfrmInstalacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmInstalacionActionPerformed
@@ -249,6 +253,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
         centrarVentana(ventana);
+        mostrarVentana(new frmInstalacion());
     }//GEN-LAST:event_jfrmInstalacionActionPerformed
 
     private void jSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSalirActionPerformed
@@ -261,6 +266,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.toFront();
         centrarVentana(ventana);
+        mostrarVentana(new FrmDiaDeSpa());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -269,6 +275,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.toFront();
         centrarVentana(ventana);
+        mostrarVentana(new FrmSesion());
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -277,6 +284,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.toFront();
         centrarVentana(ventana);
+        mostrarVentana(new frmTratamientosMasSesionados());
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -285,6 +293,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.toFront();
         centrarVentana(ventana);
+        mostrarVentana(new frmMasajistasLibres());
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -293,6 +302,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.toFront();
         centrarVentana(ventana);
+        mostrarVentana(new FrmInstalacionesMasSolicitadas());
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -301,6 +311,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.toFront();
         centrarVentana(ventana);
+        mostrarVentana(new frmMasajistaEspecialidad());
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -309,8 +320,18 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
         ventana.toFront();
         centrarVentana(ventana);
+        mostrarVentana(new frmTratamientosegunTipo());
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void mostrarVentana(JInternalFrame frame) {
+    for (JInternalFrame ventana : jDesktopPane1.getAllFrames()) {
+        ventana.dispose();
+    }
+
+    jDesktopPane1.add(frame);
+    frame.setVisible(true);
+    centrarVentana(frame);
+}
     public void centrarVentana(JInternalFrame frame) {
     int x = (jDesktopPane1.getWidth() - frame.getWidth()) / 2;
     int y = (jDesktopPane1.getHeight() - frame.getHeight()) / 2;
