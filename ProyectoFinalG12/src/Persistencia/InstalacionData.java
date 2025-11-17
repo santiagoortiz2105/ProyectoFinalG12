@@ -181,4 +181,51 @@ public class InstalacionData {
     }
     return i;
 }
+     
+     //Listar Instalacion Mas Solicitada
+public List<Instalacion> listarInstalacionesMasSolicitadas() {
+
+    List<Instalacion> lista = new ArrayList<>();
+
+    String sql = "SELECT i.codInstal, i.nombre, COUNT(si.codInstal) AS reservas "
+               + "FROM instalacion i "
+               + "LEFT JOIN sesion_instalacion si ON i.codInstal = si.codInstal "
+               + "GROUP BY i.codInstal "
+               + "ORDER BY reservas DESC";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Instalacion ins = new Instalacion();
+            ins.setCodInstal(rs.getInt("codInstal"));
+            ins.setNombre(rs.getString("nombre"));
+            ins.setCantidadReservas(rs.getInt("reservas"));
+
+            lista.add(ins);
+        }
+
+    } catch (SQLException ex) {
+        System.out.println("Error al listar instalaciones: " + ex.getMessage());
+    }
+
+    return lista;
+}
+
+     public void guardarInstalacionSesion(int codSesion, int codInstal) {
+    String sql = "INSERT INTO sesion_instalacion (codSesion, codInstal) VALUES (?, ?)";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codSesion);
+        ps.setInt(2, codInstal);
+        ps.executeUpdate();
+        ps.close();
+    } catch (SQLException e) {
+        System.out.println("Error guardando instalaciones por sesión: " + e.getMessage());
+    }
+}
+
+
 }

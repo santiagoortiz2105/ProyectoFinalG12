@@ -18,7 +18,7 @@ public class Tratamiento {
     private double costo;     //decimal
     private boolean activo;   //tinyint 
     private int cantidadSesiones; 
-    
+
     //Constructor vacio
 
     public Tratamiento() {
@@ -101,6 +101,7 @@ public class Tratamiento {
     public void setCantidadSesiones(int cantidadSesiones) {
     this.cantidadSesiones = cantidadSesiones;
     }
+    
     @Override
     public String toString() {
           return nombre + " (" + tipo + ")";

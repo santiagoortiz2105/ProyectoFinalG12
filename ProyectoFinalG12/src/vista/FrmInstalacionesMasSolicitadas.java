@@ -3,7 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
-
+import Modelo.Instalacion;
+import Persistencia.InstalacionData;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
 
 /**
@@ -11,14 +15,59 @@ import java.awt.Color;
  * @author santi
  */
 public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
-
+    private InstalacionData instalacionData;
+    private DefaultTableModel modelo;
     /**
      * Creates new form FrmInstalacionesMasSolicitas
      */
     public FrmInstalacionesMasSolicitadas() {
         initComponents();
-         this.getContentPane().setBackground(new Color(245, 242, 232));
+        this.getContentPane().setBackground(new Color(245, 242, 232));
+        modelo = new DefaultTableModel(); 
+        instalacionData = new InstalacionData();
+        jTable1.setModel(modelo);      
+
+    armarTabla();
+          armarTabla();
     }
+    
+     private void armarTabla() {
+        modelo.setRowCount(0);
+        modelo.setColumnCount(0);
+
+        modelo.addColumn("Código");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Reservas");
+    }
+    
+        private void cargarInstalaciones() {
+
+    modelo.setRowCount(0);
+
+    InstalacionData idata = new InstalacionData();
+    List<Instalacion> lista;   
+
+    try {
+        lista = idata.listarInstalacionesMasSolicitadas(); // ← acá solo se asigna
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error cargando datos.");
+        return;
+    }
+
+    if (lista.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No hay datos para mostrar.");
+        return;
+    }
+
+    for (Instalacion ins : lista) {
+        Object[] fila = new Object[3];
+        fila[0] = ins.getCodInstal();
+        fila[1] = ins.getNombre();
+        fila[2] = ins.getCantidadReservas();
+        modelo.addRow(fila);
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,6 +105,11 @@ public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
 
         jButton1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jButton1.setText("Cargar Instalaciones");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,6 +142,10 @@ public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cargarInstalaciones();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

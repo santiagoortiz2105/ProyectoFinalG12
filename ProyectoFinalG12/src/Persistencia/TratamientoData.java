@@ -160,7 +160,7 @@ public class TratamientoData {
     }
     return t;
 }
-      
+    //Listar Tratamientos mas sesionados
     public List<Tratamiento> listarTratamientosMasSesionados() {
     List<Tratamiento> tratamientos = new ArrayList<>();
 

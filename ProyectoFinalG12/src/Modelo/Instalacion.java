@@ -14,6 +14,7 @@ public class Instalacion {
     private String detalledeuso;
     private double precio30m;
     private boolean estado;
+    private int cantidadReservas;
     
     //Constructor vacio 
        public Instalacion() {
@@ -76,6 +77,14 @@ public class Instalacion {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+    
+    public int getCantidadReservas() {
+    return cantidadReservas;
+    }
+
+    public void setCantidadReservas(int cantidadReservas) {
+    this.cantidadReservas = cantidadReservas;
+    } 
 
     @Override
     public String toString() {
