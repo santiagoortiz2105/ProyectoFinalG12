@@ -15,6 +15,7 @@ import Persistencia.TratamientoData;
 import Persistencia.ConsultorioData;
 import Persistencia.MasajistaData;
 import Persistencia.DiadeSpaData;
+import Persistencia.InstalacionData;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +40,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     private ConsultorioData consulData;
     private MasajistaData masData;
     private DiadeSpaData diaSpaData;
+    private InstalacionData instalacionData;
     private DefaultTableModel modelo;
 
     public FrmSesion() {
@@ -48,6 +50,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         consulData = new ConsultorioData();
         masData = new MasajistaData();
         diaSpaData = new DiadeSpaData();
+        instalacionData = new InstalacionData();
 
         modelo = new DefaultTableModel();
         jTable1.setModel(modelo);
@@ -66,6 +69,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         modelo.addColumn("Masajista");
         modelo.addColumn("Pack Spa");
         modelo.addColumn("Estado");
+        modelo.addColumn("Instalaciones");
     }
 
     private void limpiarCampos() {
@@ -93,7 +97,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
         jComboBox3.removeAllItems();
         for (Masajista m : masData.listarMasajistas()) {
-            jComboBox3.addItem(m.getNombre());
+             if (m.isEstado()) {
+        jComboBox3.addItem(m.getNombre());
+    }
         }
 
         jComboBox4.removeAllItems();
@@ -120,7 +126,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 s.getConsultorio().getNroConsultorio(),
                 s.getMasajista().getNombre(),
                 s.getDiadeSpa().getCodPack(),
-                s.isEstado() ? "Activo" : "Inactivo"
+                s.isEstado() ? "Activo" : "Inactivo", 
+                instalacionesToString(s.getInstalaciones())
             });
         }
     }
@@ -340,13 +347,13 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jTable1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Dia de Spa", "Estado"
+                "Codigo", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Dia de Spa", "Estado", "Instalaciones"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -814,6 +821,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         sesionExistente.setConsultorio(consultorio);
         sesionExistente.setMasajista(masajista);
         sesionExistente.setDiadeSpa(diadeSpa);
+        sesionExistente.setInstalaciones(obtenerInstalacionesSeleccionadas());
         sesionExistente.setEstado(jCheckBox1.isSelected());
 
         // 5. Guardar cambios
@@ -887,6 +895,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     nuevaSesion.setInstalaciones(instalaciones);
     try {
         sesionData.guardarSesion(nuevaSesion);
+         for (Instalacion inst : instalaciones) {
+           instalacionData.guardarInstalacionSesion(nuevaSesion.getCodSesion(), inst.getCodInstal());
+    }
         mostrarMensaje("Sesión guardada exitosamente con código: " + nuevaSesion.getCodSesion(), "Guardar Sesión");
         limpiarCampos();
         cargarTabla();
@@ -939,7 +950,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 jComboBox2.setSelectedItem(String.valueOf(s.getConsultorio().getNroConsultorio()));
                 jComboBox3.setSelectedItem(s.getMasajista().getNombre());
                 jComboBox4.setSelectedItem(String.valueOf(s.getDiadeSpa().getCodPack()));
-                
+                marcarInstalaciones(s.getInstalaciones());
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró ninguna sesión con el código: " + codigo, "Búsqueda Fallida", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -985,6 +996,20 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                .findFirst().orElse(null);
     } catch (NumberFormatException e) { return null; }
 }
+    private List<Instalacion> obtenerInstalacionesSeleccionadas() {
+    List<Instalacion> lista = new ArrayList<>();
+
+    if (checkJacuzzi.isSelected()) lista.add(new Instalacion(1));
+    if (checkPiscina.isSelected()) lista.add(new Instalacion(2));
+    if (checkSauna.isSelected()) lista.add(new Instalacion(3));
+    if (checkDucha.isSelected()) lista.add(new Instalacion(4));
+    if (checkPediluvio.isSelected()) lista.add(new Instalacion(5));
+    if (checkCircuito.isSelected()) lista.add(new Instalacion(6));
+
+    return lista;
+}
+    
+    
     
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
@@ -1001,6 +1026,38 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     LocalDateTime fin = LocalDateTime.parse(finStr, FORMATTER);
     return new LocalDateTime[]{inicio, fin};
 }
+    private String instalacionesToString(List<Instalacion> lista) {
+    if (lista == null || lista.isEmpty()) return "Ninguna";
+
+    StringBuilder sb = new StringBuilder();
+    for (Instalacion inst : lista) {
+        sb.append(inst.getCodInstal()).append(", "); 
+    }
+    return sb.substring(0, sb.length() - 2);
+}
+    private void marcarInstalaciones(List<Instalacion> instalaciones) {
+        // Primero desmarcamos todo
+    checkJacuzzi.setSelected(false);
+    checkPiscina.setSelected(false);
+    checkSauna.setSelected(false);
+    checkDucha.setSelected(false);
+    checkPediluvio.setSelected(false);
+    checkCircuito.setSelected(false);
+
+    if (instalaciones == null) return;
+
+    // Marcamos según el ID guardado en la BD
+    for (Instalacion inst : instalaciones) {
+        switch (inst.getCodInstal()) {
+            case 1 -> checkJacuzzi.setSelected(true);
+            case 2 -> checkPiscina.setSelected(true);
+            case 3 -> checkSauna.setSelected(true);
+            case 4 -> checkDucha.setSelected(true);
+            case 5 -> checkPediluvio.setSelected(true);
+            case 6 -> checkCircuito.setSelected(true);
+        }
+    }
+    }
   
     
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

@@ -73,7 +73,7 @@ public class SesionData {
             return; // no hay instalaciones
         }
 
-        String sql = "INSERT INTO sesion_instalacion(codSesion, codInstalacion) VALUES (?, ?)";
+        String sql = "INSERT INTO sesion_instalacion(codSesion, codInstal) VALUES (?, ?)";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -231,7 +231,7 @@ public class SesionData {
         InstalacionData instData = new InstalacionData();
 
         while (rs.next()) {
-            int codInstal = rs.getInt("codInstalacion");
+            int codInstal = rs.getInt("codInstal");
             Instalacion inst = instData.buscarPorCodigo(codInstal);
 
             if (inst != null) {

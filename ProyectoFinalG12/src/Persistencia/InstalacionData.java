@@ -226,6 +226,78 @@ public List<Instalacion> listarInstalacionesMasSolicitadas() {
         System.out.println("Error guardando instalaciones por sesión: " + e.getMessage());
     }
 }
+     
+  public List<Instalacion> listarActivas() {
+    List<Instalacion> lista = new ArrayList<>();
+    String sql = "SELECT * FROM instalacion WHERE estado = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Instalacion i = new Instalacion(
+                rs.getString("nombre"),
+                rs.getString("detalledeuso"),
+                rs.getDouble("precio30m"),
+                rs.getBoolean("estado")
+            );
+            i.setCodInstal(rs.getInt("codInstal"));
+            lista.add(i);
+        }
+
+        ps.close();
+    } catch (SQLException e) {
+        System.out.println("Error al listar instalaciones activas: " + e.getMessage());
+    }
+
+    return lista;
+}
+  
+  public void borrarInstalacionesDeSesion(int codSesion) {
+    String sql = "DELETE FROM sesion_instalacion WHERE codSesion = ?";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codSesion);
+        ps.executeUpdate();
+        ps.close();
+    } catch (SQLException e) {
+        System.out.println("Error borrando instalaciones de la sesión: " + e.getMessage());
+    }
+}
+  public List<Instalacion> obtenerInstalacionesPorSesion(int codSesion) {
+    List<Instalacion> lista = new ArrayList<>();
+
+    String sql = "SELECT i.codInstal, i.nombre, i.detalledeuso, i.precio30m, i.estado "
+               + "FROM instalacion i "
+               + "JOIN sesion_instalacion si ON i.codInstal = si.codInstal "
+               + "WHERE si.codSesion = ?";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codSesion);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Instalacion i = new Instalacion();
+            i.setCodInstal(rs.getInt("codInstal"));
+            i.setNombre(rs.getString("nombre"));
+            i.setdetalledeuso(rs.getString("detalledeuso"));
+            i.setPrecio30m(rs.getDouble("precio30m"));
+            i.setEstado(rs.getBoolean("estado"));
+
+            lista.add(i);
+        }
+
+        ps.close();
+    } catch (SQLException e) {
+        System.out.println("Error obteniendo instalaciones por sesión: " + e.getMessage());
+    }
+
+    return lista;
+}
 
 
 }
