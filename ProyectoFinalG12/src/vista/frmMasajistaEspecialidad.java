@@ -5,7 +5,11 @@
 package vista;
 
 import java.awt.Color;
-
+import Modelo.Masajista;
+import Persistencia.MasajistaData;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Lulim
@@ -17,7 +21,11 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
      */
     public frmMasajistaEspecialidad() {
         initComponents();
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Matrícula", "Nombre", "Apellido", "Especialidad"});
+        jTable1.setModel(modelo);
         this.getContentPane().setBackground(new Color(245, 242, 232));
+        cargarEspecialidades();
     }
 
     /**
@@ -30,7 +38,7 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jBotonBuscar = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -43,12 +51,17 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Century", 1, 24)); // NOI18N
         jLabel1.setText("Especialidad");
 
-        jButton1.setBackground(new java.awt.Color(143, 191, 159));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Buscar");
+        jBotonBuscar.setBackground(new java.awt.Color(143, 191, 159));
+        jBotonBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        jBotonBuscar.setText("Buscar");
+        jBotonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonBuscarActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opción" }));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -77,9 +90,9 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jBotonBuscar)))
                 .addGap(0, 27, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(177, 177, 177)
@@ -94,7 +107,7 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
+                    .addComponent(jBotonBuscar)
                     .addComponent(jLabel2))
                 .addGap(53, 53, 53)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -104,9 +117,44 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
+        String especialidad = (String) jComboBox1.getSelectedItem();
+        MasajistaData md = new MasajistaData();
+        List<Masajista> lista = md.listarPorEspecialidad(especialidad);
+        if (especialidad.equals("Seleccione una opción")) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una especialidad.");
+        return;
+    }
+       cargarTabla(lista);
+    }//GEN-LAST:event_jBotonBuscarActionPerformed
+    
+    private void cargarTabla(List<Masajista> lista) {
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.setColumnIdentifiers(new String[]{"Matrícula", "Nombre", "Apellido", "Especialidad"});
+
+    for (Masajista m : lista) {
+        modelo.addRow(new Object[]{
+            m.getMatricula(),
+            m.getNombre(),
+            m.getApellido(),
+            m.getEspecialidad()
+        });
+    }
+
+    jTable1.setModel(modelo);
+}
+    private void cargarEspecialidades() {
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem("Seleccione una opción");
+        jComboBox1.addItem("Facial");
+        jComboBox1.addItem("Corporal");
+        jComboBox1.addItem("Relajación");
+        jComboBox1.addItem("Estético");
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBotonBuscar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
