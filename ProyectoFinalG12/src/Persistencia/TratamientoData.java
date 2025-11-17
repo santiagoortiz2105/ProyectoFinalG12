@@ -160,31 +160,34 @@ public class TratamientoData {
     }
     return t;
 }
-    public List<Tratamiento> listarTratamientosPorTipo(String tipo) {
+      
+    public List<Tratamiento> listarTratamientosMasSesionados() {
     List<Tratamiento> tratamientos = new ArrayList<>();
-    String sql = "SELECT * FROM tratamiento WHERE tipo = ? AND activo = 1";
+
+    String sql = "SELECT t.codTratam, t.nombre, COUNT(s.codSesion) AS sesiones "
+               + "FROM tratamiento t "
+               + "JOIN sesion s ON t.codTratam = s.codTratam "
+               + "GROUP BY t.codTratam "
+               + "ORDER BY sesiones DESC";
 
     try {
         PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, tipo);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            Tratamiento t = new Tratamiento(
-                rs.getString("nombre"),
-                rs.getString("tipo"),
-                rs.getString("detalle"),
-                rs.getInt("duracion_min"),
-                rs.getDouble("costo"),
-                rs.getBoolean("activo")
-            );
+            Tratamiento t = new Tratamiento();
             t.setCodTratam(rs.getInt("codTratam"));
+            t.setNombre(rs.getString("nombre"));
+            t.setCantidadSesiones(rs.getInt("sesiones"));
             tratamientos.add(t);
         }
+
         ps.close();
+
     } catch (SQLException ex) {
-        System.out.println("Error al listar tratamientos por tipo: " + ex.getMessage());
+        System.out.println("Error al listar tratamientos más sesionados: " + ex.getMessage());
     }
+
     return tratamientos;
 }
     

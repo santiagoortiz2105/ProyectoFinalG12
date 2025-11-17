@@ -3,23 +3,80 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
-
+import Modelo.Tratamiento;
+import Persistencia.TratamientoData;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
-
+import java.util.Objects;
 /**
  *
  * @author santi
  */
 public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
 
+    private TratamientoData tratamientoData = null;
+    private DefaultTableModel modelo = new DefaultTableModel();
     /**
      * Creates new form frmTramientosMasSesionados
      */
     public frmTratamientosMasSesionados() {
         initComponents();
          this.getContentPane().setBackground(new Color(245, 242, 232));
+          try {
+            tratamientoData = new TratamientoData();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "No se pudo crear TratamientoData.\n" + ex.getMessage(),
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
+        jTable1.setModel(modelo);
+        armarTabla();
+    }
+    
+    
+     private void armarTabla() {
+        modelo.setRowCount(0);
+        modelo.setColumnCount(0);
+
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Sesiones");
+    }
+     
+    private void cargarTabla() {
+    modelo.setRowCount(0);
+
+    if (Objects.isNull(tratamientoData)) {
+        JOptionPane.showMessageDialog(this, "No está disponible TratamientoData.");
+        return;
     }
 
+    try {
+        List<Tratamiento> lista = tratamientoData.listarTratamientosMasSesionados();
+
+        if (Objects.isNull(lista) || lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay datos para mostrar.");
+            return;
+        }
+
+        for (Tratamiento t : lista) {
+            if (Objects.nonNull(t)) {
+                modelo.addRow(new Object[]{
+                    t.getCodTratam(),
+                    t.getNombre(),
+                    t.getCantidadSesiones()
+                });
+            }
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
+    }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,6 +100,11 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
 
         jButton1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jButton1.setText("Cargar Tratamientos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -87,6 +149,10 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cargarTabla();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
