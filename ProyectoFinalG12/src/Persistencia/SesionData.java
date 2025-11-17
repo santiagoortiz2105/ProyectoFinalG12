@@ -114,8 +114,10 @@ public class SesionData {
                 s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
                 s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
                 s.setDiadeSpa(diaSpaData.buscarPorId(rs.getInt("codPack")));
-
+                
                 sesiones.add(s);
+                s.setInstalaciones(obtenerInstalacionesDeSesion(s.getCodSesion()));
+                
             }
             ps.close();
         } catch (SQLException ex) {
@@ -207,6 +209,8 @@ public class SesionData {
                 s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
                 s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
                 s.setDiadeSpa(diaSpaData.buscarPorId(rs.getInt("codPack")));
+                
+                s.setInstalaciones(obtenerInstalacionesDeSesion(codSesion));
             }
             ps.close();
         } catch (SQLException ex) {
@@ -214,4 +218,32 @@ public class SesionData {
         }
         return s;
     }
+    
+    private List<Instalacion> obtenerInstalacionesDeSesion(int codSesion) {
+    List<Instalacion> instalaciones = new ArrayList<>();
+    String sql = "SELECT * FROM sesion_instalacion WHERE codSesion = ?";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codSesion);
+        ResultSet rs = ps.executeQuery();
+
+        InstalacionData instData = new InstalacionData();
+
+        while (rs.next()) {
+            int codInstal = rs.getInt("codInstalacion");
+            Instalacion inst = instData.buscarPorCodigo(codInstal);
+
+            if (inst != null) {
+                instalaciones.add(inst);
+            }
+        }
+
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al obtener instalaciones: " + ex.getMessage());
+    }
+
+    return instalaciones;
+}
 }
