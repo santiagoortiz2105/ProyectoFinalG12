@@ -302,9 +302,22 @@ public class frmMasajista extends javax.swing.JInternalFrame {
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         try {
         int matricula = Integer.parseInt(tfMatricula.getText());
-
-        masajistaData.deshabilitarMasajista(matricula); 
-
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea ELIMINAR / DESHABILITAR al masajista con matrícula " + matricula + "?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            masajistaData.deshabilitarMasajista(matricula);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Masajista eliminado correctamente.",
+                    "Eliminación Exitosa",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
         cargarTabla();
         limpiarCampos();
 

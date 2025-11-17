@@ -320,16 +320,49 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBotonModificarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
+        try {
         int fila = jTable1.getSelectedRow();
-        if (fila != -1) {
-            int codigo = (int) jTable1.getValueAt(fila, 0);
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Seleccione una instalación para eliminar.",
+                "Error",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        int codigo = (int) jTable1.getValueAt(fila, 0);
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro de que desea ELIMINAR la instalación con código " + codigo + "?",
+            "Confirmar Eliminación",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+
             instalacionData.deshabilitarInstalacion(codigo);
-            JOptionPane.showMessageDialog(this, "Instalación Eliminada.");
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Instalación eliminada correctamente.",
+                "Eliminación Exitosa",
+                JOptionPane.INFORMATION_MESSAGE
+            );
             cargarTabla();
             limpiarCampos();
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una instalación para eliminar.");
         }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Error al eliminar la instalación. Revise la consola para más detalles.",
+            "Error de Base de Datos",
+            JOptionPane.ERROR_MESSAGE
+        );
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_jBotonEliminarActionPerformed
 
     private void jBotonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonNuevoActionPerformed

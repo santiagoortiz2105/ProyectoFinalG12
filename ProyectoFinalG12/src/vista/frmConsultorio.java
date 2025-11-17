@@ -6,6 +6,7 @@ package vista;
 import Modelo.Consultorio;
 import Persistencia.ConsultorioData;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -203,7 +204,7 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                         .addGap(53, 53, 53)
                         .addComponent(jbBuscar))
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
                 .addGap(31, 31, 31))
             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -230,11 +231,12 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5)
                     .addComponent(jbApto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbGuardar)
-                    .addComponent(jbModificar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbEliminar)
-                    .addComponent(jbNuevo))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jbGuardar)
+                        .addComponent(jbModificar)
+                        .addComponent(jbNuevo)))
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
@@ -271,12 +273,49 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-        if (tfnroconsultorio.getText().isEmpty()) return;
-        int id = Integer.parseInt(tfnroconsultorio.getText());
-        cData.deshabilitarConsultorio(id);
-        
-    cargarTabla();
-    limpiarCampos();
+         try {
+        if (tfnroconsultorio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Debe seleccionar un consultorio válido para eliminar.",
+                "Error de Entrada",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        int id = Integer.parseInt(tfnroconsultorio.getText().trim());
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea ELIMINAR el consultorio Nº " + id + "?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            cData.deshabilitarConsultorio(id);
+            JOptionPane.showMessageDialog(
+                this,
+                "Consultorio eliminado correctamente.",
+                "Eliminación Exitosa",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            cargarTabla();
+            limpiarCampos();
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(
+                this,
+                "El número de consultorio ingresado no es válido.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(
+                this,
+                "Error al eliminar el consultorio. Revise la consola para más detalles.",
+                "Error de Base de Datos",
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed

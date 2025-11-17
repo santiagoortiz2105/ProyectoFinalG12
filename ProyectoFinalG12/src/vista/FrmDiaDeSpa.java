@@ -341,11 +341,52 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-         if (jTextField1.getText().isEmpty()) return;
-    int codPack = Integer.parseInt(jTextField1.getText());
-    diaData.deshabilitarDiaDeSpa(codPack);
-    cargarTabla();
-    limpiarCampos();
+         try {
+        if (jTextField1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Debe ingresar o seleccionar un Día de Spa para eliminar.",
+                "Error",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        int codPack = Integer.parseInt(jTextField1.getText().trim());
+        int confirmacion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro de que desea ELIMINAR el Día de Spa con código " + codPack + "?",
+            "Confirmar Eliminación",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            diaData.deshabilitarDiaDeSpa(codPack);
+            JOptionPane.showMessageDialog(
+                this,
+                "Día de Spa eliminado correctamente.",
+                "Eliminación Exitosa",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            cargarTabla();
+            limpiarCampos();
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Código inválido. Debe ingresar un número.",
+            "Error de Entrada",
+            JOptionPane.ERROR_MESSAGE
+        );
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Error al eliminar el Día de Spa. Revise la consola.",
+            "Error de Base de Datos",
+            JOptionPane.ERROR_MESSAGE
+        );
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

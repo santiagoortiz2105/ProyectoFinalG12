@@ -315,12 +315,44 @@ public class frmCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-       if (tfCodigoCliente.getText().isEmpty()) return; 
-    int cod = Integer.parseInt(tfCodigoCliente.getText());
-    ClienteData clienteData = new ClienteData();
-    clienteData.deshabilitarCliente(cod);
-    cargarTabla();
-    limpiarCampos();
+       try {
+        int codCli = Integer.parseInt(tfCodigoCliente.getText().trim());
+        int confirmacion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro de que desea ELIMINAR al cliente con codigo " + codCli + "?",
+            "Confirmar Eliminación",
+            JOptionPane.YES_NO_OPTION
+        );
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            clienteData.deshabilitarCliente(codCli);
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Cliente eliminado correctamente.",
+                "Eliminación Exitosa",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+
+            cargarTabla();
+            limpiarCampos();
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Debe seleccionar un cliente válido para eliminar.",
+            "Error de Entrada",
+            JOptionPane.ERROR_MESSAGE
+        );
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Error al eliminar el cliente. Revise la consola para más detalles.",
+            "Error de Base de Datos",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
