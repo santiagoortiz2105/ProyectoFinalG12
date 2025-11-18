@@ -45,6 +45,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jSalir = new javax.swing.JMenuItem();
 
@@ -195,6 +196,14 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         });
         jMenu8.add(jMenuItem1);
 
+        jMenuItem9.setText("Informe ");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem9);
+
         jMenuBar1.add(jMenu8);
 
         jMenu9.setText("Salir ");
@@ -341,6 +350,15 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         mostrarVentana(new frmInstalacionesLibres());
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        frmInforme ventana = new frmInforme();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+        ventana.toFront();
+        centrarVentana(ventana);
+        mostrarVentana(new frmInforme());
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     private void mostrarVentana(JInternalFrame frame) {
     for (JInternalFrame ventana : jDesktopPane1.getAllFrames()) {
         ventana.dispose();
@@ -412,6 +430,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuItem jSalir;
     private javax.swing.JMenuItem jfrmCliente;
     private javax.swing.JMenuItem jfrmConsultorio;
