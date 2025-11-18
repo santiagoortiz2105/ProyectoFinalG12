@@ -9,6 +9,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -26,9 +28,7 @@ public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
         modelo = new DefaultTableModel(); 
         instalacionData = new InstalacionData();
         jTable1.setModel(modelo);      
-
-    armarTabla();
-          armarTabla();
+        armarTabla();
     }
     
      private void armarTabla() {
@@ -38,6 +38,13 @@ public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
         modelo.addColumn("Código");
         modelo.addColumn("Nombre");
         modelo.addColumn("Reservas");
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
     }
     
         private void cargarInstalaciones() {
@@ -58,6 +65,7 @@ public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, "No hay datos para mostrar.");
         return;
     }
+     lista.sort((a, b) -> Integer.compare(a.getCodInstal(), b.getCodInstal()));
 
     for (Instalacion ins : lista) {
         Object[] fila = new Object[3];
