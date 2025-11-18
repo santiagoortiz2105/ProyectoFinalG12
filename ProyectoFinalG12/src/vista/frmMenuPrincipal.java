@@ -40,6 +40,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         jfrmInstalacion = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
@@ -161,6 +162,14 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuItem4);
+
+        jMenuItem8.setText("Instalaciones Libres");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem8);
 
         jMenuBar1.add(jMenu6);
 
@@ -323,6 +332,15 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         mostrarVentana(new frmTratamientosegunTipo());
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        frmInstalacionesLibres ventana = new frmInstalacionesLibres();
+        jDesktopPane1.add(ventana);
+        ventana.setVisible(true);
+        ventana.toFront();
+        centrarVentana(ventana);
+        mostrarVentana(new frmInstalacionesLibres());
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     private void mostrarVentana(JInternalFrame frame) {
     for (JInternalFrame ventana : jDesktopPane1.getAllFrames()) {
         ventana.dispose();
@@ -393,6 +411,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jSalir;
     private javax.swing.JMenuItem jfrmCliente;
     private javax.swing.JMenuItem jfrmConsultorio;
