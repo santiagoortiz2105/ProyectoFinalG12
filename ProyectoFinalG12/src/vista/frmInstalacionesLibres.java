@@ -13,7 +13,7 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
 
     public frmInstalacionesLibres() {
         initComponents();
-        instalacionData = new InstalacionData(); // si tu constructor requiere Connection, pasalo
+        instalacionData = new InstalacionData();
         cargarFranjas();
         configurarTabla();
     }
@@ -125,7 +125,7 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
             return;
         }
 
-        String franja = comboBoxFranjas.getSelectedItem().toString(); // ej. "13-15"
+        String franja = comboBoxFranjas.getSelectedItem().toString();
         String[] partes = franja.split("-");
 
         int hInicio = Integer.parseInt(partes[0]);
