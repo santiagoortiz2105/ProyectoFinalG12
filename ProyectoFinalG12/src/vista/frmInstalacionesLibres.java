@@ -4,17 +4,21 @@ import Modelo.Instalacion;
 import Persistencia.InstalacionData;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     private InstalacionData instalacionData;
 
     public frmInstalacionesLibres() {
         initComponents();
+        txtInicio.setText("dd-MM-yyyy HH:mm");
+        txtFin.setText("dd-MM-yyyy HH:mm");
         instalacionData = new InstalacionData();
-        cargarFranjas();
         configurarTabla();
     }
 
@@ -30,8 +34,12 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaInstal = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        comboBoxFranjas = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtInicio = new javax.swing.JTextField();
+        txtFin = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -51,18 +59,25 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Century", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Instalaciones libres hoy");
-
-        comboBoxFranjas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        comboBoxFranjas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        comboBoxFranjas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxFranjasActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Instalaciones libres");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Seleccione una franja horaria");
+        jLabel2.setText("Ingrese fecha y hora de inicio y fin");
+
+        jLabel3.setText("Inicio:");
+
+        jLabel4.setText("Fin:");
+
+        txtInicio.setText("jTextField1");
+
+        txtFin.setText("jTextField2");
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,43 +90,53 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
                         .addGap(100, 100, 100)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addComponent(comboBoxFranjas, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(206, 206, 206)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                                    .addComponent(txtFin))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar)))
                 .addContainerGap(100, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(274, 274, 274))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(comboBoxFranjas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(btnBuscar)
+                        .addGap(53, 53, 53)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboBoxFranjasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxFranjasActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         cargarInstalacionesLibres();
-    }//GEN-LAST:event_comboBoxFranjasActionPerformed
-
-    private void cargarFranjas() {
-        comboBoxFranjas.removeAllItems();
-        comboBoxFranjas.addItem("09-11");
-        comboBoxFranjas.addItem("11-13");
-        comboBoxFranjas.addItem("13-15");
-        comboBoxFranjas.addItem("15-17");
-        comboBoxFranjas.addItem("17-19");
-    }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void configurarTabla() {
         String[] columnas = {"Código", "Nombre", "Detalle", "Precio 30m"};
@@ -120,30 +145,39 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
     }
 
     private void cargarInstalacionesLibres() {
+        try {
+            String inicioTxt = txtInicio.getText().trim();
+            String finTxt = txtFin.getText().trim();
 
-        if (comboBoxFranjas.getSelectedItem() == null) {
-            return;
+            //aca parseo del texto a localdatetime
+            LocalDateTime inicio = LocalDateTime.parse(inicioTxt, FORMATTER);
+            LocalDateTime fin = LocalDateTime.parse(finTxt, FORMATTER);
+
+            if (fin.isBefore(inicio)) {
+                JOptionPane.showMessageDialog(this,
+                        "La fecha de fin no puede ser menor que la de inicio.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            System.out.println("inicio = " + inicio);
+            System.out.println("fin = " + fin);
+
+            List<Instalacion> libres = instalacionData.getInstalacionesLibres(inicio, fin);
+
+            actualizarTabla(libres);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Formato de fecha inválido. Use: dd-MM-yyyy HH:mm",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        String franja = comboBoxFranjas.getSelectedItem().toString();
-        String[] partes = franja.split("-");
-
-        int hInicio = Integer.parseInt(partes[0]);
-        int hFin = Integer.parseInt(partes[1]);
-
-        LocalDate hoy = LocalDate.now();
-        LocalDateTime inicio = hoy.atTime(hInicio, 0);
-        LocalDateTime fin = hoy.atTime(hFin, 0);
-        System.out.println("horarios: inicio "+inicio+" y fin "+fin);
-        List<Instalacion> libres = instalacionData.getInstalacionesLibres(inicio, fin);
-        System.out.println("Libres: "+libres);
-        actualizarTabla(libres);
     }
 
     private void actualizarTabla(List<Instalacion> lista) {
         DefaultTableModel modelo = (DefaultTableModel) tablaInstal.getModel();
         modelo.setRowCount(0); //aca limpio la tabla
-        System.out.println("Lista de instalaciones: "+lista);
+        System.out.println("Lista de instalaciones: " + lista);
         for (Instalacion i : lista) {
             modelo.addRow(new Object[]{
                 i.getCodInstal(),
@@ -155,10 +189,14 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comboBoxFranjas;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaInstal;
+    private javax.swing.JTextField txtFin;
+    private javax.swing.JTextField txtInicio;
     // End of variables declaration//GEN-END:variables
 }
