@@ -12,6 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 /**
  *
  * @author Lulim
@@ -183,8 +187,136 @@ public class MasajistaData {
     return lista;
 }
     
+   
+    public List<Masajista> obtenerMasajistasLibres(LocalDateTime fechaHoraBuscada) {
+     
+    LocalDate fecha = fechaHoraBuscada.toLocalDate();
+    LocalTime hora = fechaHoraBuscada.toLocalTime();
 
+     // ✔ Antes de 15:00 → TODOS están libres
+    if (hora.isBefore(LocalTime.of(15, 0))) {
+        return listarMasajistasQueTrabajanEseDia(fecha);
+    }
+
+    // ✔ Después de 17:00 → TODOS están libres
+    if (hora.isAfter(LocalTime.of(17, 0))) {
+        return listarMasajistasQueTrabajanEseDia(fecha);
+    }
+
+    // ✔ Entre 15 y 17 → filtrar
+    List<Masajista> libres = new ArrayList<>();
+
+
+    String sql = "SELECT m.* FROM masajista m "
+            + "WHERE m.estado = 1 "
+            + "AND m.matricula IN ( "
+            + "     SELECT s.matricula FROM sesion s "
+            + "     WHERE DATE(s.fechaHoraInicio) = ? "
+            + ") "
+            + "AND m.matricula NOT IN ( "
+            + "     SELECT s.matricula FROM sesion s "
+            + "     WHERE DATE(s.fechaHoraInicio) = ? "
+            + "     AND TIME(s.fechaHoraInicio) >= '15:00:00' "
+            + "     AND TIME(s.fechaHoraInicio) <  '17:00:00' "
+            + ")";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setDate(1, java.sql.Date.valueOf(fecha));
+         ps.setDate(2, java.sql.Date.valueOf(fecha));
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Masajista m = new Masajista();
+            m.setMatricula(rs.getInt("matricula"));
+            m.setNombre(rs.getString("nombre"));
+            m.setApellido(rs.getString("apellido"));
+            m.setEspecialidad(rs.getString("especialidad"));
+            m.setEstado(rs.getBoolean("estado"));
+            libres.add(m);
+        }
+
+        rs.close();
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al buscar masajistas libres: " + ex.getMessage());
+    }
+
+    return libres;
+    
+}
+    
+    public List<Masajista> listarMasajistasActivos() {
+    List<Masajista> lista = new ArrayList<>();
+
+    String sql = "SELECT * FROM masajista WHERE estado = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Masajista m = new Masajista();
+            m.setMatricula(rs.getInt("matricula"));
+            m.setNombre(rs.getString("nombre"));
+            m.setApellido(rs.getString("apellido"));
+            m.setTelefono(rs.getString("telefono"));
+            m.setEspecialidad(rs.getString("especialidad"));
+            m.setEstado(rs.getBoolean("estado"));
+
+            lista.add(m);
+        }
+
+        rs.close();
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al listar masajistas activos: " + ex.getMessage());
+    }
+
+    return lista;
+}
+    
+    public List<Masajista> listarMasajistasQueTrabajanEseDia(LocalDate fecha) {
+
+    List<Masajista> masajistas = new ArrayList<>();
+
+    String sql =
+        "SELECT DISTINCT m.* " +
+        "FROM masajista m " +
+        "JOIN sesion s ON m.matricula = s.matricula " +
+        "WHERE m.estado = 1 " +
+        "AND DATE(s.fechaHoraInicio) = ?;";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setDate(1, java.sql.Date.valueOf(fecha));
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Masajista m = new Masajista();
+            m.setMatricula(rs.getInt("matricula"));
+            m.setNombre(rs.getString("nombre"));
+            m.setApellido(rs.getString("apellido"));
+            m.setEspecialidad(rs.getString("especialidad"));
+            m.setEstado(rs.getBoolean("estado"));
+            masajistas.add(m);
+        }
+
+        rs.close();
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al listar masajistas que trabajan ese día: " + ex.getMessage());
+    }
+
+    return masajistas;
+}
    }
+
+   
    
  
  

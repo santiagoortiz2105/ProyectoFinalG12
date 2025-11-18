@@ -214,7 +214,10 @@ public List<Instalacion> listarInstalacionesMasSolicitadas() {
 }
 
      public void guardarInstalacionSesion(int codSesion, int codInstal) {
-    String sql = "INSERT INTO sesion_instalacion (codSesion, codInstal) VALUES (?, ?)";
+        if (existeInstalacionSesion(codSesion, codInstal)) {
+        return;
+    }
+         String sql = "INSERT INTO sesion_instalacion (codSesion, codInstal) VALUES (?, ?)";
 
     try {
         PreparedStatement ps = con.prepareStatement(sql);
@@ -297,6 +300,21 @@ public List<Instalacion> listarInstalacionesMasSolicitadas() {
     }
 
     return lista;
+}
+  
+  public boolean existeInstalacionSesion(int codSesion, int codInstal) {
+    String sql = "SELECT 1 FROM sesion_instalacion WHERE codSesion = ? AND codInstal = ?";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codSesion);
+        ps.setInt(2, codInstal);
+        ResultSet rs = ps.executeQuery();
+        
+        return rs.next();
+    } catch (SQLException e) {
+        return false;
+    }
 }
 
 

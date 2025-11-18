@@ -5,20 +5,60 @@
 package vista;
 
 import java.awt.Color;
+import Modelo.Masajista;
+import Persistencia.MasajistaData;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 /**
  *
  * @author santi
  */
 public class frmMasajistasLibres extends javax.swing.JInternalFrame {
-
+        
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int fila, int columna) {
+            return false;
+        }
+    };
     /**
      * Creates new form frmMasajistasLibres
      */
     public frmMasajistasLibres() {
         initComponents();
-         this.getContentPane().setBackground(new Color(245, 242, 232));
+        this.getContentPane().setBackground(new Color(245, 242, 232));
+        armarTabla();
+        
     }
+
+     private void armarTabla() {
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Especialidad");
+        jTable1.setModel(modelo);
+    }
+     
+     private void limpiarTabla() {
+        modelo.setRowCount(0);
+    }
+     
+   private void cargarTabla(List<Masajista> lista) {
+    limpiarTabla();
+    lista.forEach(m -> modelo.addRow(new Object[]{
+        m.getMatricula(),
+        m.getNombre(),
+        m.getEspecialidad()
+    }));
+}
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,7 +81,7 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
         setMaximizable(true);
 
         jLabel1.setFont(new java.awt.Font("Century", 1, 24)); // NOI18N
-        jLabel1.setText("Masajistas libres de 15 a 16");
+        jLabel1.setText("Masajistas libres de 15 a 17");
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setText("Fecha:");
@@ -113,7 +153,39 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
-        // TODO add your handling code here:
+
+    try {
+      
+        String texto = jTextField1.getText(); 
+
+        if (texto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese fecha y hora.");
+            return;
+        }
+      
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        LocalDateTime fechaHora = LocalDateTime.parse(texto, formato);      
+        LocalDate fecha = fechaHora.toLocalDate();   
+        MasajistaData md = new MasajistaData();
+        LocalTime hora = fechaHora.toLocalTime();
+        
+        List<Masajista> libres = md.obtenerMasajistasLibres(fechaHora);
+        if (hora.isBefore(LocalTime.of(15, 0)) || hora.isAfter(LocalTime.of(17, 0))) {
+            // Fuera del horario laboral: todos libres
+            libres = md.listarMasajistasQueTrabajanEseDia(fecha);
+        } else {
+            // Entre 15 y 17: filtrar solo los ocupados
+            libres = md.obtenerMasajistasLibres(fechaHora);
+        }
+        cargarTabla(libres);
+
+        if (libres.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay masajistas libres entre 15 y 17.");
+        }
+
+    } catch (DateTimeParseException ex) {
+        JOptionPane.showMessageDialog(this, "Formato incorrecto. Debe ser: dd-MM-yyyy HH:mm");
+    }
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
