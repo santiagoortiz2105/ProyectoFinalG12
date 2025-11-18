@@ -20,7 +20,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jfrmCliente">
               <Properties>
-                <Property name="text" type="java.lang.String" value="frmCliente"/>
+                <Property name="text" type="java.lang.String" value="Cliente"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jfrmClienteActionPerformed"/>
@@ -66,7 +66,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jfrmConsultorio">
               <Properties>
-                <Property name="text" type="java.lang.String" value="frmConsultorio "/>
+                <Property name="text" type="java.lang.String" value="Consultorio "/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jfrmConsultorioActionPerformed"/>
@@ -81,7 +81,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jfrmTratamiento">
               <Properties>
-                <Property name="text" type="java.lang.String" value="frmTratamiento"/>
+                <Property name="text" type="java.lang.String" value="Tratamiento"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jfrmTratamientoActionPerformed"/>
@@ -112,7 +112,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jfrmInstalacion">
               <Properties>
-                <Property name="text" type="java.lang.String" value="frmInstalacion "/>
+                <Property name="text" type="java.lang.String" value="Instalacion "/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jfrmInstalacionActionPerformed"/>

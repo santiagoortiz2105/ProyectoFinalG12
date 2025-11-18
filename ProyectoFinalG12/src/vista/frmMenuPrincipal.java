@@ -68,7 +68,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
         jMenu2.setText("Cliente");
 
-        jfrmCliente.setText("frmCliente");
+        jfrmCliente.setText("Cliente");
         jfrmCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jfrmClienteActionPerformed(evt);
@@ -108,7 +108,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
         jMenu4.setText("Consultorio ");
 
-        jfrmConsultorio.setText("frmConsultorio ");
+        jfrmConsultorio.setText("Consultorio ");
         jfrmConsultorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jfrmConsultorioActionPerformed(evt);
@@ -120,7 +120,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
         jMenu5.setText("Tratamiento ");
 
-        jfrmTratamiento.setText("frmTratamiento");
+        jfrmTratamiento.setText("Tratamiento");
         jfrmTratamiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jfrmTratamientoActionPerformed(evt);
@@ -148,7 +148,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
         jMenu6.setText("Instalacion ");
 
-        jfrmInstalacion.setText("frmInstalacion ");
+        jfrmInstalacion.setText("Instalacion ");
         jfrmInstalacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jfrmInstalacionActionPerformed(evt);
