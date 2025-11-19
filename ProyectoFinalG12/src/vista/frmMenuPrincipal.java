@@ -59,6 +59,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1600, 900));
 
         jDesktopPane1.setMinimumSize(new java.awt.Dimension(1024, 768));
 

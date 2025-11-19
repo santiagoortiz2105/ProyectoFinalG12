@@ -4,6 +4,7 @@ import Modelo.Instalacion;
 import Persistencia.InstalacionData;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -16,8 +17,8 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
 
     public frmInstalacionesLibres() {
         initComponents();
-        txtInicio.setText("dd-MM-yyyy HH:mm");
-        txtFin.setText("dd-MM-yyyy HH:mm");
+        cargarFranjas();
+        cargarMeses();
         instalacionData = new InstalacionData();
         configurarTabla();
     }
@@ -34,12 +35,15 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaInstal = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtInicio = new javax.swing.JTextField();
-        txtFin = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtAnio = new javax.swing.JTextField();
+        cbMes = new javax.swing.JComboBox<>();
+        cbFranja = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        txtDia = new javax.swing.JTextField();
 
         setClosable(true);
         setMaximizable(true);
@@ -61,16 +65,9 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Instalaciones libres");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Ingrese fecha y hora de inicio y fin");
+        jLabel3.setText("Dia:");
 
-        jLabel3.setText("Inicio:");
-
-        jLabel4.setText("Fin:");
-
-        txtInicio.setText("jTextField1");
-
-        txtFin.setText("jTextField2");
+        jLabel4.setText("Mes:");
 
         btnBuscar.setBackground(new java.awt.Color(143, 191, 159));
         btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
@@ -81,6 +78,19 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel5.setText("Año:");
+
+        cbMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbMes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMesActionPerformed(evt);
+            }
+        });
+
+        cbFranja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel6.setText("Elija franja horaria");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,48 +99,58 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
+                        .addGap(93, 93, 93)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(206, 206, 206)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addGap(28, 28, 28)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                                    .addComponent(txtFin))))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)))
-                .addContainerGap(100, Short.MAX_VALUE))
+                        .addGap(346, 346, 346)
+                        .addComponent(jLabel5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(347, 347, 347)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(321, 321, 321)
+                        .addComponent(btnBuscar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(250, 250, 250)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtAnio)
+                            .addComponent(cbFranja, 0, 219, Short.MAX_VALUE)
+                            .addComponent(cbMes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtDia)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(315, 315, 315)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(349, 349, 349)
+                        .addComponent(jLabel3)))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addComponent(btnBuscar)
-                        .addGap(53, 53, 53)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbFranja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBuscar)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(34, 34, 34))
         );
 
         pack();
@@ -140,38 +160,65 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         cargarInstalacionesLibres();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void cbMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbMesActionPerformed
+
     private void configurarTabla() {
-        String[] columnas = {"Código", "Nombre", "Detalle", "Precio 30m"};
+        String[] columnas = {"Código", "Nombre", "Detalle", "Precio 30min"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
         tablaInstal.setModel(modelo);
     }
 
     private void cargarInstalacionesLibres() {
         try {
-            String inicioTxt = txtInicio.getText().trim();
-            String finTxt = txtFin.getText().trim();
+            String diaTxt = txtDia.getText().trim();
 
-            //aca parseo del texto a localdatetime
-            LocalDateTime inicio = LocalDateTime.parse(inicioTxt, FORMATTER);
-            LocalDateTime fin = LocalDateTime.parse(finTxt, FORMATTER);
-
-            if (fin.isBefore(inicio)) {
-                JOptionPane.showMessageDialog(this,
-                        "La fecha de fin no puede ser menor que la de inicio.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+            //valido que tenga dos digitos
+            if (!diaTxt.matches("\\d{2}")) {
+                JOptionPane.showMessageDialog(this, "El día debe tener dos dígitos");
                 return;
             }
 
-            System.out.println("inicio = " + inicio);
-            System.out.println("fin = " + fin);
+            int dia = Integer.parseInt(diaTxt);
 
-            List<Instalacion> libres = instalacionData.getInstalacionesLibres(inicio, fin);
+            if (dia < 1 || dia > 31) {
+                JOptionPane.showMessageDialog(this, "El día debe estar entre 01 y 31");
+                return;
+            }
+
+            String anioTxt = txtAnio.getText().trim();
+
+            //que sean solo numeros
+            if (!anioTxt.matches("\\d{4}")) {
+                JOptionPane.showMessageDialog(this, "El año debe tener 4 dígitos numéricos");
+                return;
+            }
+
+            int anio = Integer.parseInt(anioTxt);
+
+            if (anio < 2025 || anio > 2030) {
+                JOptionPane.showMessageDialog(this, "El año no puede ser menor a 2025 o mayor a 2030");
+                return;
+            }
+
+            int mes = cbMes.getSelectedIndex() + 1; //recupero la posicion del combobox + 1
+            
+
+            String franjaCb = cbFranja.getSelectedItem().toString();
+            String[] franjas = franjaCb.split(" - "); //divido las franjas
+            LocalTime inicio = LocalTime.parse(franjas[0]);
+            LocalTime fin = LocalTime.parse(franjas[1]);
+
+            LocalDateTime fechaInicio = LocalDateTime.of(anio, mes, dia, inicio.getHour(), inicio.getMinute());
+            LocalDateTime fechaFin = LocalDateTime.of(anio, mes, dia, fin.getHour(), fin.getMinute());
+
+            List<Instalacion> libres = instalacionData.getInstalacionesLibres(fechaInicio, fechaFin);
 
             actualizarTabla(libres);
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "Formato de fecha inválido. Use: dd-MM-yyyy HH:mm",
+                    e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -190,15 +237,45 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         }
     }
 
+    private void cargarFranjas() {
+        cbFranja.removeAllItems();
+        cbFranja.addItem("09:00 - 11:00");
+        cbFranja.addItem("11:00 - 13:00");
+        cbFranja.addItem("13:00 - 15:00");
+        cbFranja.addItem("15:00 - 17:00");
+        cbFranja.addItem("17:00 - 19:00");
+        cbFranja.addItem("19:00 - 21:00");
+    }
+
+    private void cargarMeses() {
+        cbMes.removeAllItems();
+        cbMes.addItem("Enero");
+        cbMes.addItem("Febrero");
+        cbMes.addItem("Marzo");
+        cbMes.addItem("Abril");
+        cbMes.addItem("Mayo");
+        cbMes.addItem("Junio");
+        cbMes.addItem("Julio");
+        cbMes.addItem("Agosto");
+        cbMes.addItem("Septiembre");
+        cbMes.addItem("Octubre");
+        cbMes.addItem("Noviembre");
+        cbMes.addItem("Diciembre");
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JComboBox<String> cbFranja;
+    private javax.swing.JComboBox<String> cbMes;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaInstal;
-    private javax.swing.JTextField txtFin;
-    private javax.swing.JTextField txtInicio;
+    private javax.swing.JTextField txtAnio;
+    private javax.swing.JTextField txtDia;
     // End of variables declaration//GEN-END:variables
+
 }

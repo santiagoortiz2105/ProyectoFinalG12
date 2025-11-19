@@ -219,7 +219,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jLabel1.setText("Sesión");
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel2.setText("Codigo:");
+        jLabel2.setText("Código:");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,7 +228,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel3.setText("Hora Inicio:");
+        jLabel3.setText("Día y hora inicio:");
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,7 +237,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel4.setText("Hora Fin:");
+        jLabel4.setText("Día y hora fin:");
 
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,7 +273,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         });
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel8.setText("Dia de Spa:");
+        jLabel8.setText("Día de Spa:");
 
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -282,7 +282,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel9.setText("Estado");
+        jLabel9.setText("Estado:");
 
         jCheckBox1.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
         jCheckBox1.setText("Activo");
@@ -353,7 +353,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Dia de Spa", "Estado", "Instalaciones"
+                "Código", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Dia de Spa", "Estado", "Instalaciones"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -684,9 +684,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 .addGap(44, 44, 44))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 340, Short.MAX_VALUE)
+                    .addGap(0, 350, Short.MAX_VALUE)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 339, Short.MAX_VALUE)))
+                    .addGap(0, 350, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
