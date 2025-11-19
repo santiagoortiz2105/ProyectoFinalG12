@@ -2,6 +2,12 @@ package vista;
 
 import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Image;
+import java.awt.Component;
+import java.awt.Graphics;
+import javax.swing.border.AbstractBorder;
 
 public class frmMenuPrincipal extends javax.swing.JFrame {
 
@@ -11,6 +17,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Menú Principal - Spa Entre Dedos");
         this.setLocationRelativeTo(null);
+        setFondo();
     }
 
     /**
@@ -233,6 +240,23 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void setFondo() {
+    try {
+        Image img = new ImageIcon(getClass().getResource("/images/fondoSpa.jpg")).getImage();
+
+        jDesktopPane1.setBorder(new AbstractBorder() {
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                g.drawImage(img, 0, 0, width, height, null);
+            }
+        });
+
+    } catch (Exception e) {
+        System.out.println("No se encontró imagen: " + e.getMessage());
+    }
+}
+
 
     private void jfrmClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jfrmClienteActionPerformed
         frmCliente ventana = new frmCliente();
