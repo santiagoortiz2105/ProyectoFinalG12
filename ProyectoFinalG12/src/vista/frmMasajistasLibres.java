@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,6 +34,7 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
         configurarTabla();
         masajistaData = new MasajistaData();
         actualizarTabla(masajistaData.listarMasajistas());
+        centrarColumnas(); 
     }
     
      private void actualizarTabla(List<Masajista> lista) {
@@ -45,8 +47,8 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
                 m.getMatricula(),
                 m.getNombre(),
                 m.getApellido(),
-                m.getEspecialidad(),
                 m.getTelefono(), 
+                m.getEspecialidad(),
                 estado
             });
         }
@@ -136,6 +138,15 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+     
+     private void centrarColumnas() {
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

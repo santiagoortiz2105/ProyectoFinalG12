@@ -23,6 +23,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         armarTabla();
         cargarTabla();
          this.getContentPane().setBackground(new Color(245, 242, 232));
+         centrarColumnas(); 
     }
     
     private void cargarClientes() {
@@ -405,7 +406,15 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
     jCheckBox1.setSelected(d.isEstado());
     }
     }//GEN-LAST:event_jButton5ActionPerformed
+    
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

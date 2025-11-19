@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
@@ -21,6 +22,7 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         cargarMeses();
         instalacionData = new InstalacionData();
         configurarTabla();
+        centrarColumnas();  
     }
 
     /**
@@ -266,6 +268,15 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         cbMes.addItem("Noviembre");
         cbMes.addItem("Diciembre");
     }
+    
+    private void centrarColumnas() {
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < tablaInstal.getColumnCount(); i++) {
+        tablaInstal.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

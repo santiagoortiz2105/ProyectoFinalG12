@@ -34,6 +34,7 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
 
         jTable1.setModel(modelo);
         armarTabla();
+         centrarColumnas();
     }
     
     
@@ -71,6 +72,7 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
                 });
             }
         }
+         centrarColumnas();
 
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
@@ -154,6 +156,15 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
         cargarTabla();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer =
+            new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

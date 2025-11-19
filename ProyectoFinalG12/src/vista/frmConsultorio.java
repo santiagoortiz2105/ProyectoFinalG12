@@ -25,6 +25,7 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
         cargarTabla();
         limpiarCampos();
          this.getContentPane().setBackground(new Color(245, 242, 232));
+         centrarColumnas(); 
     }
 
     /**
@@ -353,6 +354,7 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
             c.isApto() ? "Sí" : "No"
         });
     }
+    centrarColumnas();
 }
     
     private void limpiarCampos() {
@@ -360,6 +362,15 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
     tfUsos.setText("");
     taEquipamiento.setText("");
     jbApto.setSelected(false);
+}
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer =
+            new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jtConsultorio.getColumnCount(); i++) {
+        jtConsultorio.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

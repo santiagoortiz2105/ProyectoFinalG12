@@ -23,6 +23,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
     public frmCliente() {
         initComponents();
         cargarTabla();
+        centrarColumnas(); 
     }
 
     /**
@@ -456,6 +457,16 @@ public class frmCliente extends javax.swing.JInternalFrame {
         taAfecciones.setText("");
         cbEstado.setSelected(false);
     }
+    
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer =
+            new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jtCliente.getColumnCount(); i++) {
+        jtCliente.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox cbEstado;

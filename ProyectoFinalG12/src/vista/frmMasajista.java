@@ -25,6 +25,7 @@ public class frmMasajista extends javax.swing.JInternalFrame {
          modelo = (DefaultTableModel) jtMasajista.getModel();  
          cargarTabla();
          limpiarCampos();
+         centrarColumnas(); 
     }
 
     /**
@@ -399,6 +400,7 @@ public class frmMasajista extends javax.swing.JInternalFrame {
                 m.isEstado() ? "Activo" : "Inactivo"
             });
         }
+        centrarColumnas(); 
     }
      
       private void limpiarCampos() {
@@ -409,6 +411,16 @@ public class frmMasajista extends javax.swing.JInternalFrame {
         cbEspecialidad.setSelectedIndex(0);
         jbEstado.setSelected(false);
     }
+      
+      private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer =
+            new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jtMasajista.getColumnCount(); i++) {
+        jtMasajista.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbEspecialidad;

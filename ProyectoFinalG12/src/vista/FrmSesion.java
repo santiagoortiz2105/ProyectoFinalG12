@@ -58,6 +58,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         cargarCombos();
         cargarTabla();
         this.getContentPane().setBackground(new Color(245, 242, 232));
+        centrarColumnas();
     }
 
     private void armarTabla() {
@@ -117,11 +118,12 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
     private void cargarTabla() {
         limpiarTabla();
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         for (Sesion s : sesionData.listarSesiones()) {
             modelo.addRow(new Object[]{
                 s.getCodSesion(),
-                s.getFechaHoraInicio(),
-                s.getFechaHoraFin(),
+                s.getFechaHoraInicio().format(formatter),
+                s.getFechaHoraFin().format(formatter),
                 s.getTratamiento().getNombre(),
                 s.getConsultorio().getNroConsultorio(),
                 s.getMasajista().getNombre(),
@@ -130,7 +132,18 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 instalacionesToString(s.getInstalaciones())
             });
         }
+        centrarColumnas();
     }
+    
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer =
+            new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -943,8 +956,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
             if (s != null) {
                 // Cargar los datos simples
-                jTextField2.setText(s.getFechaHoraInicio().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm")));
-                jTextField3.setText(s.getFechaHoraFin().format(DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm")));
+                jTextField2.setText(s.getFechaHoraInicio().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+                jTextField3.setText(s.getFechaHoraFin().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
                 jCheckBox1.setSelected(s.isEstado());
                 jComboBox1.setSelectedItem(s.getTratamiento().getNombre());
                 jComboBox2.setSelectedItem(String.valueOf(s.getConsultorio().getNroConsultorio()));

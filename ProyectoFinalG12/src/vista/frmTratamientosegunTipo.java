@@ -25,6 +25,7 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
         cargarCombo();
         armarTabla();
         limpiarTabla();
+        centrarColumnas(); 
     }
 
     /**
@@ -144,6 +145,7 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
             t.getCosto()
         });
     }
+    centrarColumnas();
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private void cargarCombo() {
@@ -168,6 +170,15 @@ public class frmTratamientosegunTipo extends javax.swing.JInternalFrame {
 }
     private void limpiarTabla() {
     modelo.setRowCount(0);
+}
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer =
+            new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

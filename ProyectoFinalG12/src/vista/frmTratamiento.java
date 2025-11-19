@@ -25,6 +25,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         cargarTabla();
         cargarCombo();
         this.getContentPane().setBackground(new Color(245, 242, 232));
+        centrarColumnas(); 
     }
 
     /**
@@ -433,6 +434,14 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     jComboBox1.addItem("Relajacion ");
     jComboBox1.addItem("Estetico");
     }
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable2.getColumnCount(); i++) {
+        jTable2.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
     
     
     

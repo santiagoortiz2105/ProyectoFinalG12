@@ -27,6 +27,7 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
         this.getContentPane().setBackground(new Color(245, 242, 232));
         cargarEspecialidades();
         limpiarTabla();
+        centrarColumnas(); 
     }
 
     /**
@@ -153,6 +154,7 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
     }
 
     jTable1.setModel(modelo);
+    centrarColumnas();
 }
     private void cargarEspecialidades() {
         jComboBox1.removeAllItems();
@@ -165,6 +167,16 @@ public class frmMasajistaEspecialidad extends javax.swing.JInternalFrame {
     private void limpiarTabla() {
     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
     modelo.setRowCount(0);
+}
+    
+    private void centrarColumnas() {
+    javax.swing.table.DefaultTableCellRenderer centerRenderer =
+            new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
 }
     
 

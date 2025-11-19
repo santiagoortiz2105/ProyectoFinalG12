@@ -8,6 +8,7 @@ import Persistencia.InstalacionData;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +28,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         jTextField1.setEditable(true);
          this.getContentPane().setBackground(new Color(245, 242, 232));
         cargarTabla();
+        centrarColumnas(); 
     }
 
     /**
@@ -436,6 +438,15 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         jTextField3.setText("");
         jCheckBoxEstado.setSelected(true);
     }
+      
+      private void centrarColumnas() {
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+}
 
     
     
