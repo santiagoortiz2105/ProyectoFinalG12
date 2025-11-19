@@ -5,6 +5,7 @@
 package vista;
 import Modelo.Tratamiento;
 import Persistencia.TratamientoData;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -23,6 +24,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         modeloTabla = (DefaultTableModel) jTable2.getModel();
         cargarTabla();
         cargarCombo();
+        this.getContentPane().setBackground(new Color(245, 242, 232));
     }
 
     /**

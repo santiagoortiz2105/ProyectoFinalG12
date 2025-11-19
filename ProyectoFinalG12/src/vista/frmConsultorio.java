@@ -5,6 +5,7 @@
 package vista;
 import Modelo.Consultorio;
 import Persistencia.ConsultorioData;
+import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,7 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
         modelo = (DefaultTableModel) jtConsultorio.getModel(); 
         cargarTabla();
         limpiarCampos();
+         this.getContentPane().setBackground(new Color(245, 242, 232));
     }
 
     /**

@@ -92,6 +92,8 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
             }
         });
 
+        jBotonBuscar.setBackground(new java.awt.Color(143, 191, 159));
+        jBotonBuscar.setForeground(new java.awt.Color(0, 0, 0));
         jBotonBuscar.setText("Buscar");
         jBotonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

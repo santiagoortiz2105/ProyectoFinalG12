@@ -72,6 +72,8 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
 
         txtFin.setText("jTextField2");
 
+        btnBuscar.setBackground(new java.awt.Color(143, 191, 159));
+        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

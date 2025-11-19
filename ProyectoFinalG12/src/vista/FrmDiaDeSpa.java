@@ -4,6 +4,7 @@ import Modelo.DiadeSpa;
 import Modelo.Cliente;
 import Persistencia.DiadeSpaData;
 import Persistencia.ClienteData;
+import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,6 +22,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         cargarClientes();
         armarTabla();
         cargarTabla();
+         this.getContentPane().setBackground(new Color(245, 242, 232));
     }
     
     private void cargarClientes() {

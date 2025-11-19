@@ -5,6 +5,7 @@
 package vista;
 import Modelo.Instalacion;
 import Persistencia.InstalacionData;
+import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -24,6 +25,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         modeloTabla = (DefaultTableModel) jTable1.getModel();
         jTextField1.setEnabled(true);
         jTextField1.setEditable(true);
+         this.getContentPane().setBackground(new Color(245, 242, 232));
         cargarTabla();
     }
 
