@@ -314,6 +314,47 @@ public class MasajistaData {
 
     return masajistas;
 }
+    
+    public List<Masajista> obtenerMasajistasLibresFranja(LocalDateTime inicio, LocalDateTime fin) {
+
+    List<Masajista> libres = new ArrayList<>();
+
+    String sql = """
+        SELECT * FROM masajista 
+        WHERE estado = 1
+        AND matricula NOT IN (
+            SELECT matricula FROM sesion
+            WHERE (fechaHoraInicio < ? AND fechaHoraFin > ?)
+        )
+    """;
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setTimestamp(1, java.sql.Timestamp.valueOf(fin));
+        ps.setTimestamp(2, java.sql.Timestamp.valueOf(inicio));
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Masajista m = new Masajista();
+            m.setMatricula(rs.getInt("matricula"));
+            m.setNombre(rs.getString("nombre"));
+            m.setApellido(rs.getString("apellido"));
+            m.setTelefono(rs.getString("telefono"));
+            m.setEspecialidad(rs.getString("especialidad"));
+            m.setEstado(rs.getBoolean("estado"));
+            libres.add(m);
+        }
+
+        rs.close();
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al obtener masajistas libres por franja: " + ex.getMessage());
+    }
+
+    return libres;
+}
    }
 
    
