@@ -3,19 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+
 import Modelo.Tratamiento;
 import Persistencia.TratamientoData;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+
 /**
  *
  * @author Lulim
  */
 public class frmTratamiento extends javax.swing.JInternalFrame {
+
     private TratamientoData tratamientoData = new TratamientoData();
     private DefaultTableModel modeloTabla;
+
     /**
      * Creates new form frmTratamiento
      */
@@ -25,7 +29,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         cargarTabla();
         cargarCombo();
         this.getContentPane().setBackground(new Color(245, 242, 232));
-        centrarColumnas(); 
+        centrarColumnas();
     }
 
     /**
@@ -308,62 +312,65 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
+        if (!validarCamposTratamiento(false)) {
+            return;
+        }
         try {
-        String nombre = jTextField2.getText();
-        String tipo = (String) jComboBox1.getSelectedItem();
-        String detalle = jTextArea2.getText();
-        int duracion = Integer.parseInt(jTextField3.getText());
-        double costo = Double.parseDouble(jTextField4.getText());
-        boolean activo = jCheckBoxEstado.isSelected();
+            String nombre = jTextField2.getText().trim();
+            String tipo = (String) jComboBox1.getSelectedItem();
+            String detalle = jTextArea2.getText().trim();
+            int duracion = Integer.parseInt(jTextField3.getText().trim());
+            double costo = Double.parseDouble(jTextField4.getText().trim());
+            boolean activo = jCheckBoxEstado.isSelected();
 
-        Tratamiento t = new Tratamiento(nombre, tipo, detalle, duracion, costo, activo);
-        tratamientoData.guardarTratamiento(t);
-
-        JOptionPane.showMessageDialog(this, "Tratamiento guardado correctamente.");
-        limpiarCampos();
-        cargarTabla();
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Verifique los campos numéricos.");
-    }
+            Tratamiento t = new Tratamiento(nombre, tipo, detalle, duracion, costo, activo);
+            tratamientoData.guardarTratamiento(t);
+            JOptionPane.showMessageDialog(this, "Tratamiento guardado correctamente.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
+        }
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
-        try {
-        int cod = Integer.parseInt(jTextField1.getText());
-        Tratamiento t = tratamientoData.buscarPorId(cod);
-
-        if (t != null) {
-            t.setNombre(jTextField2.getText());
-            t.setTipo((String) jComboBox1.getSelectedItem());
-            t.setDetalle(jTextArea2.getText());
-            t.setDuracion_min(Integer.parseInt(jTextField3.getText()));
-            t.setCosto(Double.parseDouble(jTextField4.getText()));
-            t.setActivo(jCheckBoxEstado.isSelected());
-
-            tratamientoData.editarTratamiento(t);
-            JOptionPane.showMessageDialog(this, "Tratamiento modificado correctamente.");
-            limpiarCampos();
-            cargarTabla();
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró el tratamiento con ese código.");
+        if (!validarCamposTratamiento(true)) {
+            return;
         }
+        try {
+            int cod = Integer.parseInt(jTextField1.getText().trim());
+            Tratamiento t = tratamientoData.buscarPorId(cod);
 
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Ingrese un código válido.");
-    }
+            if (t != null) {
+                t.setNombre(jTextField2.getText().trim());
+                t.setTipo((String) jComboBox1.getSelectedItem());
+                t.setDetalle(jTextArea2.getText().trim());
+                t.setDuracion_min(Integer.parseInt(jTextField3.getText().trim()));
+                t.setCosto(Double.parseDouble(jTextField4.getText().trim()));
+                t.setActivo(jCheckBoxEstado.isSelected());
+
+                tratamientoData.editarTratamiento(t);
+                JOptionPane.showMessageDialog(this, "Tratamiento modificado correctamente.");
+                limpiarCampos();
+                cargarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el tratamiento con ese código.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
+        }
     }//GEN-LAST:event_jBotonModificarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
         try {
-        int cod = Integer.parseInt(jTextField1.getText());
-        tratamientoData.deshabilitarTratamiento(cod);
-        JOptionPane.showMessageDialog(this, "Tratamiento Eliminado.");
-        limpiarCampos();
-        cargarTabla();
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Ingrese un código válido.");
-    }
+            int cod = Integer.parseInt(jTextField1.getText());
+            tratamientoData.deshabilitarTratamiento(cod);
+            JOptionPane.showMessageDialog(this, "Tratamiento Eliminado.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un código válido.");
+        }
     }//GEN-LAST:event_jBotonEliminarActionPerformed
 
     private void jBotonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonNuevoActionPerformed
@@ -371,80 +378,155 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBotonNuevoActionPerformed
 
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
-       try {
-        int cod = Integer.parseInt(jTextField1.getText());
-        Tratamiento t = tratamientoData.buscarPorId(cod);
+        try {
+            int cod = Integer.parseInt(jTextField1.getText());
+            Tratamiento t = tratamientoData.buscarPorId(cod);
 
-        if (t != null) {
-            jTextField2.setText(t.getNombre());
-            jComboBox1.setSelectedItem(t.getTipo());
-            jTextArea2.setText(t.getDetalle());
-            jTextField3.setText(String.valueOf(t.getDuracion_min()));
-            jTextField4.setText(String.valueOf(t.getCosto()));
-            jCheckBoxEstado.setSelected(t.isActivo());
-        } else {
-            JOptionPane.showMessageDialog(this, "Tratamiento no encontrado.");
+            if (t != null) {
+                jTextField2.setText(t.getNombre());
+                jComboBox1.setSelectedItem(t.getTipo());
+                jTextArea2.setText(t.getDetalle());
+                jTextField3.setText(String.valueOf(t.getDuracion_min()));
+                jTextField4.setText(String.valueOf(t.getCosto()));
+                jCheckBoxEstado.setSelected(t.isActivo());
+            } else {
+                JOptionPane.showMessageDialog(this, "Tratamiento no encontrado.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un código válido.");
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Ingrese un código válido.");
-    }
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private void jCheckBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEstadoActionPerformed
-         if (jCheckBoxEstado.isSelected()) {
-        jCheckBoxEstado.setText("Activo");
-        jTextField2.setEnabled(true);
-    } else {
-        jCheckBoxEstado.setText("Inactivo");
-        jTextField2.setEnabled(false);
-        jTextField2.setText("");
-    }
+        if (jCheckBoxEstado.isSelected()) {
+            jCheckBoxEstado.setText("Activo");
+            jTextField2.setEnabled(true);
+        } else {
+            jCheckBoxEstado.setText("Inactivo");
+            jTextField2.setEnabled(false);
+            jTextField2.setText("");
+        }
     }//GEN-LAST:event_jCheckBoxEstadoActionPerformed
 
     private void cargarTabla() {
-    modeloTabla.setRowCount(0); 
-    List<Tratamiento> lista = tratamientoData.listarTratamientos();
+        modeloTabla.setRowCount(0);
+        List<Tratamiento> lista = tratamientoData.listarTratamientos();
 
-    for (Tratamiento t : lista) {
-    modeloTabla.addRow(new Object[]{
-        t.getCodTratam(),
-        t.getNombre(),
-        t.getTipo(),
-        t.getDetalle(),
-        t.getDuracion_min(),
-        t.getCosto(),
-        t.isActivo() ? "Activo" : "Inactivo"
-    });
-}
-}
-    
+        for (Tratamiento t : lista) {
+            modeloTabla.addRow(new Object[]{
+                t.getCodTratam(),
+                t.getNombre(),
+                t.getTipo(),
+                t.getDetalle(),
+                t.getDuracion_min(),
+                t.getCosto(),
+                t.isActivo() ? "Activo" : "Inactivo"
+            });
+        }
+    }
+
+    private boolean validarCamposTratamiento(boolean validarCodigo) {
+        //validamos el codigo solo cuando sea modificar
+        if (validarCodigo) {
+            String cod = jTextField1.getText().trim();
+            if (cod.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un código.");
+                return false;
+            }
+            if (!cod.matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "El código debe ser un número.");
+                return false;
+            }
+        }
+
+        //campo nombre
+        String nombre = jTextField2.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre es obligatorio.");
+            return false;
+        }
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede contener números ni símbolos.");
+            return false;
+        }
+
+        //campo tipo
+        String tipo = (String) jComboBox1.getSelectedItem();
+        if (tipo.equals("Seleccione una opcion")) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo válido.");
+            return false;
+        }
+
+        //campo detalle
+        String detalle = jTextArea2.getText().trim();
+        if (detalle.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un detalle del tratamiento.");
+            return false;
+        }
+
+        //campo duracion
+        String durTxt = jTextField3.getText().trim();
+        if (durTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la duración en minutos.");
+            return false;
+        }
+        if (!durTxt.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "La duración debe ser numérica.");
+            return false;
+        }
+        int duracion = Integer.parseInt(durTxt);
+        if (duracion <= 0) {
+            JOptionPane.showMessageDialog(this, "La duración debe ser mayor a 0.");
+            return false;
+        }
+
+        //campo costo
+        String costoTxt = jTextField4.getText().trim();
+        if (costoTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un costo.");
+            return false;
+        }
+        if (!costoTxt.matches("\\d+(\\.\\d+)?")) {
+            JOptionPane.showMessageDialog(this, "Costo inválido. Ejemplos válidos: 100 – 150.50");
+            return false;
+        }
+        double costo = Double.parseDouble(costoTxt);
+        if (costo <= 0) {
+            JOptionPane.showMessageDialog(this, "El costo debe ser mayor a 0.");
+            return false;
+        }
+
+        return true;
+    }
+
     private void limpiarCampos() {
-    jTextField1.setText("");
-    jTextField2.setText("");
-    jTextArea2.setText("");
-    jTextField3.setText("");
-    jTextField4.setText("");
-    jCheckBoxEstado.setSelected(false);
-}   
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextArea2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jCheckBoxEstado.setSelected(false);
+    }
+
     private void cargarCombo() {
         jComboBox1.removeAllItems();
-    jComboBox1.addItem("Seleccione un tipo");
-    jComboBox1.addItem("Facial");
-    jComboBox1.addItem("Corporal");
-    jComboBox1.addItem("Relajacion ");
-    jComboBox1.addItem("Estetico");
+        jComboBox1.addItem("Seleccione una opción");
+        jComboBox1.addItem("Facial");
+        jComboBox1.addItem("Corporal");
+        jComboBox1.addItem("Relajacion ");
+        jComboBox1.addItem("Estetico");
     }
-    private void centrarColumnas() {
-    javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < jTable2.getColumnCount(); i++) {
-        jTable2.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    private void centrarColumnas() {
+        javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < jTable2.getColumnCount(); i++) {
+            jTable2.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
-}
-    
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBotonBuscar;
     private javax.swing.JButton jBotonEliminar;
