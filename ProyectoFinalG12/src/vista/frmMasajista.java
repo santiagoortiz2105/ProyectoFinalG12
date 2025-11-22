@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+
 import Modelo.Masajista;
 import Persistencia.MasajistaData;
 import javax.swing.JOptionPane;
@@ -13,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
  * @author thefl
  */
 public class frmMasajista extends javax.swing.JInternalFrame {
+
     private MasajistaData masajistaData;
     private DefaultTableModel modelo;
 
@@ -21,11 +23,11 @@ public class frmMasajista extends javax.swing.JInternalFrame {
      */
     public frmMasajista() {
         initComponents();
-         masajistaData = new MasajistaData();  
-         modelo = (DefaultTableModel) jtMasajista.getModel();  
-         cargarTabla();
-         limpiarCampos();
-         centrarColumnas(); 
+        masajistaData = new MasajistaData();
+        modelo = (DefaultTableModel) jtMasajista.getModel();
+        cargarTabla();
+        limpiarCampos();
+        centrarColumnas();
     }
 
     /**
@@ -269,92 +271,91 @@ public class frmMasajista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbEspecialidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEspecialidadActionPerformed
-  
+
     }//GEN-LAST:event_cbEspecialidadActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-           try {
-        int matricula = Integer.parseInt(tfMatricula.getText());
+        if (!validarCamposMasajista(true)) {
+            return;
+        }
+        try {
+            int matricula = Integer.parseInt(tfMatricula.getText().trim());
+            String nombre = tfNombre.getText().trim();
+            String apellido = tfApellido.getText().trim();
+            String telefono = tfTelefono.getText().trim();
+            String especialidad = cbEspecialidad.getSelectedItem().toString();
+            boolean estado = jbEstado.isSelected();
 
-        String nombre = tfNombre.getText();
-        String apellido = tfApellido.getText();
-        String telefono = tfTelefono.getText();
-        String especialidad = (String) cbEspecialidad.getSelectedItem();
-        boolean estado = jbEstado.isSelected(); 
-
-        Masajista m = new Masajista();
-        m.setMatricula(matricula);
-        m.setNombre(nombre);
-        m.setApellido(apellido);
-        m.setTelefono(telefono);
-        m.setEspecialidad(especialidad);
-        m.setEstado(estado);
-
-        masajistaData.editarMasajista(m);
-
-        cargarTabla();   
-        limpiarCampos(); 
-
-    } catch (NumberFormatException ex) {
-        System.out.println("El número de matrícula no es válido.");
-    }
+            Masajista m = new Masajista();
+            m.setMatricula(matricula);
+            m.setNombre(nombre);
+            m.setApellido(apellido);
+            m.setTelefono(telefono);
+            m.setEspecialidad(especialidad);
+            m.setEstado(estado);
+            masajistaData.editarMasajista(m);
+            cargarTabla();
+            limpiarCampos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
+        }
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         try {
-        int matricula = Integer.parseInt(tfMatricula.getText());
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Está seguro de que desea ELIMINAR / DESHABILITAR al masajista con matrícula " + matricula + "?",
-                "Confirmar Eliminación",
-                JOptionPane.YES_NO_OPTION
-        );
-        
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            masajistaData.deshabilitarMasajista(matricula);
-            JOptionPane.showMessageDialog(
+            int matricula = Integer.parseInt(tfMatricula.getText());
+            int confirmacion = JOptionPane.showConfirmDialog(
                     this,
-                    "Masajista eliminado correctamente.",
-                    "Eliminación Exitosa",
-                    JOptionPane.INFORMATION_MESSAGE
+                    "¿Está seguro de que desea ELIMINAR / DESHABILITAR al masajista con matrícula " + matricula + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION
             );
-        }
-        cargarTabla();
-        limpiarCampos();
 
-    } catch (NumberFormatException e) {
-        System.out.println("Debe seleccionar un masajista para eliminar.");
-    }
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                masajistaData.deshabilitarMasajista(matricula);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Masajista eliminado correctamente.",
+                        "Eliminación Exitosa",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+            cargarTabla();
+            limpiarCampos();
+
+        } catch (NumberFormatException e) {
+            System.out.println("Debe seleccionar un masajista para eliminar.");
+        }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-         limpiarCampos();
+        limpiarCampos();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         try {
-        if (tfMatricula.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese una matrícula.");
-            return;
+            if (tfMatricula.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese una matrícula.");
+                return;
+            }
+
+            int matricula = Integer.parseInt(tfMatricula.getText());
+
+            Masajista m = masajistaData.buscarPorMatricula(matricula);
+
+            if (m != null) {
+                tfNombre.setText(m.getNombre());
+                tfApellido.setText(m.getApellido());
+                tfTelefono.setText(m.getTelefono());
+                cbEspecialidad.setSelectedItem(m.getEspecialidad());
+                jbEstado.setSelected(m.isEstado());
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el masajista.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La matrícula debe ser un número.");
         }
-
-        int matricula = Integer.parseInt(tfMatricula.getText());
-
-        Masajista m = masajistaData.buscarPorMatricula(matricula);
-
-        if (m != null) {
-            tfNombre.setText(m.getNombre());
-            tfApellido.setText(m.getApellido());
-            tfTelefono.setText(m.getTelefono());
-            cbEspecialidad.setSelectedItem(m.getEspecialidad());
-            jbEstado.setSelected(m.isEstado());
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró el masajista.");
-        }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "La matrícula debe ser un número.");
-    }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEstadoActionPerformed
@@ -362,32 +363,27 @@ public class frmMasajista extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbEstadoActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-         try {
-        String nombre = tfNombre.getText();
-        String apellido = tfApellido.getText();
-        String telefono = tfTelefono.getText();
-        String especialidad = cbEspecialidad.getSelectedItem().toString();
-        boolean estado = jbEstado.isSelected();
-
-        if (nombre.isEmpty() || apellido.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Complete todos los campos.");
+        if (!validarCamposMasajista(false)) {
             return;
         }
+        try {
+            String nombre = tfNombre.getText().trim();
+            String apellido = tfApellido.getText().trim();
+            String telefono = tfTelefono.getText().trim();
+            String especialidad = cbEspecialidad.getSelectedItem().toString();
+            boolean estado = jbEstado.isSelected();
 
-        Masajista m = new Masajista(nombre, apellido, telefono, especialidad, estado);
-
-        masajistaData.guardarMasajista(m);
-        cargarTabla();
-        limpiarCampos();
-
-        JOptionPane.showMessageDialog(this, "Masajista guardado correctamente.");
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
-    }
+            Masajista m = new Masajista(nombre, apellido, telefono, especialidad, estado);
+            masajistaData.guardarMasajista(m);
+            cargarTabla();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(this, "Masajista guardado correctamente.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
+        }
     }//GEN-LAST:event_jbGuardarActionPerformed
-    
-     private void cargarTabla() {
+
+    private void cargarTabla() {
         modelo.setRowCount(0);
 
         for (Masajista m : masajistaData.listarMasajistas()) {
@@ -400,10 +396,10 @@ public class frmMasajista extends javax.swing.JInternalFrame {
                 m.isEstado() ? "Activo" : "Inactivo"
             });
         }
-        centrarColumnas(); 
+        centrarColumnas();
     }
-     
-      private void limpiarCampos() {
+
+    private void limpiarCampos() {
         tfMatricula.setText("");
         tfNombre.setText("");
         tfApellido.setText("");
@@ -411,16 +407,67 @@ public class frmMasajista extends javax.swing.JInternalFrame {
         cbEspecialidad.setSelectedIndex(0);
         jbEstado.setSelected(false);
     }
-      
-      private void centrarColumnas() {
-    javax.swing.table.DefaultTableCellRenderer centerRenderer =
-            new javax.swing.table.DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < jtMasajista.getColumnCount(); i++) {
-        jtMasajista.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    private boolean validarCamposMasajista(boolean validarMatricula) {
+
+        //validamos la matricula solo cuando sea para modificar
+        if (validarMatricula) {
+            String mat = tfMatricula.getText().trim();
+            if (mat.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar una matrícula.");
+                return false;
+            }
+            if (!mat.matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "La matrícula debe ser un número positivo.");
+                return false;
+            }
+        }
+
+        //campo nombre
+        String nombre = tfNombre.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre es obligatorio.");
+            return false;
+        }
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede contener números ni símbolos.");
+            return false;
+        }
+
+        //campo apellido
+        String apellido = tfApellido.getText().trim();
+        if (apellido.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El apellido es obligatorio.");
+            return false;
+        }
+        if (!apellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            JOptionPane.showMessageDialog(this, "El apellido no puede contener números ni símbolos.");
+            return false;
+        }
+
+        //campo telefono
+        String telefono = tfTelefono.getText().trim();
+        if (telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un teléfono.");
+            return false;
+        }
+        if (!telefono.matches("\\d{6,15}")) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe ser numérico de 6 a 15 dígitos.");
+            return false;
+        }
+
+        return true;
     }
-}
+
+    private void centrarColumnas() {
+        javax.swing.table.DefaultTableCellRenderer centerRenderer
+                = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < jtMasajista.getColumnCount(); i++) {
+            jtMasajista.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbEspecialidad;
