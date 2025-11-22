@@ -3,17 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+
 import Modelo.Cliente;
 import Persistencia.ClienteData;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author thefl
  */
 public class frmCliente extends javax.swing.JInternalFrame {
-    
+
     private ClienteData clienteData = new ClienteData();
     private DefaultTableModel modelo = new DefaultTableModel();
 
@@ -23,7 +25,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
     public frmCliente() {
         initComponents();
         cargarTabla();
-        centrarColumnas(); 
+        centrarColumnas();
     }
 
     /**
@@ -311,95 +313,94 @@ public class frmCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-         limpiarCampos();
+        limpiarCampos();
         JOptionPane.showMessageDialog(this, "Campos listos para nuevo cliente.");
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-       try {
-        int codCli = Integer.parseInt(tfCodigoCliente.getText().trim());
-        int confirmacion = JOptionPane.showConfirmDialog(
-            this,
-            "¿Está seguro de que desea ELIMINAR al cliente con codigo " + codCli + "?",
-            "Confirmar Eliminación",
-            JOptionPane.YES_NO_OPTION
-        );
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            clienteData.deshabilitarCliente(codCli);
+        try {
+            int codCli = Integer.parseInt(tfCodigoCliente.getText().trim());
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro de que desea ELIMINAR al cliente con codigo " + codCli + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                clienteData.deshabilitarCliente(codCli);
 
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Cliente eliminado correctamente.",
+                        "Eliminación Exitosa",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+                cargarTabla();
+                limpiarCampos();
+            }
+
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(
-                this,
-                "Cliente eliminado correctamente.",
-                "Eliminación Exitosa",
-                JOptionPane.INFORMATION_MESSAGE
+                    this,
+                    "Debe seleccionar un cliente válido para eliminar.",
+                    "Error de Entrada",
+                    JOptionPane.ERROR_MESSAGE
             );
 
-            cargarTabla();
-            limpiarCampos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al eliminar el cliente. Revise la consola para más detalles.",
+                    "Error de Base de Datos",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Debe seleccionar un cliente válido para eliminar.",
-            "Error de Entrada",
-            JOptionPane.ERROR_MESSAGE
-        );
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Error al eliminar el cliente. Revise la consola para más detalles.",
-            "Error de Base de Datos",
-            JOptionPane.ERROR_MESSAGE
-        );
-    }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-      if (tfCodigoCliente.getText().isEmpty()) {
+        if (tfCodigoCliente.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe ingresar un código de cliente para modificar.");
             return;
         }
 
+        if (!validarCampos()) {
+            return;
+        }
         try {
             Cliente c = new Cliente();
-            c.setCodCli(Integer.parseInt(tfCodigoCliente.getText()));
-            c.setDni(tfdni.getText());
-            c.setNombreCompleto(tfNombreCompleto.getText());
-            c.setTelefono(tfTelefono.getText());
-            c.setEdad(Integer.parseInt(tfEdad.getText()));
-            c.setAfecciones(taAfecciones.getText());
+            c.setCodCli(Integer.parseInt(tfCodigoCliente.getText().trim()));
+            c.setDni(tfdni.getText().trim());
+            c.setNombreCompleto(tfNombreCompleto.getText().trim());
+            c.setTelefono(tfTelefono.getText().trim());
+            c.setEdad(Integer.parseInt(tfEdad.getText().trim()));
+            c.setAfecciones(taAfecciones.getText().trim());
             c.setEstado(cbEstado.isSelected());
 
             clienteData.editarCliente(c);
             cargarTabla();
             limpiarCampos();
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al modificar cliente: " + e.getMessage());
-        } 
+        }
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-         try {
-            String dni = tfdni.getText();
-            String nombre = tfNombreCompleto.getText();
-            String telefono = tfTelefono.getText();
-            int edad = Integer.parseInt(tfEdad.getText());
-            String afecciones = taAfecciones.getText();
+        if (!validarCampos()) {
+            return;
+        }
+        try {
+            String dni = tfdni.getText().trim();
+            String nombre = tfNombreCompleto.getText().trim();
+            String telefono = tfTelefono.getText().trim();
+            int edad = Integer.parseInt(tfEdad.getText().trim());
+            String afecciones = taAfecciones.getText().trim();
             boolean estado = cbEstado.isSelected();
-
-            if (dni.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Complete los campos obligatorios (DNI y Nombre).");
-                return;
-            }
 
             Cliente c = new Cliente(dni, nombre, telefono, edad, afecciones, estado);
             clienteData.guardarCliente(c);
             cargarTabla();
             limpiarCampos();
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar cliente: " + e.getMessage());
         }
@@ -407,23 +408,22 @@ public class frmCliente extends javax.swing.JInternalFrame {
 
     private void cbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoActionPerformed
         if (tfCodigoCliente.getText().isEmpty()) {
-        return; 
-    }
+            return;
+        }
 
-       int cod = Integer.parseInt(tfCodigoCliente.getText());
+        int cod = Integer.parseInt(tfCodigoCliente.getText());
         boolean activo = cbEstado.isSelected();
 
-    if (activo) {
-        clienteData.habilitarCliente(cod);
-    } else {
-        clienteData.deshabilitarCliente(cod);
-    }
+        if (activo) {
+            clienteData.habilitarCliente(cod);
+        } else {
+            clienteData.deshabilitarCliente(cod);
+        }
 
-    cargarTabla();
+        cargarTabla();
     }//GEN-LAST:event_cbEstadoActionPerformed
 
-    
-     private void cargarTabla() {
+    private void cargarTabla() {
         modelo = new DefaultTableModel();
         modelo.addColumn("Código");
         modelo.addColumn("DNI");
@@ -448,6 +448,56 @@ public class frmCliente extends javax.swing.JInternalFrame {
         jtCliente.setModel(modelo);
     }
 
+    private boolean validarCampos() {
+        //campo dni
+        String dni = tfdni.getText().trim();
+        if (dni.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El DNI es obligatorio.");
+            return false;
+        }
+        if (!dni.matches("\\d{7,8}")) {
+            JOptionPane.showMessageDialog(this, "El DNI debe ser numérico y tener 7 u 8 dígitos.");
+            return false;
+        }
+
+        //campo nombre
+        String nombre = tfNombreCompleto.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre completo es obligatorio.");
+            return false;
+        }
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede contener números ni símbolos.");
+            return false;
+        }
+
+        //campo telefono
+        String tel = tfTelefono.getText().trim();
+        if (!tel.isEmpty() && !tel.matches("\\d{6,15}")) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe ser numérico de 6 a 15 dígitos.");
+            return false;
+        }
+
+        //campo edad
+        String edadTxt = tfEdad.getText().trim();
+        if (edadTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la edad.");
+            return false;
+        }
+        try {
+            int edad = Integer.parseInt(edadTxt);
+            if (edad < 0 || edad > 100) {
+                JOptionPane.showMessageDialog(this, "Edad fuera de rango.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La edad debe ser un número.");
+            return false;
+        }
+
+        return true;
+    }
+
     private void limpiarCampos() {
         tfCodigoCliente.setText("");
         tfdni.setText("");
@@ -457,16 +507,16 @@ public class frmCliente extends javax.swing.JInternalFrame {
         taAfecciones.setText("");
         cbEstado.setSelected(false);
     }
-    
-    private void centrarColumnas() {
-    javax.swing.table.DefaultTableCellRenderer centerRenderer =
-            new javax.swing.table.DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < jtCliente.getColumnCount(); i++) {
-        jtCliente.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    private void centrarColumnas() {
+        javax.swing.table.DefaultTableCellRenderer centerRenderer
+                = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < jtCliente.getColumnCount(); i++) {
+            jtCliente.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox cbEstado;
