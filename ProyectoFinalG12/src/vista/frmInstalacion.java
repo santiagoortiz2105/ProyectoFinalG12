@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+
 import Modelo.Instalacion;
 import Persistencia.InstalacionData;
 import java.awt.Color;
@@ -16,8 +17,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Lulim
  */
 public class frmInstalacion extends javax.swing.JInternalFrame {
-     private InstalacionData instalacionData = new InstalacionData();
-     private DefaultTableModel modeloTabla;
+
+    private InstalacionData instalacionData = new InstalacionData();
+    private DefaultTableModel modeloTabla;
+
     /**
      * Creates new form frmInstalacion
      */
@@ -26,9 +29,9 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
         modeloTabla = (DefaultTableModel) jTable1.getModel();
         jTextField1.setEnabled(true);
         jTextField1.setEditable(true);
-         this.getContentPane().setBackground(new Color(245, 242, 232));
+        this.getContentPane().setBackground(new Color(245, 242, 232));
         cargarTabla();
-        centrarColumnas(); 
+        centrarColumnas();
     }
 
     /**
@@ -265,7 +268,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCheckBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEstadoActionPerformed
-       if (jCheckBoxEstado.isSelected()) {
+        if (jCheckBoxEstado.isSelected()) {
             jCheckBoxEstado.setText("Activo");
         } else {
             jCheckBoxEstado.setText("Inactivo");
@@ -273,143 +276,173 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jCheckBoxEstadoActionPerformed
 
     private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
-         try {
-        if (jTextField2.getText().trim().isEmpty() ||
-            jTextArea1.getText().trim().isEmpty() ||
-            jTextField3.getText().trim().isEmpty()) {
-            
-            JOptionPane.showMessageDialog(this, "Todos los campos deben estar completos.");
-            return;
+        try {
+            Instalacion i = validarYHacerInstalacion();
+            if (i == null) {
+                return;
+            }
+
+            instalacionData.guardarInstalacion(i);
+
+            jTextField1.setText(String.valueOf(i.getCodInstal()));
+            JOptionPane.showMessageDialog(this, "Instalación guardada correctamente.");
+            cargarTabla();
+            limpiarCampos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar la instalación: " + e.getMessage());
         }
-        String nombre = jTextField2.getText();
-        String detalleUso = jTextArea1.getText();
-        double precio = Double.parseDouble(jTextField3.getText());
-        boolean estado = jCheckBoxEstado.isSelected();
-
-        Instalacion i = new Instalacion(nombre, detalleUso, precio, estado);
-
-        instalacionData.guardarInstalacion(i);
-
-        jTextField1.setText(String.valueOf(i.getCodInstal()));
-
-        JOptionPane.showMessageDialog(this, "Instalación guardada correctamente.");
-        cargarTabla();
-        limpiarCampos();
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al guardar la instalación: " + e.getMessage());
-    }
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
-          int fila = jTable1.getSelectedRow();
-        if (fila != -1) {
-            int codigo = (int) jTable1.getValueAt(fila, 0);
-            String nombre = jTextField2.getText();
-            String detalle = jTextArea1.getText();
-            double precio = Double.parseDouble(jTextField3.getText());
-            boolean estado = jCheckBoxEstado.isSelected();
+        int fila = jTable1.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una instalación de la tabla.");
+            return;
+        }
 
-            Instalacion i = new Instalacion(nombre, detalle, precio, estado);
+        try {
+            Instalacion i = validarYHacerInstalacion();
+            if (i == null) {
+                return;
+            }
+
+            int codigo = (int) jTable1.getValueAt(fila, 0);
             i.setCodInstal(codigo);
+
             instalacionData.editarInstalacion(i);
+
             JOptionPane.showMessageDialog(this, "Instalación modificada correctamente.");
             cargarTabla();
             limpiarCampos();
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una instalación de la tabla.");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al modificar la instalación: " + e.getMessage());
         }
     }//GEN-LAST:event_jBotonModificarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
         try {
-        int fila = jTable1.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(
-                this,
-                "Seleccione una instalación para eliminar.",
-                "Error",
-                JOptionPane.WARNING_MESSAGE
+            int fila = jTable1.getSelectedRow();
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Seleccione una instalación para eliminar.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+            int codigo = (int) jTable1.getValueAt(fila, 0);
+
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro de que desea ELIMINAR la instalación con código " + codigo + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION
             );
-            return;
-        }
-        int codigo = (int) jTable1.getValueAt(fila, 0);
 
-        int confirmacion = JOptionPane.showConfirmDialog(
-            this,
-            "¿Está seguro de que desea ELIMINAR la instalación con código " + codigo + "?",
-            "Confirmar Eliminación",
-            JOptionPane.YES_NO_OPTION
-        );
+            if (confirmacion == JOptionPane.YES_OPTION) {
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
+                instalacionData.deshabilitarInstalacion(codigo);
 
-            instalacionData.deshabilitarInstalacion(codigo);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Instalación eliminada correctamente.",
+                        "Eliminación Exitosa",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                cargarTabla();
+                limpiarCampos();
+            }
 
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(
-                this,
-                "Instalación eliminada correctamente.",
-                "Eliminación Exitosa",
-                JOptionPane.INFORMATION_MESSAGE
+                    this,
+                    "Error al eliminar la instalación. Revise la consola para más detalles.",
+                    "Error de Base de Datos",
+                    JOptionPane.ERROR_MESSAGE
             );
-            cargarTabla();
-            limpiarCampos();
+            e.printStackTrace();
         }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Error al eliminar la instalación. Revise la consola para más detalles.",
-            "Error de Base de Datos",
-            JOptionPane.ERROR_MESSAGE
-        );
-        e.printStackTrace();
-    }
     }//GEN-LAST:event_jBotonEliminarActionPerformed
+
+    private Instalacion validarYHacerInstalacion() {
+        String nombre = jTextField2.getText().trim();
+        String detalle = jTextArea1.getText().trim();
+        String precioTxt = jTextField3.getText().trim();
+        boolean estado = jCheckBoxEstado.isSelected();
+
+        //campos vacios
+        if (nombre.isEmpty() || detalle.isEmpty() || precioTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar completos.");
+            return null;
+        }
+
+        //campo nombre
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            JOptionPane.showMessageDialog(this, "El nombre solo puede contener letras y espacios.");
+            return null;
+        }
+
+        //campo precio
+        double precio;
+        try {
+            precio = Double.parseDouble(precioTxt);
+            if (precio <= 0) {
+                JOptionPane.showMessageDialog(this, "El precio debe ser mayor a 0.");
+                return null;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.");
+            return null;
+        }
+
+        //si esta bien devuelvo el objeto listo
+        return new Instalacion(nombre, detalle, precio, estado);
+    }
 
     private void jBotonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonNuevoActionPerformed
         limpiarCampos();
     }//GEN-LAST:event_jBotonNuevoActionPerformed
 
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
-         try {
-        String textoCodigo = jTextField1.getText().trim();
-        String nombreTexto = jTextField2.getText().trim();
-        Instalacion i = null;
+        try {
+            String textoCodigo = jTextField1.getText().trim();
+            String nombreTexto = jTextField2.getText().trim();
+            Instalacion i = null;
 
-        if (!textoCodigo.isEmpty()) {
-            // Buscar por código si se escribió uno
-            int codigo = Integer.parseInt(textoCodigo);
-            i = instalacionData.buscarPorCodigo(codigo);
-        } else if (!nombreTexto.isEmpty()) {
-            // Si no hay código, busca por nombre
-            i = instalacionData.buscarPorNombre(nombreTexto);
-        } else {
-            JOptionPane.showMessageDialog(this, "Ingrese un código o nombre para buscar.");
-            return;
+            if (!textoCodigo.isEmpty()) {
+                // Buscar por código si se escribió uno
+                int codigo = Integer.parseInt(textoCodigo);
+                i = instalacionData.buscarPorCodigo(codigo);
+            } else if (!nombreTexto.isEmpty()) {
+                // Si no hay código, busca por nombre
+                i = instalacionData.buscarPorNombre(nombreTexto);
+            } else {
+                JOptionPane.showMessageDialog(this, "Ingrese un código o nombre para buscar.");
+                return;
+            }
+
+            if (i == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró una instalación con esos datos.");
+                return;
+            }
+
+            jTextField1.setText(String.valueOf(i.getCodInstal()));
+            jTextField2.setText(i.getNombre());
+            jTextArea1.setText(i.getdetalledeuso());
+            jTextField3.setText(String.valueOf(i.getPrecio30m()));
+            jCheckBoxEstado.setSelected(i.isEstado());
+            if (!i.isEstado()) {
+                JOptionPane.showMessageDialog(this, "La instalación existe pero está desactivada.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El código debe ser un número válido.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar instalación: " + e.getMessage());
         }
-
-        if (i == null) {
-            JOptionPane.showMessageDialog(this, "No se encontró una instalación con esos datos.");
-            return;
-        }
-
-        jTextField1.setText(String.valueOf(i.getCodInstal()));
-        jTextField2.setText(i.getNombre());
-        jTextArea1.setText(i.getdetalledeuso());
-        jTextField3.setText(String.valueOf(i.getPrecio30m()));
-        jCheckBoxEstado.setSelected(i.isEstado());
-        if (!i.isEstado()) {
-            JOptionPane.showMessageDialog(this, "La instalación existe pero está desactivada.");
-        }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El código debe ser un número válido.");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al buscar instalación: " + e.getMessage());
-    }
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -418,39 +451,37 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
 
     private void cargarTabla() {
         List<Instalacion> lista = instalacionData.listarInstalaciones();
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-    modelo.setRowCount(0); 
-    for (Instalacion i : lista) {
-        modelo.addRow(new Object[]{
-            i.getCodInstal(),
-            i.getNombre(),
-            i.getdetalledeuso(),
-            i.getPrecio30m(),
-            i.isEstado() ? "Activo" : "Inactivo"
-        });
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
+        for (Instalacion i : lista) {
+            modelo.addRow(new Object[]{
+                i.getCodInstal(),
+                i.getNombre(),
+                i.getdetalledeuso(),
+                i.getPrecio30m(),
+                i.isEstado() ? "Activo" : "Inactivo"
+            });
+        }
     }
-    }
-    
-      private void limpiarCampos() {
+
+    private void limpiarCampos() {
         jTextField1.setText("");
         jTextField2.setText("");
         jTextArea1.setText("");
         jTextField3.setText("");
         jCheckBoxEstado.setSelected(true);
     }
-      
-      private void centrarColumnas() {
-    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < jTable1.getColumnCount(); i++) {
-        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    private void centrarColumnas() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
-}
 
-    
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBotonBuscar;
     private javax.swing.JButton jBotonEliminar;

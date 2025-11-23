@@ -487,7 +487,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
             return false;
         }
         if (!costoTxt.matches("\\d+(\\.\\d+)?")) {
-            JOptionPane.showMessageDialog(this, "Costo inválido. Ejemplos válidos: 100 – 150.50");
+            JOptionPane.showMessageDialog(this, "Costo inválido. Ej: 100 - 150.50");
             return false;
         }
         double costo = Double.parseDouble(costoTxt);

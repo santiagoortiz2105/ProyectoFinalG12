@@ -22,7 +22,7 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         cargarMeses();
         instalacionData = new InstalacionData();
         configurarTabla();
-        centrarColumnas();  
+        centrarColumnas();
     }
 
     /**
@@ -178,54 +178,59 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
 
     private void cargarInstalacionesLibres() {
         try {
+            //validamos dia
             String diaTxt = txtDia.getText().trim();
-
-            //valido que tenga dos digitos
             if (!diaTxt.matches("\\d{2}")) {
-                JOptionPane.showMessageDialog(this, "El día debe tener dos dígitos");
+                JOptionPane.showMessageDialog(this, "El día debe tener dos dígitos (01-31)");
                 return;
             }
-
             int dia = Integer.parseInt(diaTxt);
-
             if (dia < 1 || dia > 31) {
-                JOptionPane.showMessageDialog(this, "El día debe estar entre 01 y 31");
+                JOptionPane.showMessageDialog(this, "Día fuera de rango");
                 return;
             }
 
+            //validamos año
             String anioTxt = txtAnio.getText().trim();
-
-            //que sean solo numeros
             if (!anioTxt.matches("\\d{4}")) {
-                JOptionPane.showMessageDialog(this, "El año debe tener 4 dígitos numéricos");
+                JOptionPane.showMessageDialog(this, "El año debe tener 4 dígitos");
                 return;
             }
-
             int anio = Integer.parseInt(anioTxt);
 
-            if (anio < 2025 || anio > 2030) {
-                JOptionPane.showMessageDialog(this, "El año no puede ser menor a 2025 o mayor a 2030");
+            //mes del combobox
+            int mes = cbMes.getSelectedIndex() + 1;
+
+            //hacemos la fecha
+            LocalDate fecha = LocalDate.of(anio, mes, dia);
+
+            //vemos que la fecha no sea del pasado
+            if (fecha.isBefore(LocalDate.now())) {
+                JOptionPane.showMessageDialog(this, "La fecha no puede ser del pasado.");
                 return;
             }
 
-            int mes = cbMes.getSelectedIndex() + 1; //recupero la posicion del combobox + 1
-            
-
+            //franja horaria
             String franjaCb = cbFranja.getSelectedItem().toString();
-            String[] franjas = franjaCb.split(" - "); //divido las franjas
-            LocalTime inicio = LocalTime.parse(franjas[0]);
-            LocalTime fin = LocalTime.parse(franjas[1]);
+            String[] partes = franjaCb.split(" - ");
+            LocalTime inicio = LocalTime.parse(partes[0]);
+            LocalTime fin = LocalTime.parse(partes[1]);
 
-            LocalDateTime fechaInicio = LocalDateTime.of(anio, mes, dia, inicio.getHour(), inicio.getMinute());
-            LocalDateTime fechaFin = LocalDateTime.of(anio, mes, dia, fin.getHour(), fin.getMinute());
+            if (!inicio.isBefore(fin)) {
+                JOptionPane.showMessageDialog(this, "La hora de inicio debe ser menor que la hora de fin.");
+                return;
+            }
 
+            LocalDateTime fechaInicio = LocalDateTime.of(fecha, inicio);
+            LocalDateTime fechaFin = LocalDateTime.of(fecha, fin);
+
+            //aca pedimos las instalaciones libres
             List<Instalacion> libres = instalacionData.getInstalacionesLibres(fechaInicio, fechaFin);
 
             actualizarTabla(libres);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -268,15 +273,15 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
         cbMes.addItem("Noviembre");
         cbMes.addItem("Diciembre");
     }
-    
-    private void centrarColumnas() {
-    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < tablaInstal.getColumnCount(); i++) {
-        tablaInstal.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    private void centrarColumnas() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < tablaInstal.getColumnCount(); i++) {
+            tablaInstal.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

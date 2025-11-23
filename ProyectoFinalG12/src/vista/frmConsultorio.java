@@ -3,29 +3,33 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+
 import Modelo.Consultorio;
 import Persistencia.ConsultorioData;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author thefl
  */
 public class frmConsultorio extends javax.swing.JInternalFrame {
+
     private ConsultorioData cData = new ConsultorioData();
     private DefaultTableModel modelo;
+
     /**
      * Creates new form Consultorio
      */
     public frmConsultorio() {
         initComponents();
-        modelo = (DefaultTableModel) jtConsultorio.getModel(); 
+        modelo = (DefaultTableModel) jtConsultorio.getModel();
         cargarTabla();
         limpiarCampos();
-         this.getContentPane().setBackground(new Color(245, 242, 232));
-         centrarColumnas(); 
+        this.getContentPane().setBackground(new Color(245, 242, 232));
+        centrarColumnas();
     }
 
     /**
@@ -249,76 +253,98 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-          String usos = tfUsos.getText();
-          String equipamiento = taEquipamiento.getText();
-          boolean apto = jbApto.isSelected();
+        Consultorio c = validarYConstruirConsultorio();
+        if (c == null) {
+            return;
+        }
 
-        if (usos.isEmpty() || equipamiento.isEmpty()) {
-        return;
-    }
-        Consultorio c = new Consultorio(usos, equipamiento, apto);
         cData.guardarConsultorio(c);
-
         cargarTabla();
         limpiarCampos();
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-        if (tfnroconsultorio.getText().isEmpty()) return;
-         int id = Integer.parseInt(tfnroconsultorio.getText());
-         String usos = tfUsos.getText();
-         String equipamiento = taEquipamiento.getText();
-         boolean apto = jbApto.isSelected();
-    Consultorio c = new Consultorio(usos, equipamiento, apto);
-    c.setNroConsultorio(id);
-    cData.editarConsultorio(c);
-    cargarTabla();
-    }//GEN-LAST:event_jbModificarActionPerformed
-
-    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-         try {
         if (tfnroconsultorio.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(
-                this,
-                "Debe seleccionar un consultorio válido para eliminar.",
-                "Error de Entrada",
-                JOptionPane.ERROR_MESSAGE
-            );
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un consultorio de la tabla.");
             return;
         }
-        int id = Integer.parseInt(tfnroconsultorio.getText().trim());
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Está seguro de que desea ELIMINAR el consultorio Nº " + id + "?",
-                "Confirmar Eliminación",
-                JOptionPane.YES_NO_OPTION
-        );
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            cData.deshabilitarConsultorio(id);
-            JOptionPane.showMessageDialog(
-                this,
-                "Consultorio eliminado correctamente.",
-                "Eliminación Exitosa",
-                JOptionPane.INFORMATION_MESSAGE
-            );
-            cargarTabla();
-            limpiarCampos();
+
+        Consultorio c = validarYConstruirConsultorio();
+        if (c == null) {
+            return;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(
-                this,
-                "El número de consultorio ingresado no es válido.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-        );
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(
-                this,
-                "Error al eliminar el consultorio. Revise la consola para más detalles.",
-                "Error de Base de Datos",
-                JOptionPane.ERROR_MESSAGE
-        );
+
+        int id = Integer.parseInt(tfnroconsultorio.getText());
+        c.setNroConsultorio(id);
+
+        cData.editarConsultorio(c);
+        cargarTabla();
+        limpiarCampos();
+    }//GEN-LAST:event_jbModificarActionPerformed
+
+    private Consultorio validarYConstruirConsultorio() {
+        String usos = tfUsos.getText().trim();
+        String equipamiento = taEquipamiento.getText().trim();
+        boolean apto = jbApto.isSelected();
+
+        if (usos.isEmpty() || equipamiento.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar completos.");
+            return null;
+        }
+
+        //valido solo letras y espacios para Usos
+        if (!usos.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            JOptionPane.showMessageDialog(this, "Usos solo puede contener letras y espacios.");
+            return null;
+        }
+        return new Consultorio(usos, equipamiento, apto);
     }
+
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+        try {
+            if (tfnroconsultorio.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Debe seleccionar un consultorio válido para eliminar.",
+                        "Error de Entrada",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+            int id = Integer.parseInt(tfnroconsultorio.getText().trim());
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro de que desea ELIMINAR el consultorio Nº " + id + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                cData.deshabilitarConsultorio(id);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Consultorio eliminado correctamente.",
+                        "Eliminación Exitosa",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                cargarTabla();
+                limpiarCampos();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El número de consultorio ingresado no es válido.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al eliminar el consultorio. Revise la consola para más detalles.",
+                    "Error de Base de Datos",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
@@ -326,52 +352,55 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-       if (tfnroconsultorio.getText().isEmpty()) return;
-       int id = Integer.parseInt(tfnroconsultorio.getText());
-       Consultorio c = cData.buscarConsultorioPorId(id);
+        if (tfnroconsultorio.getText().isEmpty()) {
+            return;
+        }
+        int id = Integer.parseInt(tfnroconsultorio.getText());
+        Consultorio c = cData.buscarConsultorioPorId(id);
 
-    if (c != null) {
-        tfUsos.setText(c.getUsos());
-        taEquipamiento.setText(c.getEquipamiento());
-        jbApto.setSelected(c.isApto());
-    }
+        if (c != null) {
+            tfUsos.setText(c.getUsos());
+            taEquipamiento.setText(c.getEquipamiento());
+            jbApto.setSelected(c.isApto());
+        }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbAptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAptoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbAptoActionPerformed
-    
+
     private void cargarTabla() {
-     modelo.setRowCount(0); 
+        modelo.setRowCount(0);
 
-    List<Consultorio> lista = cData.listarConsultorios();
+        List<Consultorio> lista = cData.listarConsultorios();
 
-    for (Consultorio c : lista) {
-        modelo.addRow(new Object[]{
-            c.getNroConsultorio(),
-            c.getUsos(),
-            c.getEquipamiento(),
-            c.isApto() ? "Sí" : "No"
-        });
+        for (Consultorio c : lista) {
+            modelo.addRow(new Object[]{
+                c.getNroConsultorio(),
+                c.getUsos(),
+                c.getEquipamiento(),
+                c.isApto() ? "Sí" : "No"
+            });
+        }
+        centrarColumnas();
     }
-    centrarColumnas();
-}
-    
+
     private void limpiarCampos() {
-    tfnroconsultorio.setText("");
-    tfUsos.setText("");
-    taEquipamiento.setText("");
-    jbApto.setSelected(false);
-}
-    private void centrarColumnas() {
-    javax.swing.table.DefaultTableCellRenderer centerRenderer =
-            new javax.swing.table.DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-
-    for (int i = 0; i < jtConsultorio.getColumnCount(); i++) {
-        jtConsultorio.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        tfnroconsultorio.setText("");
+        tfUsos.setText("");
+        taEquipamiento.setText("");
+        jbApto.setSelected(false);
     }
-}
+
+    private void centrarColumnas() {
+        javax.swing.table.DefaultTableCellRenderer centerRenderer
+                = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < jtConsultorio.getColumnCount(); i++) {
+            jtConsultorio.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

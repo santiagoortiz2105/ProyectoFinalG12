@@ -7,6 +7,7 @@ package vista;
 import java.awt.Color;
 import Modelo.Masajista;
 import Persistencia.MasajistaData;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -20,9 +21,11 @@ import javax.swing.table.DefaultTableModel;
  * @author santi
  */
 public class frmMasajistasLibres extends javax.swing.JInternalFrame {
-     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");     
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     private MasajistaData masajistaData;
-    private DefaultTableModel modelo; 
+    private DefaultTableModel modelo;
+
     /**
      * Creates new form frmMasajistasLibres
      */
@@ -34,37 +37,37 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
         configurarTabla();
         masajistaData = new MasajistaData();
         actualizarTabla(masajistaData.listarMasajistas());
-        centrarColumnas(); 
+        centrarColumnas();
     }
-    
-     private void actualizarTabla(List<Masajista> lista) {
+
+    private void actualizarTabla(List<Masajista> lista) {
         modelo.setRowCount(0);
 
         for (Masajista m : lista) {
-             String estado = m.isEstado() ? "Activo" : "Inactivo";
+            String estado = m.isEstado() ? "Activo" : "Inactivo";
 
             modelo.addRow(new Object[]{
                 m.getMatricula(),
                 m.getNombre(),
                 m.getApellido(),
-                m.getTelefono(), 
+                m.getTelefono(),
                 m.getEspecialidad(),
                 estado
             });
         }
     }
- 
+
     private void configurarTabla() {
-         String[] columnas = {"Matrícula", "Nombre", "Apellido", "Teléfono","Especialidad" ,"Estado"};
+        String[] columnas = {"Matrícula", "Nombre", "Apellido", "Teléfono", "Especialidad", "Estado"};
 
-    modelo = new DefaultTableModel(columnas, 0) {
-        @Override
-        public boolean isCellEditable(int fila, int columna) {
-            return false;
-        }
-    };
+        modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                return false;
+            }
+        };
 
-    jTable1.setModel(modelo);
+        jTable1.setModel(modelo);
     }
 
     private void cargarFranjas() {
@@ -91,10 +94,10 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
         cbMes.addItem("Noviembre");
         cbMes.addItem("Diciembre");
     }
-    
-     private void buscarMasajistas() {
+
+    private void buscarMasajistas() {
         try {
-            // validar día
+            //valido día
             String diaTxt = txtDia.getText().trim();
             if (!diaTxt.matches("\\d{2}")) {
                 JOptionPane.showMessageDialog(this, "El día debe tener dos dígitos (01-31)");
@@ -106,7 +109,7 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
                 return;
             }
 
-            // validar año
+            //valido año
             String anioTxt = txtAnio.getText().trim();
             if (!anioTxt.matches("\\d{4}")) {
                 JOptionPane.showMessageDialog(this, "El año debe ser de 4 dígitos");
@@ -116,7 +119,7 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
 
             int mes = cbMes.getSelectedIndex() + 1;
 
-            // procesar franja
+            //proceso la franja
             String franja = cbFranja.getSelectedItem().toString();
             String[] partes = franja.split(" - ");
             LocalTime inicio = LocalTime.parse(partes[0]);
@@ -125,9 +128,20 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
             LocalDateTime dtInicio = LocalDateTime.of(anio, mes, dia, inicio.getHour(), inicio.getMinute());
             LocalDateTime dtFin = LocalDateTime.of(anio, mes, dia, fin.getHour(), fin.getMinute());
 
-            // pedir datos
-            List<Masajista> libres = masajistaData.obtenerMasajistasLibresFranja(dtInicio, dtFin);
+            //valido que no sea una fecha pasada
+            LocalDateTime ahora = LocalDateTime.now();
 
+            if (dtInicio.toLocalDate().isBefore(LocalDate.now())) {
+                JOptionPane.showMessageDialog(this, "La fecha no puede ser del pasado.");
+                return;
+            }
+
+            if (dtInicio.toLocalDate().isEqual(LocalDate.now()) && dtInicio.isBefore(ahora)) {
+                JOptionPane.showMessageDialog(this, "La hora seleccionada no puede ser anterior a la actual.");
+                return;
+            }
+
+            List<Masajista> libres = masajistaData.obtenerMasajistasLibresFranja(dtInicio, dtFin);
             actualizarTabla(libres);
 
             if (libres.isEmpty()) {
@@ -138,15 +152,15 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-     
-     private void centrarColumnas() {
-    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < jTable1.getColumnCount(); i++) {
-        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    private void centrarColumnas() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -307,7 +321,7 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-       buscarMasajistas();
+        buscarMasajistas();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiaActionPerformed
