@@ -22,7 +22,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         cargarClientes();
         armarTabla();
         cargarTabla();
-         this.getContentPane().setBackground(new Color(245, 242, 232));
+        this.getContentPane().setBackground(new Color(245, 242, 232));
          centrarColumnas(); 
     }
     

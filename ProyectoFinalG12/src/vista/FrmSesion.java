@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import java.util.stream.Collectors;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -51,14 +55,17 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         masData = new MasajistaData();
         diaSpaData = new DiadeSpaData();
         instalacionData = new InstalacionData();
-
+       
         modelo = new DefaultTableModel();
         jTable1.setModel(modelo);
         armarTabla();
         cargarCombos();
+        cargarListaInstalaciones();
         cargarTabla();
         this.getContentPane().setBackground(new Color(245, 242, 232));
         centrarColumnas();
+        soloFechaHora(jTextField2);
+        soloFechaHora(jTextField3);
     }
 
     private void armarTabla() {
@@ -82,6 +89,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jComboBox2.setSelectedIndex(0);
         jComboBox3.setSelectedIndex(0);
         jComboBox4.setSelectedIndex(0);
+        listaInstalaciones.clearSelection();
     }
 
     private void cargarCombos() {
@@ -108,6 +116,63 @@ public class FrmSesion extends javax.swing.JInternalFrame {
             jComboBox4.addItem(String.valueOf(d.getCodPack()));
         }
     }
+    
+    private boolean validarCampos(boolean esModificacion) {
+
+    // Si es MODIFICAR, debemos validar el ID
+    if (esModificacion) {
+        if (jTextField1.getText().trim().isEmpty()) {
+            mostrarError("Debe ingresar el código de sesión para modificar.");
+            jTextField1.requestFocus();
+            return false;
+        }
+    }
+
+    // VALIDAR FECHAS
+    if (jTextField2.getText().trim().isEmpty()) {
+        mostrarError("Debe ingresar la fecha y hora de inicio.");
+        jTextField2.requestFocus();
+        return false;
+    }
+
+    if (jTextField3.getText().trim().isEmpty()) {
+        mostrarError("Debe ingresar la fecha y hora de fin.");
+        jTextField3.requestFocus();
+        return false;
+    }
+
+    // TRATAMIENTO
+    if (jComboBox1.getSelectedIndex() == 0) {
+        mostrarError("Debe seleccionar un tratamiento.");
+        return false;
+    }
+
+    // CONSULTORIO
+    if (jComboBox2.getSelectedIndex() == 0) {
+        mostrarError("Debe seleccionar un consultorio.");
+        return false;
+    }
+
+    // DÍA DE SPA
+    if (jComboBox4.getSelectedIndex() == 0) {
+        mostrarError("Debe seleccionar el día de Spa.");
+        return false;
+    }
+
+    // INSTALACIONES
+    if (listaInstalaciones.getSelectedValuesList().isEmpty()) {
+        mostrarError("Debe seleccionar al menos una instalación.");
+        return false;
+    }
+
+    // MASAJISTA
+    if (jComboBox3.getSelectedIndex() == 0) {
+        mostrarError("Debe seleccionar un masajista.");
+        return false;
+    }
+
+    return true;
+}
 
     private void limpiarTabla() {
         int filas = modelo.getRowCount() - 1;
@@ -206,12 +271,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel19 = new javax.swing.JLabel();
-        checkJacuzzi = new javax.swing.JCheckBox();
-        checkPiscina = new javax.swing.JCheckBox();
-        checkSauna = new javax.swing.JCheckBox();
-        checkDucha = new javax.swing.JCheckBox();
-        checkPediluvio = new javax.swing.JCheckBox();
-        checkCircuito = new javax.swing.JCheckBox();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listaInstalaciones = new javax.swing.JList<>();
 
         jButton2.setText("Modificar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -610,27 +671,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jLabel19.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel19.setText("Instalaciones:");
 
-        checkJacuzzi.setText("Jacuzzi");
-        checkJacuzzi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkJacuzziActionPerformed(evt);
-            }
-        });
-
-        checkPiscina.setText("Piscina Climatizada");
-        checkPiscina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkPiscinaActionPerformed(evt);
-            }
-        });
-
-        checkSauna.setText("Sauna");
-
-        checkDucha.setText("Duchas de sensaciones");
-
-        checkPediluvio.setText("Pediluvio");
-
-        checkCircuito.setText("Circuito de hidroterapia");
+        jScrollPane4.setViewportView(listaInstalaciones);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -651,6 +692,10 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                             .addComponent(jLabel19))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(111, 111, 111)
+                                .addComponent(jCheckBox1)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField2)
@@ -663,21 +708,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                                         .addGap(27, 27, 27)
                                         .addComponent(jBotonBuscar))
                                     .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(checkSauna)
-                                            .addComponent(checkJacuzzi)
-                                            .addComponent(checkPediluvio))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(checkCircuito)
-                                            .addComponent(checkPiscina)
-                                            .addComponent(checkDucha))))
-                                .addGap(213, 213, 213))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(111, 111, 111)
-                                .addComponent(jCheckBox1)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(213, 213, 213))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -697,9 +729,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 .addGap(44, 44, 44))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 350, Short.MAX_VALUE)
+                    .addGap(0, 358, Short.MAX_VALUE)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 350, Short.MAX_VALUE)))
+                    .addGap(0, 358, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -736,19 +768,12 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                         .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(checkPiscina)
-                        .addComponent(checkJacuzzi)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkSauna)
-                    .addComponent(checkDucha))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkPediluvio)
-                    .addComponent(checkCircuito))
-                .addGap(18, 18, 18)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(70, 70, 70))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -767,9 +792,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 421, Short.MAX_VALUE)
+                    .addGap(0, 425, Short.MAX_VALUE)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 421, Short.MAX_VALUE)))
+                    .addGap(0, 426, Short.MAX_VALUE)))
         );
 
         jTextField1.getAccessibleContext().setAccessibleName("");
@@ -786,50 +811,60 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
-         try {
-        // 1. Validar y obtener código de sesión
+       try {
+
+        // 1. Validar código
         int codigo = Integer.parseInt(jTextField1.getText().trim());
         Sesion sesionExistente = sesionData.buscarPorCodSesion(codigo);
 
         if (sesionExistente == null) {
-            mostrarError("No se encontró una sesión con el código: " + codigo, "Error de Búsqueda");
+            mostrarError("No se encontró una sesión con el código: " + codigo);
             return;
         }
 
-        // 2. Obtener objetos seleccionados usando tus métodos auxiliares
+        // 2. Validar campos obligatorios
+        if (!validarCampos(true)) return;
+
+        // 3. Obtener objetos seleccionados
         Tratamiento tratamiento = obtenerTratamientoSeleccionado();
         Consultorio consultorio = obtenerConsultorioSeleccionado();
         Masajista masajista = obtenerMasajistaSeleccionado();
         DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
 
-        if (tratamiento == null || consultorio == null || masajista == null || diadeSpa == null) {
-            mostrarError("No se pudo encontrar uno o más objetos seleccionados.", "Error de Búsqueda");
-            return;
-        }
-
-        // 3. Validar fechas
+        // 4. Validar fechas
         String inicioStr = jTextField2.getText().trim();
         String finStr = jTextField3.getText().trim();
-        if (inicioStr.isEmpty() || finStr.isEmpty()) {
-            mostrarError("Las fechas y horas no pueden estar vacías.", "Error de Datos");
+
+        LocalDateTime[] fechas = parsearFechas(inicioStr, finStr);
+        LocalDateTime inicio = fechas[0];
+        LocalDateTime fin = fechas[1];
+
+        if (inicio.isAfter(fin)) {
+            mostrarError("La fecha/hora de inicio debe ser anterior a la de fin.");
             return;
         }
 
-        LocalDateTime[] fechas;
-        try {
-            fechas = parsearFechas(inicioStr, finStr);
-            if (fechas[0].isAfter(fechas[1])) {
-                mostrarError("La fecha/hora de inicio debe ser anterior a la de fin.", "Error de Validación");
-                return;
-            }
-        } catch (DateTimeParseException ex) {
-            mostrarError("Formato de Fecha/Hora inválido. Use el formato: dd-MM-yyyy HH:mm", "Error de Formato");
+        // 5. validaciones de horarios 
+        if (sesionData.estaOcupadoMasajistaExcepto(codigo, masajista.getMatricula(), inicio, fin)) {
+            mostrarError("El masajista seleccionado ya está ocupado en esa franja horaria.");
             return;
         }
 
-        // 4. Actualizar sesión existente
-        sesionExistente.setFechaHoraInicio(fechas[0]);
-        sesionExistente.setFechaHoraFin(fechas[1]);
+        if (sesionData.estaOcupadoConsultorioExcepto(codigo, consultorio.getNroConsultorio(), inicio, fin)) {
+            mostrarError("El consultorio seleccionado ya está ocupado en esa franja horaria.");
+            return;
+        }
+        
+        for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
+        if (sesionData.estaOcupadaInstalacionExcepto(codigo, ins.getCodInstal(), inicio, fin)) {
+         mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
+        return;
+    }
+}
+
+        // 6. Actualizar valores de la sesión
+        sesionExistente.setFechaHoraInicio(inicio);
+        sesionExistente.setFechaHoraFin(fin);
         sesionExistente.setTratamiento(tratamiento);
         sesionExistente.setConsultorio(consultorio);
         sesionExistente.setMasajista(masajista);
@@ -837,57 +872,68 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         sesionExistente.setInstalaciones(obtenerInstalacionesSeleccionadas());
         sesionExistente.setEstado(jCheckBox1.isSelected());
 
-        // 5. Guardar cambios
+        // 7. Guardar cambios
         sesionData.editarSesion(sesionExistente);
         mostrarMensaje("Sesión con código " + codigo + " modificada exitosamente.", "Modificación Exitosa");
+
         limpiarCampos();
         cargarTabla();
 
     } catch (NumberFormatException e) {
-        mostrarError("Debe ingresar un código de sesión válido.", "Error de Entrada");
+        mostrarError("Debe ingresar un código de sesión válido.");
+    } catch (DateTimeParseException e) {
+        mostrarError("Formato de fecha/hora inválido. Use dd-MM-yyyy HH:mm");
     } catch (Exception e) {
-        mostrarError("Error al modificar la sesión: " + e.getMessage(), "Error de Base de Datos");
+        mostrarError("Error al modificar la sesión: " + e.getMessage());
     }
     }//GEN-LAST:event_jBotonModificarActionPerformed
 
     private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
-         // 1. Obtener objetos seleccionados
+         if (!validarCampos(false)) return;
+
     Tratamiento tratamiento = obtenerTratamientoSeleccionado();
     Consultorio consultorio = obtenerConsultorioSeleccionado();
     Masajista masajista = obtenerMasajistaSeleccionado();
     DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
 
-    // 2. Validar selección de objetos
-    if (tratamiento == null || consultorio == null || masajista == null || diadeSpa == null) {
-        mostrarError("Debe seleccionar todos los campos relacionados.", "Error de Datos");
-        return;
-    }
-
-    // 3. Validar fechas
     String inicioStr = jTextField2.getText().trim();
     String finStr = jTextField3.getText().trim();
-    if (inicioStr.isEmpty() || finStr.isEmpty()) {
-        mostrarError("Las fechas y horas no pueden estar vacías.", "Error de Datos");
-        return;
-    }
 
-    // 4. Parsear fechas
     LocalDateTime[] fechas;
     try {
         fechas = parsearFechas(inicioStr, finStr);
-        if (fechas[0].isAfter(fechas[1])) {
-            mostrarError("La fecha/hora de inicio debe ser anterior a la de fin.", "Error de Validación");
-            return;
-        }
     } catch (DateTimeParseException ex) {
-        mostrarError("Formato de Fecha/Hora inválido. Use el formato: dd-MM-yyyy HH:mm", "Error de Formato");
+        mostrarError("Formato de fecha incorrecto.");
         return;
     }
 
-    // 5. Crear y guardar nueva sesión
+    LocalDateTime inicio = fechas[0];
+    LocalDateTime fin = fechas[1];
+
+    // Validar disponibilidad del masajista
+    if (sesionData.estaOcupadoMasajista(masajista.getMatricula(), inicio, fin)) {
+        mostrarError("El masajista seleccionado ya tiene una sesión en esta franja horaria.");
+        return;
+    }
+
+    //validar disponibilidad del consultorio
+    if (sesionData.estaOcupadoConsultorio(consultorio.getNroConsultorio(), inicio, fin)) {
+        mostrarError("El consultorio seleccionado está ocupado en esta franja horaria.");
+        return;
+    }
+    
+    for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
+        if (sesionData.estaOcupadaInstalacion(ins.getCodInstal(), inicio, fin)) {
+        mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
+        return;
+    }
+    }
+    
+
+    // crear sesion
     Sesion nuevaSesion = new Sesion(
-        fechas[0],
-        fechas[1],
+        inicio,
+        fin,
         tratamiento,
         consultorio,
         masajista,
@@ -895,28 +941,13 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jCheckBox1.isSelected()
     );
     
-    // 6. Construir lista de instalaciones desde los checkbox
-    List<Instalacion> instalaciones = new ArrayList<>();
+    // ASIGNAR instalaciones seleccionadas antes de guardar
+     nuevaSesion.setInstalaciones(obtenerInstalacionesSeleccionadas());
 
-    if (checkJacuzzi.isSelected()) instalaciones.add(new Instalacion(1)); //en la db tenemos esos id
-    if (checkPiscina.isSelected()) instalaciones.add(new Instalacion(2));
-    if (checkSauna.isSelected()) instalaciones.add(new Instalacion(3));
-    if (checkDucha.isSelected()) instalaciones.add(new Instalacion(4));
-    if (checkPediluvio.isSelected()) instalaciones.add(new Instalacion(5));
-    if (checkCircuito.isSelected()) instalaciones.add(new Instalacion(6));
-
-    nuevaSesion.setInstalaciones(instalaciones);
-    try {
-        sesionData.guardarSesion(nuevaSesion);
-         for (Instalacion inst : instalaciones) {
-           instalacionData.guardarInstalacionSesion(nuevaSesion.getCodSesion(), inst.getCodInstal());
-    }
-        mostrarMensaje("Sesión guardada exitosamente con código: " + nuevaSesion.getCodSesion(), "Guardar Sesión");
-        limpiarCampos();
-        cargarTabla();
-    } catch (Exception e) {
-        mostrarError("Error al guardar la sesión: " + e.getMessage(), "Error de Base de Datos");
-    }
+    sesionData.guardarSesion(nuevaSesion);
+    mostrarMensaje("Sesión registrada correctamente.", "Éxito");
+    cargarTabla();
+    limpiarCampos();
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
@@ -963,7 +994,26 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 jComboBox2.setSelectedItem(String.valueOf(s.getConsultorio().getNroConsultorio()));
                 jComboBox3.setSelectedItem(s.getMasajista().getNombre());
                 jComboBox4.setSelectedItem(String.valueOf(s.getDiadeSpa().getCodPack()));
-                marcarInstalaciones(s.getInstalaciones());
+                
+                DefaultListModel<Instalacion> modeloLista =
+            (DefaultListModel<Instalacion>) listaInstalaciones.getModel();
+
+             // Traemos desde la BD las instalaciones de la sesión
+            List<Instalacion> instalacionesSesion = instalacionData.obtenerInstalacionesPorSesion(s.getCodSesion());
+
+            // Sacamos cualquier selección previa
+            listaInstalaciones.clearSelection();
+
+            // Marcar en la JList las instalaciones que pertenecen a la sesión
+            for (int i = 0; i < modeloLista.getSize(); i++) {
+           Instalacion instLista = modeloLista.getElementAt(i);
+
+           for (Instalacion instSesion : instalacionesSesion) {
+            if (instLista.getCodInstal() == instSesion.getCodInstal()) {
+                listaInstalaciones.addSelectionInterval(i, i); // seleccionar
+            }
+        }
+    }
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró ninguna sesión con el código: " + codigo, "Búsqueda Fallida", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -1010,24 +1060,15 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     } catch (NumberFormatException e) { return null; }
 }
     private List<Instalacion> obtenerInstalacionesSeleccionadas() {
-    List<Instalacion> lista = new ArrayList<>();
-
-    if (checkJacuzzi.isSelected()) lista.add(new Instalacion(1));
-    if (checkPiscina.isSelected()) lista.add(new Instalacion(2));
-    if (checkSauna.isSelected()) lista.add(new Instalacion(3));
-    if (checkDucha.isSelected()) lista.add(new Instalacion(4));
-    if (checkPediluvio.isSelected()) lista.add(new Instalacion(5));
-    if (checkCircuito.isSelected()) lista.add(new Instalacion(6));
-
-    return lista;
+    return listaInstalaciones.getSelectedValuesList();
 }
     
     
     
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-    private void mostrarError(String mensaje, String titulo) {
-    JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.ERROR_MESSAGE);
+    private void mostrarError(String mensaje) {
+    JOptionPane.showMessageDialog(this, mensaje,"Error", JOptionPane.ERROR_MESSAGE);
 }
 
     private void mostrarMensaje(String mensaje, String titulo) {
@@ -1048,29 +1089,31 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     }
     return sb.substring(0, sb.length() - 2);
 }
-    private void marcarInstalaciones(List<Instalacion> instalaciones) {
-        // Primero desmarcamos todo
-    checkJacuzzi.setSelected(false);
-    checkPiscina.setSelected(false);
-    checkSauna.setSelected(false);
-    checkDucha.setSelected(false);
-    checkPediluvio.setSelected(false);
-    checkCircuito.setSelected(false);
 
-    if (instalaciones == null) return;
-
-    // Marcamos según el ID guardado en la BD
-    for (Instalacion inst : instalaciones) {
-        switch (inst.getCodInstal()) {
-            case 1 -> checkJacuzzi.setSelected(true);
-            case 2 -> checkPiscina.setSelected(true);
-            case 3 -> checkSauna.setSelected(true);
-            case 4 -> checkDucha.setSelected(true);
-            case 5 -> checkPediluvio.setSelected(true);
-            case 6 -> checkCircuito.setSelected(true);
+    
+     private void cargarListaInstalaciones() {
+        DefaultListModel<Instalacion> lm = new DefaultListModel<>();
+        for (Instalacion inst : instalacionData.listarInstalaciones()) {
+            if (inst.isEstado()) lm.addElement(inst);
         }
+        listaInstalaciones.setModel(lm);
+        listaInstalaciones.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
-    }
+     
+     private void soloFechaHora(javax.swing.JTextField campo) {
+    campo.addKeyListener(new java.awt.event.KeyAdapter() {
+        @Override
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            char c = evt.getKeyChar();
+
+            // Solo números, guiones, slash, espacio y dos puntos
+            if (!Character.isDigit(c) && c != '-' && c != '/' && c != ':' && c != ' ') {
+                evt.consume(); // Bloquea el carácter
+            }
+        }
+    });
+}
+
   
     
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -1137,22 +1180,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
-    private void checkJacuzziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkJacuzziActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_checkJacuzziActionPerformed
-
-    private void checkPiscinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkPiscinaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_checkPiscinaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox checkCircuito;
-    private javax.swing.JCheckBox checkDucha;
-    private javax.swing.JCheckBox checkJacuzzi;
-    private javax.swing.JCheckBox checkPediluvio;
-    private javax.swing.JCheckBox checkPiscina;
-    private javax.swing.JCheckBox checkSauna;
     private javax.swing.JButton jBotonBuscar;
     private javax.swing.JButton jBotonEliminar;
     private javax.swing.JButton jBotonGuardar;
@@ -1197,6 +1226,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
@@ -1205,5 +1235,6 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JList<Instalacion> listaInstalaciones;
     // End of variables declaration//GEN-END:variables
 }

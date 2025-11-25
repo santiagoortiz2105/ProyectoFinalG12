@@ -5,11 +5,13 @@
 package Persistencia;
 import Modelo.Conexion;
 import Modelo.Consultorio;
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -149,4 +151,41 @@ public class ConsultorioData {
         }
         return c;
     }
+    
+    public List<Consultorio> getConsultoriosLibres(LocalDateTime inicio, LocalDateTime fin) {
+    List<Consultorio> lista = new ArrayList<>();
+
+    String sql = """
+        SELECT *
+        FROM consultorio c
+        WHERE c.apto = 1
+          AND c.nroConsultorio NOT IN (
+                SELECT s.nroConsultorio
+                FROM sesion s
+                WHERE (s.fechaHoraInicio < ?)
+                  AND (s.fechaHoraFin > ?)
+          )
+    """;
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setTimestamp(1, Timestamp.valueOf(fin));
+        ps.setTimestamp(2, Timestamp.valueOf(inicio));
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Consultorio c = new Consultorio();
+            c.setNroConsultorio(rs.getInt("nroConsultorio"));
+            c.setUsos(rs.getString("usos"));
+            c.setEquipamiento(rs.getString("equipamiento"));
+            c.setApto(rs.getBoolean("apto"));
+
+            lista.add(c);
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error al obtener consultorios libres: " + ex.getMessage());
+    }
+
+    return lista;
+}
+    
 }
