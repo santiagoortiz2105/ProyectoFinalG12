@@ -17,16 +17,20 @@ import Persistencia.MasajistaData;
 import Persistencia.DiadeSpaData;
 import Persistencia.InstalacionData;
 import java.awt.Color;
+import java.awt.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JCheckBox;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,6 +40,26 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrmSesion extends javax.swing.JInternalFrame {
 
+      private class CheckListRenderer extends JCheckBox implements ListCellRenderer<Object> {
+
+        public CheckListRenderer() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getListCellRendererComponent(
+                JList<?> list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+
+            setText(value.toString());
+            setSelected(list.isSelectedIndex(index));
+
+            setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
+            setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
+
+            return this;
+        }
+    }
     /**
      * Creates new form FrmSesion
      */
@@ -55,7 +79,6 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         masData = new MasajistaData();
         diaSpaData = new DiadeSpaData();
         instalacionData = new InstalacionData();
-       
         modelo = new DefaultTableModel();
         jTable1.setModel(modelo);
         armarTabla();
@@ -671,6 +694,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jLabel19.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel19.setText("Instalaciones:");
 
+        listaInstalaciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(listaInstalaciones);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1092,13 +1116,40 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
     
      private void cargarListaInstalaciones() {
-        DefaultListModel<Instalacion> lm = new DefaultListModel<>();
-        for (Instalacion inst : instalacionData.listarInstalaciones()) {
-            if (inst.isEstado()) lm.addElement(inst);
-        }
-        listaInstalaciones.setModel(lm);
-        listaInstalaciones.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+          DefaultListModel<Instalacion> lm = new DefaultListModel<>();
+    for (Instalacion inst : instalacionData.listarInstalaciones()) {
+        if (inst.isEstado()) lm.addElement(inst);
     }
+    listaInstalaciones.setModel(lm);
+
+    // Modo de selección (no usar MULTIPLE_INTERVAL_SELECTION)
+    listaInstalaciones.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    //SELECTION MODEL que hace toggle con un solo click
+    listaInstalaciones.setSelectionModel(new DefaultListSelectionModel() {
+        @Override
+        public void setSelectionInterval(int index0, int index1) {
+            if (index0 == index1) {
+                // Toggle: si está seleccionado, lo saco; si no, lo marco
+                if (isSelectedIndex(index0)) {
+                    super.removeSelectionInterval(index0, index0);
+                } else {
+                    super.addSelectionInterval(index0, index0);
+                }
+            } else {
+                // permite seleccionar varios si arrastra (opcional)
+                super.setSelectionInterval(index0, index1);
+            }
+        }
+    });
+
+    //NECESARIO para que no robe foco y no active selección rara
+    listaInstalaciones.setFocusable(false);
+
+    //RENDERER con checkboxes — SIN ESTO NO FUNCIONA
+    listaInstalaciones.setCellRenderer(new CheckListRenderer());
+        }
+    
      
      private void soloFechaHora(javax.swing.JTextField campo) {
     campo.addKeyListener(new java.awt.event.KeyAdapter() {
