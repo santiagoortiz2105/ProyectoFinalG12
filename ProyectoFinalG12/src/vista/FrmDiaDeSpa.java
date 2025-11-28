@@ -111,9 +111,9 @@ try {
         return false;
     }
 
-    // No puede ser mayor a 2030
-    if (anio > 2030) {
-        JOptionPane.showMessageDialog(this, "El año no puede superar 2030.");
+    // No puede ser mayor a 2026
+    if (anio > 2026) {
+        JOptionPane.showMessageDialog(this, "El año no puede superar 2026.");
         return false;
     }
 
