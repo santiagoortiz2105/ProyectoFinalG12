@@ -268,11 +268,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCheckBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEstadoActionPerformed
-        if (jCheckBoxEstado.isSelected()) {
-            jCheckBoxEstado.setText("Activo");
-        } else {
-            jCheckBoxEstado.setText("Inactivo");
-        }
+
     }//GEN-LAST:event_jCheckBoxEstadoActionPerformed
 
     private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
@@ -295,76 +291,65 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
-        int fila = jTable1.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una instalación de la tabla.");
-            return;
-        }
-
         try {
-            Instalacion i = validarYHacerInstalacion();
-            if (i == null) {
-                return;
-            }
+        int codigo = Integer.parseInt(jTextField1.getText().trim());
+        String nombre = jTextField2.getText().trim();
+        String detalle = jTextArea1.getText().trim();
+        double precio = Double.parseDouble(jTextField3.getText().trim());
+        boolean estado = jCheckBoxEstado.isSelected();
 
-            int codigo = (int) jTable1.getValueAt(fila, 0);
-            i.setCodInstal(codigo);
+        // Armo de cero la instalación con lo que está en los campos
+        Instalacion i = new Instalacion();
+        i.setCodInstal(codigo);
+        i.setNombre(nombre);
+        i.setdetalledeuso(detalle);
+        i.setPrecio30m(precio);
+        i.setEstado(estado);
 
-            instalacionData.editarInstalacion(i);
+        instalacionData.editarInstalacion(i);
 
-            JOptionPane.showMessageDialog(this, "Instalación modificada correctamente.");
-            cargarTabla();
-            limpiarCampos();
+        JOptionPane.showMessageDialog(this, "Instalación modificada correctamente.");
+        cargarTabla();
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al modificar la instalación: " + e.getMessage());
-        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Datos numéricos inválidos.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
+    }
     }//GEN-LAST:event_jBotonModificarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
-        try {
-            int fila = jTable1.getSelectedRow();
-            if (fila == -1) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Seleccione una instalación para eliminar.",
-                        "Error",
-                        JOptionPane.WARNING_MESSAGE
-                );
-                return;
-            }
-            int codigo = (int) jTable1.getValueAt(fila, 0);
+         try {
+        String texto = jTextField1.getText().trim();
 
-            int confirmacion = JOptionPane.showConfirmDialog(
-                    this,
-                    "¿Está seguro de que desea ELIMINAR la instalación con código " + codigo + "?",
-                    "Confirmar Eliminación",
-                    JOptionPane.YES_NO_OPTION
-            );
-
-            if (confirmacion == JOptionPane.YES_OPTION) {
-
-                instalacionData.deshabilitarInstalacion(codigo);
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Instalación eliminada correctamente.",
-                        "Eliminación Exitosa",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-                cargarTabla();
-                limpiarCampos();
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Error al eliminar la instalación. Revise la consola para más detalles.",
-                    "Error de Base de Datos",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            e.printStackTrace();
+        if (texto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese o busque un código antes de eliminar.");
+            return;
         }
+
+        int codigo = Integer.parseInt(texto);
+
+        // Confirmación
+        int opc = JOptionPane.showConfirmDialog(this, 
+                "¿Seguro que quiere eliminar la instalación con código: " + codigo + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (opc != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        instalacionData.deshabilitarInstalacion(codigo);
+
+        JOptionPane.showMessageDialog(this, "Instalación eliminada correctamente.");
+        limpiarCampos();
+        cargarTabla();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El código debe ser un número válido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+    }
     }//GEN-LAST:event_jBotonEliminarActionPerformed
 
     private Instalacion validarYHacerInstalacion() {

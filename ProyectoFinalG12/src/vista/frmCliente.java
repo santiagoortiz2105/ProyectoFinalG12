@@ -360,30 +360,31 @@ public class frmCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-        if (tfCodigoCliente.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un código de cliente para modificar.");
-            return;
-        }
+     
+    if (tfCodigoCliente.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Seleccione un cliente primero.");
+        return;
+    }
 
-        if (!validarCampos()) {
-            return;
-        }
-        try {
-            Cliente c = new Cliente();
-            c.setCodCli(Integer.parseInt(tfCodigoCliente.getText().trim()));
-            c.setDni(tfdni.getText().trim());
-            c.setNombreCompleto(tfNombreCompleto.getText().trim());
-            c.setTelefono(tfTelefono.getText().trim());
-            c.setEdad(Integer.parseInt(tfEdad.getText().trim()));
-            c.setAfecciones(taAfecciones.getText().trim());
-            c.setEstado(cbEstado.isSelected());
+    try {
 
-            clienteData.editarCliente(c);
-            cargarTabla();
-            limpiarCampos();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al modificar cliente: " + e.getMessage());
-        }
+        Cliente c = new Cliente();
+        c.setCodCli(Integer.parseInt(tfCodigoCliente.getText()));
+        c.setDni(tfdni.getText());
+        c.setNombreCompleto(tfNombreCompleto.getText());
+        c.setTelefono(tfTelefono.getText());
+        c.setEdad(Integer.parseInt(tfEdad.getText()));
+        c.setAfecciones(taAfecciones.getText());
+        c.setEstado(cbEstado.isSelected());   
+
+        clienteData.editarCliente(c);
+
+        JOptionPane.showMessageDialog(this, "Cliente modificado correctamente.");
+        cargarTabla();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al modificar cliente.");
+    }
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
@@ -408,20 +409,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void cbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoActionPerformed
-        if (tfCodigoCliente.getText().isEmpty()) {
-            return;
-        }
 
-        int cod = Integer.parseInt(tfCodigoCliente.getText());
-        boolean activo = cbEstado.isSelected();
-
-        if (activo) {
-            clienteData.habilitarCliente(cod);
-        } else {
-            clienteData.deshabilitarCliente(cod);
-        }
-
-        cargarTabla();
     }//GEN-LAST:event_cbEstadoActionPerformed
 
     private void cargarTabla() {

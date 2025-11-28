@@ -398,14 +398,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private void jCheckBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEstadoActionPerformed
-        if (jCheckBoxEstado.isSelected()) {
-            jCheckBoxEstado.setText("Activo");
-            jTextField2.setEnabled(true);
-        } else {
-            jCheckBoxEstado.setText("Inactivo");
-            jTextField2.setEnabled(false);
-            jTextField2.setText("");
-        }
+
     }//GEN-LAST:event_jCheckBoxEstadoActionPerformed
 
     private void cargarTabla() {

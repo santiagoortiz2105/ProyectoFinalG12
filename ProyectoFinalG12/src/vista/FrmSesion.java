@@ -91,6 +91,45 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         soloFechaHora(jTextField3);
     }
 
+private String instalacionesToString(List<Instalacion> lista) {
+    String texto = "";
+    boolean primero = true;
+    boolean tieneElementos = false;
+    double total = 0;
+
+    try {
+
+        for (Instalacion inst : lista) {
+
+            tieneElementos = true;
+
+            if (!primero) {
+                texto = texto + ", ";
+            }
+
+            // AGREGO EL CÓDIGO DE LA INSTALACIÓN
+            texto = texto + inst.getCodInstal();
+
+            primero = false;
+
+            // SUMAMOS EL PRECIO REAL
+            total = total + inst.getPrecio30m();
+        }
+
+        // Lista vacía
+        if (!tieneElementos) {
+            return "-";
+        }
+
+        // DEVUELVE CÓDIGOS + TOTAL
+        return texto + " | Total: $" + total;
+
+    } catch (Exception e) {
+        return "-";
+    }
+}
+
+
     private void armarTabla() {
         modelo.addColumn("Código");
         modelo.addColumn("Inicio");
@@ -444,13 +483,13 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jTable1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Dia de Spa", "Estado", "Instalaciones"
+                "Código", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Dia de Spa", "Estado", "Instalaciones", "Monto Total"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -749,8 +788,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 358, Short.MAX_VALUE)
@@ -1104,15 +1143,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     LocalDateTime fin = LocalDateTime.parse(finStr, FORMATTER);
     return new LocalDateTime[]{inicio, fin};
 }
-    private String instalacionesToString(List<Instalacion> lista) {
-    if (lista == null || lista.isEmpty()) return "Ninguna";
-
-    StringBuilder sb = new StringBuilder();
-    for (Instalacion inst : lista) {
-        sb.append(inst.getCodInstal()).append(", "); 
-    }
-    return sb.substring(0, sb.length() - 2);
-}
+    
 
     
      private void cargarListaInstalaciones() {
