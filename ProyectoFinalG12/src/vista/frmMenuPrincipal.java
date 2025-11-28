@@ -48,11 +48,11 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jfrmInstalacion = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jSalir = new javax.swing.JMenuItem();
 
@@ -70,7 +70,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 768, Short.MAX_VALUE)
+            .addGap(0, 769, Short.MAX_VALUE)
         );
 
         jMenu2.setText("Cliente");
@@ -181,18 +181,6 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu6);
 
-        jMenu7.setText("Sesion ");
-
-        jMenuItem2.setText("Turnos");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu7.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu7);
-
         jMenu8.setText("Dia de Spa");
 
         jMenuItem1.setText("Spa");
@@ -212,6 +200,18 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jMenu8.add(jMenuItem9);
 
         jMenuBar1.add(jMenu8);
+
+        jMenu7.setText("Sesion ");
+
+        jMenuItem2.setText("Turnos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu7);
 
         jMenu9.setText("Salir ");
 

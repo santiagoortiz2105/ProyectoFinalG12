@@ -327,7 +327,8 @@ public class frmCliente extends javax.swing.JInternalFrame {
                     JOptionPane.YES_NO_OPTION
             );
             if (confirmacion == JOptionPane.YES_OPTION) {
-                clienteData.deshabilitarCliente(codCli);
+                
+                clienteData.eliminarCliente(codCli);
 
                 JOptionPane.showMessageDialog(
                         this,
@@ -424,29 +425,36 @@ public class frmCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbEstadoActionPerformed
 
     private void cargarTabla() {
-        modelo = new DefaultTableModel();
-        modelo.addColumn("Código");
-        modelo.addColumn("DNI");
-        modelo.addColumn("Nombre Completo");
-        modelo.addColumn("Teléfono");
-        modelo.addColumn("Edad");
-        modelo.addColumn("Afecciones");
-        modelo.addColumn("Estado");
 
-        List<Cliente> lista = clienteData.listarClientes();
-        for (Cliente c : lista) {
-            modelo.addRow(new Object[]{
-                c.getCodCli(),
-                c.getDni(),
-                c.getNombreCompleto(),
-                c.getTelefono(),
-                c.getEdad(),
-                c.getAfecciones(),
-                c.isEstado() ? "Activo" : "Inactivo"
-            });
-        }
-        jtCliente.setModel(modelo);
+    limpiarTabla(); 
+
+    modelo = new DefaultTableModel();
+    modelo.addColumn("Código");
+    modelo.addColumn("DNI");
+    modelo.addColumn("Nombre Completo");
+    modelo.addColumn("Teléfono");
+    modelo.addColumn("Edad");
+    modelo.addColumn("Afecciones");
+    modelo.addColumn("Estado");
+
+    List<Cliente> lista = clienteData.listarClientes();
+    for (Cliente c : lista) {
+        modelo.addRow(new Object[]{
+            c.getCodCli(),
+            c.getDni(),
+            c.getNombreCompleto(),
+            c.getTelefono(),
+            c.getEdad(),
+            c.getAfecciones(),
+            c.isEstado() ? "Activo" : "Inactivo"
+        });
     }
+    jtCliente.setModel(modelo);
+}
+    private void limpiarTabla() {
+    DefaultTableModel modelo = (DefaultTableModel) jtCliente.getModel();
+    modelo.setRowCount(0); 
+}
 
     private boolean validarCampos() {
         //campo dni
