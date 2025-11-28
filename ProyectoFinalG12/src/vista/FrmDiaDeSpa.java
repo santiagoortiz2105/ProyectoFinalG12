@@ -25,6 +25,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         armarTabla();
         cargarTabla();
         cargarMeses();
+        cargarHorarios();
         this.getContentPane().setBackground(new Color(245, 242, 232));
         centrarColumnas();
     }
@@ -69,6 +70,95 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         tfMonto.setText("");
         checkEstado.setSelected(false);
     }
+    
+    private boolean validarCampos() {
+
+    //Dia
+    if (tfDia.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un día.");
+        return false;
+    }
+    try {
+        int dia = Integer.parseInt(tfDia.getText());
+        if (dia < 1 || dia > 31) {
+            JOptionPane.showMessageDialog(this, "El día debe estar entre 1 y 31.");
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El día debe ser un número válido.");
+        return false;
+    }
+
+    //Año
+    String textoAnio = tfAnio.getText().trim();
+
+if (textoAnio.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Debe ingresar un año.");
+    return false;
+}
+
+// Debe tener 4 dígitos
+if (!textoAnio.matches("\\d{4}")) {
+    JOptionPane.showMessageDialog(this, "El año debe tener exactamente 4 dígitos.");
+    return false;
+}
+
+try {
+    int anio = Integer.parseInt(textoAnio);
+
+    // No puede ser menor a 2025
+    if (anio < 2025) {
+        JOptionPane.showMessageDialog(this, "El año no puede ser menor a 2025.");
+        return false;
+    }
+
+    // No puede ser mayor a 2030
+    if (anio > 2030) {
+        JOptionPane.showMessageDialog(this, "El año no puede superar 2030.");
+        return false;
+    }
+
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "El año debe ser un número.");
+    return false;
+    }
+
+    //Horario
+    if (cbFranja.getSelectedIndex() == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una franja horaria.");
+        return false;
+    }
+
+    //Preferencias
+    if (taPref.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar preferencias.");
+        return false;
+    }
+
+    //Cliente
+    if (cbCliente.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.");
+        return false;
+    }
+
+    //Monto
+    if (tfMonto.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un monto.");
+        return false;
+    }
+    try {
+        double monto = Double.parseDouble(tfMonto.getText());
+        if (monto <= 0) {
+            JOptionPane.showMessageDialog(this, "El monto debe ser mayor a cero.");
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El monto debe ser numérico.");
+        return false;
+    }
+
+    return true;
+}
 
     @SuppressWarnings("unchecked")
 
@@ -82,20 +172,28 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
     }
 
     private void cargarMeses() {
-        cbFranja.removeAllItems();
-        cbFranja.addItem("Enero");
-        cbFranja.addItem("Febrero");
-        cbFranja.addItem("Marzo");
-        cbFranja.addItem("Abril");
-        cbFranja.addItem("Mayo");
-        cbFranja.addItem("Junio");
-        cbFranja.addItem("Julio");
-        cbFranja.addItem("Agosto");
-        cbFranja.addItem("Septiembre");
-        cbFranja.addItem("Octubre");
-        cbFranja.addItem("Noviembre");
-        cbFranja.addItem("Diciembre");
+        cbMes.removeAllItems();
+        cbMes.addItem("Enero");
+        cbMes.addItem("Febrero");
+        cbMes.addItem("Marzo");
+        cbMes.addItem("Abril");
+        cbMes.addItem("Mayo");
+        cbMes.addItem("Junio");
+        cbMes.addItem("Julio");
+        cbMes.addItem("Agosto");
+        cbMes.addItem("Septiembre");
+        cbMes.addItem("Octubre");
+        cbMes.addItem("Noviembre");
+        cbMes.addItem("Diciembre");
     }
+    
+    private void cargarHorarios() {
+        cbFranja.removeAllItems();
+        cbFranja.addItem("08:00 - 10:00");
+        cbFranja.addItem("11:00 - 13:00");
+        cbFranja.addItem("14:00 - 16:00");
+        cbFranja.addItem("17:00 - 19:00");
+}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -388,6 +486,9 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //boton modificar
+        if (!validarCampos()) {
+         return;
+        }
         if (jTextField1.getText().isEmpty()) {
             return;
         }
@@ -410,6 +511,9 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //boton guardar
+        if (!validarCampos()) {
+         return;
+         }
         try {
             //validacion de fecha y horario
             FechaSpa resultado = obtenerFechasSpa();

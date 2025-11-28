@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -165,4 +166,35 @@ public class DiadeSpaData {
         }
         return d;
     }
+    
+    public List<DiadeSpa> obtenerDiasPorFecha(LocalDate fecha) {
+    List<DiadeSpa> lista = new ArrayList<>();
+
+    String sql = "SELECT * FROM dia_de_spa WHERE DATE(fechaHoraInicio) = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setDate(1, java.sql.Date.valueOf(fecha));
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            DiadeSpa dia = new DiadeSpa();
+            dia.setCodPack(rs.getInt("codPack"));
+            dia.setFechaHoraInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
+            dia.setFechaHoraFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
+            dia.setPreferencias(rs.getString("preferencias"));
+            dia.setMonto(rs.getDouble("monto"));
+            dia.setEstado(rs.getBoolean("estado"));
+            dia.setCliente(clienteData.buscarClientePorid(rs.getInt("codCli")));
+
+            lista.add(dia);
+        }
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al obtener días por fecha: " + ex.getMessage());
+    }
+
+    return lista;
+}
 }

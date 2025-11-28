@@ -232,32 +232,39 @@ public class SesionData {
         return s;
     }
     
-    private List<Instalacion> obtenerInstalacionesDeSesion(int codSesion) {
-    List<Instalacion> instalaciones = new ArrayList<>();
-    String sql = "SELECT * FROM sesion_instalacion WHERE codSesion = ?";
+    public List<Instalacion> obtenerInstalacionesDeSesion(int codSesion) {
+     List<Instalacion> lista = new ArrayList<>();
+
+    String sql =
+        "SELECT i.* FROM sesion_instalacion si "
+        + "JOIN instalacion i ON si.codInstal = i.codInstal "
+        + "WHERE si.codSesion = ?";
 
     try {
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, codSesion);
+
         ResultSet rs = ps.executeQuery();
 
-        InstalacionData instData = new InstalacionData();
-
         while (rs.next()) {
-            int codInstal = rs.getInt("codInstal");
-            Instalacion inst = instData.buscarPorCodigo(codInstal);
+            Instalacion inst = new Instalacion();
+            inst.setCodInstal(rs.getInt("codInstal"));
+            inst.setNombre(rs.getString("nombre"));
+            inst.setdetalledeuso(rs.getString("detalledeuso"));
+            inst.setPrecio30m(rs.getDouble("precio30m"));
+            inst.setEstado(rs.getBoolean("estado"));
 
-            if (inst != null) {
-                instalaciones.add(inst);
-            }
+            lista.add(inst);
         }
 
+        rs.close();
         ps.close();
-    } catch (SQLException ex) {
-        System.out.println("Error al obtener instalaciones: " + ex.getMessage());
+
+    } catch (SQLException e) {
+        System.out.println("Error al obtener instalaciones: " + e.getMessage());
     }
 
-    return instalaciones;
+    return lista;
 }
      public boolean estaOcupadoConsultorio(int nroConsultorio, LocalDateTime inicio, LocalDateTime fin) {
       String sql = """
@@ -416,5 +423,121 @@ public class SesionData {
     return false;
     
 }
+      
     
+      public List<Sesion> listarSesionesPorPack(int codPack) {
+    List<Sesion> lista = new ArrayList<>();
+    
+    String sql = "SELECT * FROM sesion WHERE codPack = ? AND estado = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codPack);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Sesion s = new Sesion();
+            s.setCodSesion(rs.getInt("codSesion"));
+            s.setFechaHoraInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
+            s.setFechaHoraFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
+            s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam")));
+            s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
+            s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
+            s.setDiadeSpa(diaSpaData.buscarPorId(codPack));
+
+            s.setEstado(rs.getBoolean("estado"));
+
+            lista.add(s);
+        }
+
+        rs.close();
+        ps.close();
+
+    } catch (SQLException e) {
+        System.out.println("Error al listar sesiones por pack: " + e.getMessage());
+    }
+
+    return lista;
+}
+
+      public List<Sesion> listarSesionesPorDiaSpa(int codPack) {
+    List<Sesion> lista = new ArrayList<>();
+
+    String sql = "SELECT * FROM sesion WHERE codPack = ? AND estado = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codPack);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Sesion s = new Sesion();
+
+            s.setCodSesion(rs.getInt("codSesion"));
+            s.setFechaHoraInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
+            s.setFechaHoraFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
+            s.setTratamiento(tratData.buscarPorId(rs.getInt("codTratam")));
+            s.setConsultorio(consulData.buscarConsultorioPorId(rs.getInt("nroConsultorio")));
+            s.setMasajista(masajistaData.buscarPorMatricula(rs.getInt("matricula")));
+            s.setDiadeSpa(diaSpaData.buscarPorId(codPack));
+
+            s.setEstado(rs.getBoolean("estado"));
+
+            lista.add(s);
+        }
+
+        rs.close();
+        ps.close();
+
+    } catch (SQLException e) {
+        System.out.println("Error al listar sesiones por Día de Spa: " + e.getMessage());
+    }
+
+    return lista;
+}
+    public double calcularCostoTotalSesion(int codSesion) {
+    double total = 0.0;
+
+    try {
+        // Sumar instalaciones
+        String sqlInst = "SELECT precio30m FROM instalacion "
+                + "JOIN sesion_instalacion ON instalacion.codInstal = sesion_instalacion.codInstal "
+                + "WHERE sesion_instalacion.codSesion = ?";
+
+        PreparedStatement psInst = con.prepareStatement(sqlInst);
+        psInst.setInt(1, codSesion);
+
+        ResultSet rsInst = psInst.executeQuery();
+
+        while (rsInst.next()) {
+            total += rsInst.getDouble("precio30m");
+        }
+
+        rsInst.close();
+        psInst.close();
+
+        // Sumar Tratamiento (usa 'costo', NO 'precio')
+        String sqlTrat = "SELECT t.costo FROM tratamiento t "
+                + "JOIN sesion s ON s.codTratam = t.codTratam "
+                + "WHERE s.codSesion = ?";
+
+        PreparedStatement psTrat = con.prepareStatement(sqlTrat);
+        psTrat.setInt(1, codSesion);
+
+        ResultSet rsTrat = psTrat.executeQuery();
+
+        if (rsTrat.next()) {
+            total += rsTrat.getDouble("costo");
+        }
+
+        rsTrat.close();
+        psTrat.close();
+
+    } catch (SQLException e) {
+        System.out.println("Error al calcular costo total: " + e.getMessage());
+    }
+
+    return total;
+}
 }
