@@ -129,6 +129,30 @@ private String instalacionesToString(List<Instalacion> lista) {
     }
 }
 
+    private double calcularMontoSesion(DiadeSpa dia, List<Instalacion> instalaciones) {
+    double total = 0.0;
+
+    // 1) monto del pack 
+    if (dia != null) {
+        total += dia.getMonto();
+    }
+
+    // 2) instalaciones
+    if (instalaciones != null) {
+        for (Instalacion inst : instalaciones) {
+            total += inst.getPrecio30m();
+        }
+    }
+
+    // 3) cargo fijo siempre
+    total += 00.0;
+
+    return total;
+}
+
+
+
+
 
     private void armarTabla() {
         modelo.addColumn("Código");
@@ -918,6 +942,11 @@ private String instalacionesToString(List<Instalacion> lista) {
             return;
         }
         
+        if (sesionData.estaOcupadoDiaSpaExcepto(codigo, diadeSpa.getCodPack(), inicio, fin)) {
+        mostrarError("El Día de Spa seleccionado ya está ocupado en esa franja horaria.");
+        return;
+        }
+        
         for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
         if (sesionData.estaOcupadaInstalacionExcepto(codigo, ins.getCodInstal(), inicio, fin)) {
          mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
@@ -934,6 +963,15 @@ private String instalacionesToString(List<Instalacion> lista) {
         sesionExistente.setDiadeSpa(diadeSpa);
         sesionExistente.setInstalaciones(obtenerInstalacionesSeleccionadas());
         sesionExistente.setEstado(jCheckBox1.isSelected());
+        
+        double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas());
+        JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
+
+
+        // reasignar el día de spa a la sesión
+        sesionExistente.setDiadeSpa(diadeSpa);
+
+
 
         // 7. Guardar cambios
         sesionData.editarSesion(sesionExistente);
@@ -984,6 +1022,11 @@ private String instalacionesToString(List<Instalacion> lista) {
         mostrarError("El consultorio seleccionado está ocupado en esta franja horaria.");
         return;
     }
+    // validar disponibilidad del día de spa
+    if (sesionData.estaOcupadoDiaSpa(diadeSpa.getCodPack(), inicio, fin)) {
+    mostrarError("El Día de Spa seleccionado ya está asignado a otra sesión en ese horario.");
+    return;
+    }
     
     for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
         if (sesionData.estaOcupadaInstalacion(ins.getCodInstal(), inicio, fin)) {
@@ -1006,6 +1049,11 @@ private String instalacionesToString(List<Instalacion> lista) {
     
     // ASIGNAR instalaciones seleccionadas antes de guardar
      nuevaSesion.setInstalaciones(obtenerInstalacionesSeleccionadas());
+     
+    double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas());
+    JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
+
+
 
     sesionData.guardarSesion(nuevaSesion);
     mostrarMensaje("Sesión registrada correctamente.", "Éxito");
@@ -1014,24 +1062,30 @@ private String instalacionesToString(List<Instalacion> lista) {
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
-        try {
-        int codigo = Integer.parseInt(jTextField1.getText().trim());
-        int confirmacion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro de que desea ELIMINAR la sesión con código " + codigo + "?", 
-            "Confirmar Eliminación", 
-            JOptionPane.YES_NO_OPTION);
+   try {
+    int codigo = Integer.parseInt(jTextField1.getText().trim());
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            sesionData.deshabilitarSesion(codigo); 
-            JOptionPane.showMessageDialog(this, "Sesión eliminada correctamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
-            limpiarCampos();
-            cargarTabla();
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar el código de la sesión a eliminar.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al eliminar la sesión. Revise la consola por el detalle SQL.", "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+    int confirmacion = JOptionPane.showConfirmDialog(
+        this,
+        "¿Está seguro de que desea ELIMINAR la sesión con código " + codigo + "?",
+        "Confirmar Eliminación",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE
+    );
+
+    if (confirmacion != JOptionPane.YES_OPTION) {
+        return;
     }
+   
+    sesionData.borrarSesion(codigo); 
+    JOptionPane.showMessageDialog(this, "Sesión eliminada correctamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+    limpiarCampos();
+    cargarTabla();
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Debe ingresar el código de la sesión a eliminar.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al eliminar la sesión. Revise la consola por el detalle SQL.", "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_jBotonEliminarActionPerformed
 
     private void jBotonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonNuevoActionPerformed

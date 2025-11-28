@@ -54,7 +54,6 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
             modelo.addRow(new Object[]{
                 d.getCodPack(),
                 d.getFechaHoraInicio(),
-                d.getFechaHoraFin(),
                 d.getPreferencias(),
                 d.getCliente().getNombreCompleto(),
                 d.getMonto(),

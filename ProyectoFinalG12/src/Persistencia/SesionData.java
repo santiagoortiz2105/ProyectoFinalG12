@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -540,4 +541,107 @@ public class SesionData {
 
     return total;
 }
+    
+    
+    //Masajistas disponibles
+    public boolean masajistaDisponible(int codMasajista, LocalDateTime inicio, LocalDateTime fin) {
+    String sql = "SELECT * FROM sesion WHERE codMasajista = ? AND estado = 1 AND "
+            + "( (fechaHoraInicio <= ? AND fechaHoraFin > ?) "
+            + "OR  (fechaHoraInicio < ? AND fechaHoraFin >= ?) "
+            + "OR  (fechaHoraInicio >= ? AND fechaHoraFin <= ?) )";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, codMasajista);
+
+        ps.setTimestamp(2, Timestamp.valueOf(inicio));
+        ps.setTimestamp(3, Timestamp.valueOf(inicio));
+
+        ps.setTimestamp(4, Timestamp.valueOf(fin));
+        ps.setTimestamp(5, Timestamp.valueOf(fin));
+
+        ps.setTimestamp(6, Timestamp.valueOf(inicio));
+        ps.setTimestamp(7, Timestamp.valueOf(fin));
+
+        ResultSet rs = ps.executeQuery();
+
+        boolean libre = !rs.next();
+        rs.close();
+        ps.close();
+
+        return libre;
+
+    } catch (SQLException e) {
+        System.out.println("Error verificando masajista: " + e.getMessage());
+        return false;
+    }
+}
+    //Dia de spa Ocupado
+    public boolean estaOcupadoDiaSpa(int codDiaSpa, LocalDateTime inicio, LocalDateTime fin) {
+    String sql = "SELECT COUNT(*) FROM sesion " +
+                 "WHERE codDiaSpa = ? AND " +
+                 "((fechaHoraInicio < ? AND fechaHoraFin > ?) OR " +   // se superponen
+                 "(fechaHoraInicio >= ? AND fechaHoraInicio < ?))";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, codDiaSpa);
+        ps.setTimestamp(2, Timestamp.valueOf(fin));
+        ps.setTimestamp(3, Timestamp.valueOf(inicio));
+        ps.setTimestamp(4, Timestamp.valueOf(inicio));
+        ps.setTimestamp(5, Timestamp.valueOf(fin));
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1) > 0;
+
+    } catch (SQLException e) {
+        System.out.println("Error validando día de spa: " + e.getMessage());
+    }
+    return false;
+}
+    
+    public boolean estaOcupadoDiaSpaExcepto(int codSesion, int codDiaSpa, LocalDateTime inicio, LocalDateTime fin) {
+    String sql = "SELECT COUNT(*) FROM sesion " +
+                 "WHERE codDiaSpa = ? AND codSesion <> ? AND " +
+                 "((fechaHoraInicio < ? AND fechaHoraFin > ?) OR " +
+                 "(fechaHoraInicio >= ? AND fechaHoraInicio < ?))";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, codDiaSpa);
+        ps.setInt(2, codSesion);
+        ps.setTimestamp(3, Timestamp.valueOf(fin));
+        ps.setTimestamp(4, Timestamp.valueOf(inicio));
+        ps.setTimestamp(5, Timestamp.valueOf(inicio));
+        ps.setTimestamp(6, Timestamp.valueOf(fin));
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt(1) > 0;
+
+    } catch (SQLException e) {
+        System.out.println("Error validando día de spa (excepto): " + e.getMessage());
+    }
+    return false;
+}
+//Eliminar Sesion
+public void borrarSesion(int codSesion) {
+    borrarInstalacionesDeSesion(codSesion);
+
+    String sql = "DELETE FROM sesion WHERE codSesion = ?";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, codSesion);
+        int borrado = ps.executeUpdate();
+
+        if (borrado > 0) {
+            JOptionPane.showMessageDialog(null, "Sesión eliminada correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró la sesión.");
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al eliminar sesión: " + ex.getMessage());
+    }
+}
+
+
+
 }

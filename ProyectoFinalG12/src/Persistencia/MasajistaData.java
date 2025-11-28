@@ -16,6 +16,7 @@ import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -356,6 +357,50 @@ public class MasajistaData {
 
     return libres;
 }
+    
+    public void eliminarMasajista(int matricula) {
+    // 1) Verificar si tiene sesiones asociadas
+    String verificarSql = "SELECT COUNT(*) FROM sesion WHERE matricula = ?";
+
+    try (PreparedStatement psVerificar = con.prepareStatement(verificarSql)) {
+        psVerificar.setInt(1, matricula);
+        ResultSet rs = psVerificar.executeQuery();
+        
+        if (rs.next() && rs.getInt(1) > 0) {
+            JOptionPane.showMessageDialog(null, 
+                "No se puede eliminar el masajista porque tiene sesiones asociadas.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, 
+            "Error al verificar sesiones del masajista: " + ex.getMessage());
+        return;
+    }
+
+    // 2) Eliminar si no tiene dependencias
+    String sql = "DELETE FROM masajista WHERE matricula = ?";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, matricula);
+        int fila = ps.executeUpdate();
+
+        if (fila > 0) {
+            JOptionPane.showMessageDialog(null, 
+                    "Masajista eliminado correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                    "No se encontró el masajista.");
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, 
+            "Error al eliminar masajista: " + ex.getMessage());
+    }
+}
+
     
    }
 

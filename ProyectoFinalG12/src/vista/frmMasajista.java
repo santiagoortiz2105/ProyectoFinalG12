@@ -312,7 +312,7 @@ public class frmMasajista extends javax.swing.JInternalFrame {
             );
 
             if (confirmacion == JOptionPane.YES_OPTION) {
-                masajistaData.deshabilitarMasajista(matricula);
+                masajistaData.eliminarMasajista(matricula);
                 JOptionPane.showMessageDialog(
                         this,
                         "Masajista eliminado correctamente.",
