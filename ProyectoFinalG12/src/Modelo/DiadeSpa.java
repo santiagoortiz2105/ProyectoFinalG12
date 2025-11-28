@@ -13,7 +13,8 @@ import java.util.List;
  */
 public class DiadeSpa {
     private int codPack;
-    private LocalDateTime fechaHora;
+    private LocalDateTime fechaHoraInicio;
+    private LocalDateTime fechaHoraFin;
     private String preferencias;
     private Cliente cliente;
     private double monto;
@@ -26,8 +27,9 @@ public class DiadeSpa {
         this.sesiones = new ArrayList<>();
     }
 
-    public DiadeSpa(LocalDateTime fechaHora, String preferencias, Cliente cliente, double monto, boolean estado) {
-        this.fechaHora = fechaHora;
+    public DiadeSpa(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, String preferencias, Cliente cliente, double monto, boolean estado) {
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
         this.preferencias = preferencias;
         this.cliente = cliente;
         this.monto = monto;
@@ -43,12 +45,20 @@ public class DiadeSpa {
         this.codPack = codPack;
     }
 
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
+    public LocalDateTime getFechaHoraInicio() {
+        return fechaHoraInicio;
     }
 
-    public void setFechaHora(LocalDateTime fechaHora) {
-        this.fechaHora = fechaHora;
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+    
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
     }
 
     public String getPreferencias() {

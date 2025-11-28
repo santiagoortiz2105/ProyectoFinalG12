@@ -33,14 +33,15 @@ public class DiadeSpaData {
     
     //Guardar DiadeSpa
     public void guardarDiaDeSpa(DiadeSpa d) {
-        String sql = "INSERT INTO dia_de_spa (fechaHora, preferencias, codCli, monto, estado) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO dia_de_spa (fechaHoraInicio, fechaHoraFin, preferencias, codCli, monto, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setTimestamp(1, java.sql.Timestamp.valueOf(d.getFechaHora()));
-            ps.setString(2, d.getPreferencias());
-            ps.setInt(3, d.getCliente().getCodCli());
-            ps.setDouble(4, d.getMonto());
-            ps.setBoolean(5, d.isEstado());
+            ps.setTimestamp(1, java.sql.Timestamp.valueOf(d.getFechaHoraInicio()));
+            ps.setTimestamp(2, java.sql.Timestamp.valueOf(d.getFechaHoraFin()));
+            ps.setString(3, d.getPreferencias());
+            ps.setInt(4, d.getCliente().getCodCli());
+            ps.setDouble(5, d.getMonto());
+            ps.setBoolean(6, d.isEstado());
 
             ps.executeUpdate();
 
@@ -65,7 +66,8 @@ public class DiadeSpaData {
             while (rs.next()) {
                 DiadeSpa dia = new DiadeSpa();
                 dia.setCodPack(rs.getInt("codPack"));
-                dia.setFechaHora(rs.getTimestamp("fechaHora").toLocalDateTime());
+                dia.setFechaHoraInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
+                dia.setFechaHoraFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
                 dia.setPreferencias(rs.getString("preferencias"));
                 dia.setMonto(rs.getDouble("monto"));
                 dia.setEstado(rs.getBoolean("estado"));
@@ -80,15 +82,16 @@ public class DiadeSpaData {
     }
     //Editar DiadeSpa
     public void editarDiaDeSpa(DiadeSpa d) {
-        String sql = "UPDATE dia_de_spa SET fechaHora=?, preferencias=?, codCli=?, monto=?, estado=? WHERE codPack=?";
+        String sql = "UPDATE dia_de_spa SET fechaHoraInicio=?, fechaHoraFin=?, preferencias=?, codCli=?, monto=?, estado=? WHERE codPack=?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setTimestamp(1, java.sql.Timestamp.valueOf(d.getFechaHora()));
-            ps.setString(2, d.getPreferencias());
-            ps.setInt(3, d.getCliente().getCodCli());
-            ps.setDouble(4, d.getMonto());
-            ps.setBoolean(5, d.isEstado());
-            ps.setInt(6, d.getCodPack());
+            ps.setTimestamp(1, java.sql.Timestamp.valueOf(d.getFechaHoraInicio()));
+            ps.setTimestamp(2, java.sql.Timestamp.valueOf(d.getFechaHoraFin()));
+            ps.setString(3, d.getPreferencias());
+            ps.setInt(4, d.getCliente().getCodCli());
+            ps.setDouble(5, d.getMonto());
+            ps.setBoolean(6, d.isEstado());
+            ps.setInt(7, d.getCodPack());
 
             int exito = ps.executeUpdate();
             ps.close();
@@ -148,7 +151,8 @@ public class DiadeSpaData {
             if (rs.next()) {
                 d = new DiadeSpa();
                 d.setCodPack(rs.getInt("codPack"));
-                d.setFechaHora(rs.getTimestamp("fechaHora").toLocalDateTime());
+                d.setFechaHoraInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
+                d.setFechaHoraFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
                 d.setPreferencias(rs.getString("preferencias"));
                 d.setMonto(rs.getDouble("monto"));
                 d.setEstado(rs.getBoolean("estado"));
