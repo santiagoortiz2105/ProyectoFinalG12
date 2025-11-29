@@ -83,28 +83,34 @@ public class DiadeSpaData {
     }
     //Editar DiadeSpa
     public void editarDiaDeSpa(DiadeSpa d) {
-        String sql = "UPDATE dia_de_spa SET fechaHoraInicio=?, fechaHoraFin=?, preferencias=?, codCli=?, monto=?, estado=? WHERE codPack=?";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setTimestamp(1, java.sql.Timestamp.valueOf(d.getFechaHoraInicio()));
-            ps.setTimestamp(2, java.sql.Timestamp.valueOf(d.getFechaHoraFin()));
-            ps.setString(3, d.getPreferencias());
-            ps.setInt(4, d.getCliente().getCodCli());
-            ps.setDouble(5, d.getMonto());
-            ps.setBoolean(6, d.isEstado());
-            ps.setInt(7, d.getCodPack());
+       String sql = "UPDATE dia_de_spa SET fechaHoraInicio=?, fechaHoraFin=?, preferencias=?, codCli=?, monto=?, estado=? WHERE codPack=?";
+    try {
+        System.out.println("CodPack: " + d.getCodPack());
+        System.out.println("Conexión: " + (con != null && !con.isClosed())); // Verificar conexión
 
-            int exito = ps.executeUpdate();
-            ps.close();
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setTimestamp(1, java.sql.Timestamp.valueOf(d.getFechaHoraInicio()));
+        ps.setTimestamp(2, java.sql.Timestamp.valueOf(d.getFechaHoraFin()));
+        ps.setString(3, d.getPreferencias());
+        ps.setInt(4, d.getCliente().getCodCli());
+        ps.setDouble(5, d.getMonto());
+        ps.setBoolean(6, d.isEstado());
+        ps.setInt(7, d.getCodPack());
 
-            if (exito == 1) {
-                System.out.println("Día de Spa modificado correctamente.");
-            } else {
-                System.out.println("No se encontró el Día de Spa.");
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error al editar Día de Spa: " + ex.getMessage());
+        int filasAfectadas = ps.executeUpdate();
+        ps.close();
+
+        if (filasAfectadas == 1) {
+            System.out.println("Día de Spa modificado correctamente.");
+            JOptionPane.showMessageDialog(null, "Día de Spa modificado correctamente.");
+        } else {
+            System.out.println("No se encontró el Día de Spa.");
+            JOptionPane.showMessageDialog(null, "No se encontró el Día de Spa para modificar.");
         }
+    } catch (SQLException ex) {
+        System.out.println("Error al editar Día de Spa: " + ex.getMessage());
+        JOptionPane.showMessageDialog(null, "Error al editar Día de Spa: " + ex.getMessage());
+    }
     }
     //Deshabilitar DiadeSpa
     public void deshabilitarDiaDeSpa(int codPack) {
@@ -197,4 +203,6 @@ public class DiadeSpaData {
 
     return lista;
 }
+    
+    
 }

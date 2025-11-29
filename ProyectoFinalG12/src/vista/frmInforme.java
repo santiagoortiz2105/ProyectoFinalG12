@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 public class frmInforme extends javax.swing.JInternalFrame {
 
     private DiadeSpaData diaSpaData = new DiadeSpaData();
+    private SesionData sesionData = new SesionData();
     private DefaultTableModel modelo;
 
     /**
@@ -85,18 +86,16 @@ public class frmInforme extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Hora Inicio", "Hora Fin", "Instalacion", "Tratamiento", "Masajista", "Consultorio", "Monto por sesión", "Monto Total"
+                "Fecha", "Horario", "Instalacion", "Tratamiento", "Masajista", "Consultorio", "Monto por sesión", "Monto Total"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,12 +138,26 @@ public class frmInforme extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cargarClientesPorFecha(LocalDate fechaBuscada) {
+     jComboBox2.removeAllItems();
+    List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
+
+    for (DiadeSpa dia : dias) {
+        // Verificar si el Día de Spa tiene sesiones asociadas
+        List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
+        if (!sesiones.isEmpty()) {
+            String item = "Día de Spa Cod. " + dia.getCodPack() + " - " + dia.getCliente().getNombreCompleto();
+            jComboBox2.addItem(item);
+        }
+    }
+}
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
         try {
             String texto = (String) jComboBox1.getSelectedItem();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate fechaBuscada = LocalDate.parse(texto, formato);
             cargarTablaPorFecha(fechaBuscada);
+            cargarClientesPorFecha(fechaBuscada); 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Formato inválido. Use dd-MM-yyyy");
         }
@@ -166,6 +179,9 @@ public class frmInforme extends javax.swing.JInternalFrame {
             }
         }
     }
+    
+     
+      
 
     // Método auxiliar para verificar si una fecha ya está en el JComboBox
     private boolean contieneFecha(JComboBox<String> comboBox, String fecha) {
@@ -178,45 +194,50 @@ public class frmInforme extends javax.swing.JInternalFrame {
     }
 
     private void cargarTablaPorFecha(LocalDate fechaBuscada) {
-        limpiarTabla();
+         limpiarTabla();
+    List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
 
-        List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
-        SesionData sesionData = new SesionData();
+    DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        for (DiadeSpa dia : dias) {
+    for (DiadeSpa dia : dias) {
+        List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
 
-            List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
+        for (Sesion s : sesiones) {
+            // Obtener tratamiento
+            String tratamiento = (s.getTratamiento() != null) ? s.getTratamiento().getNombre() : "-";
 
-            for (Sesion s : sesiones) {
+            // Obtener instalaciones
+            List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
+            String instalaciones = insts.stream()
+                    .map(Instalacion::getNombre)
+                    .reduce((a, b) -> a + ", " + b)
+                    .orElse("-");
 
-                String tratamiento = (s.getTratamiento() != null)
-                        ? s.getTratamiento().getNombre()
-                        : "-";
+            // Obtener horario
+            String horario = s.getFechaHoraInicio().format(horaFormatter) + " - " + s.getFechaHoraFin().format(horaFormatter);
 
-                // Obtener instalaciones
-                List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
-                String instalaciones = insts.stream()
-                        .map(Instalacion::getNombre)
-                        .reduce((a, b) -> a + ", " + b)
-                        .orElse("-");
+            // Calcular monto por sesión (solo instalaciones)
+            double montoSesion = insts.stream().mapToDouble(Instalacion::getPrecio30m).sum();
 
-                double montoTotal = sesionData.calcularCostoTotalSesion(s.getCodSesion());
+            // Calcular monto total (monto por sesión + $40 del Día de Spa)
+            double montoTotal = montoSesion + 40.0;
 
-                modelo.addRow(new Object[]{
-                    dia.getCodPack(),
-                    dia.getFechaHoraInicio().toLocalDate(),
-                    dia.getCliente().getNombreCompleto(),
-                    s.getMasajista().getNombre(),
-                    s.getConsultorio().getNroConsultorio(),
-                    tratamiento,
-                    instalaciones,
-                    s.getCodSesion(),
-                    montoTotal
-                });
-            }
+            // Agregar fila a la tabla
+            modelo.addRow(new Object[]{
+                s.getFechaHoraInicio().toLocalDate(), // Fecha
+                horario, // Horario
+                instalaciones, // Instalación
+                tratamiento, // Tratamiento
+                s.getMasajista().getNombre(), // Masajista
+                s.getConsultorio().getNroConsultorio(), // Consultorio
+                "$" + montoSesion, // Monto por sesión
+                "$" + montoTotal // Monto total
+            });
         }
+    }
     }//GEN-LAST:event_jBotonBuscarActionPerformed
-
+     
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBotonBuscar;

@@ -131,22 +131,12 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
     private double calcularMontoSesion(DiadeSpa dia, List<Instalacion> instalaciones) {
         double total = 0.0;
-
-        // 1) monto del pack 
-        if (dia != null) {
-            total += dia.getMonto();
-        }
-
-        // 2) instalaciones
+        //instalaciones
         if (instalaciones != null) {
             for (Instalacion inst : instalaciones) {
                 total += inst.getPrecio30m();
             }
         }
-
-        // 3) cargo fijo siempre
-        total += 00.0;
-
         return total;
     }
 

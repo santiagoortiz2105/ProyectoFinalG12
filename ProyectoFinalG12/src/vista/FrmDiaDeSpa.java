@@ -485,27 +485,33 @@ try {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //boton modificar
-        if (!validarCampos()) {
-         return;
-        }
-        if (jTextField1.getText().isEmpty()) {
-            return;
-        }
-        FechaSpa resultado = obtenerFechasSpa();
-        if (resultado == null) {
-            return;
-        }
-        DiadeSpa d = new DiadeSpa();
-        d.setCodPack(Integer.parseInt(jTextField1.getText()));
-        d.setFechaHoraInicio(resultado.inicio);
-        d.setFechaHoraFin(resultado.fin);
-        d.setPreferencias(taPref.getText());
-        d.setCliente((Cliente) cbCliente.getSelectedItem());
-        d.setMonto(Double.parseDouble(tfMonto.getText()));
-        d.setEstado(checkEstado.isSelected());
+         if (!validarCampos()) {
+        return;
+    }
 
-        diaData.editarDiaDeSpa(d);
-        cargarTabla();
+    if (jTextField1.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar el código del Día de Spa para modificar.");
+        return;
+    }
+
+    System.out.println("Código del Día de Spa a modificar: " + jTextField1.getText()); // Mensaje de depuración
+
+    FechaSpa resultado = obtenerFechasSpa();
+    if (resultado == null) {
+        return;
+    }
+
+    DiadeSpa d = new DiadeSpa();
+    d.setCodPack(Integer.parseInt(jTextField1.getText()));
+    d.setFechaHoraInicio(resultado.inicio);
+    d.setFechaHoraFin(resultado.fin);
+    d.setPreferencias(taPref.getText());
+    d.setCliente((Cliente) cbCliente.getSelectedItem());
+    d.setMonto(Double.parseDouble(tfMonto.getText()));
+    d.setEstado(checkEstado.isSelected());
+
+    diaData.editarDiaDeSpa(d);
+    cargarTabla();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

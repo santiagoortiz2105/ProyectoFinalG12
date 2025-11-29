@@ -544,15 +544,15 @@ public class SesionData {
     
     
     //Masajistas disponibles
-    public boolean masajistaDisponible(int codMasajista, LocalDateTime inicio, LocalDateTime fin) {
-    String sql = "SELECT * FROM sesion WHERE codMasajista = ? AND estado = 1 AND "
+    public boolean masajistaDisponible(int matricula, LocalDateTime inicio, LocalDateTime fin) {
+    String sql = "SELECT * FROM sesion WHERE matricula = ? AND estado = 1 AND "
             + "( (fechaHoraInicio <= ? AND fechaHoraFin > ?) "
             + "OR  (fechaHoraInicio < ? AND fechaHoraFin >= ?) "
             + "OR  (fechaHoraInicio >= ? AND fechaHoraFin <= ?) )";
 
     try {
         PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, codMasajista);
+        ps.setInt(1, matricula);
 
         ps.setTimestamp(2, Timestamp.valueOf(inicio));
         ps.setTimestamp(3, Timestamp.valueOf(inicio));
@@ -577,14 +577,14 @@ public class SesionData {
     }
 }
     //Dia de spa Ocupado
-    public boolean estaOcupadoDiaSpa(int codDiaSpa, LocalDateTime inicio, LocalDateTime fin) {
+    public boolean estaOcupadoDiaSpa(int codPack, LocalDateTime inicio, LocalDateTime fin) {
     String sql = "SELECT COUNT(*) FROM sesion " +
-                 "WHERE codDiaSpa = ? AND " +
+                 "WHERE codPack = ? AND " +
                  "((fechaHoraInicio < ? AND fechaHoraFin > ?) OR " +   // se superponen
                  "(fechaHoraInicio >= ? AND fechaHoraInicio < ?))";
 
     try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, codDiaSpa);
+        ps.setInt(1, codPack);
         ps.setTimestamp(2, Timestamp.valueOf(fin));
         ps.setTimestamp(3, Timestamp.valueOf(inicio));
         ps.setTimestamp(4, Timestamp.valueOf(inicio));
@@ -599,14 +599,14 @@ public class SesionData {
     return false;
 }
     
-    public boolean estaOcupadoDiaSpaExcepto(int codSesion, int codDiaSpa, LocalDateTime inicio, LocalDateTime fin) {
+    public boolean estaOcupadoDiaSpaExcepto(int codSesion, int codPack, LocalDateTime inicio, LocalDateTime fin) {
     String sql = "SELECT COUNT(*) FROM sesion " +
-                 "WHERE codDiaSpa = ? AND codSesion <> ? AND " +
+                 "WHERE codPack = ? AND codSesion <> ? AND " +
                  "((fechaHoraInicio < ? AND fechaHoraFin > ?) OR " +
                  "(fechaHoraInicio >= ? AND fechaHoraInicio < ?))";
 
     try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, codDiaSpa);
+        ps.setInt(1, codPack);
         ps.setInt(2, codSesion);
         ps.setTimestamp(3, Timestamp.valueOf(fin));
         ps.setTimestamp(4, Timestamp.valueOf(inicio));
