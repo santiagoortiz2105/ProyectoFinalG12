@@ -40,7 +40,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrmSesion extends javax.swing.JInternalFrame {
 
-      private class CheckListRenderer extends JCheckBox implements ListCellRenderer<Object> {
+    private class CheckListRenderer extends JCheckBox implements ListCellRenderer<Object> {
 
         public CheckListRenderer() {
             setOpaque(true);
@@ -91,68 +91,64 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         soloFechaHora(jTextField3);
     }
 
-private String instalacionesToString(List<Instalacion> lista) {
-    String texto = "";
-    boolean primero = true;
-    boolean tieneElementos = false;
-    double total = 0;
+    private String instalacionesToString(List<Instalacion> lista) {
+        String texto = "";
+        boolean primero = true;
+        boolean tieneElementos = false;
+        double total = 0;
 
-    try {
+        try {
 
-        for (Instalacion inst : lista) {
+            for (Instalacion inst : lista) {
 
-            tieneElementos = true;
+                tieneElementos = true;
 
-            if (!primero) {
-                texto = texto + ", ";
+                if (!primero) {
+                    texto = texto + ", ";
+                }
+
+                // AGREGO EL CÓDIGO DE LA INSTALACIÓN
+                texto = texto + inst.getCodInstal();
+
+                primero = false;
+
+                // SUMAMOS EL PRECIO REAL
+                total = total + inst.getPrecio30m();
             }
 
-            // AGREGO EL CÓDIGO DE LA INSTALACIÓN
-            texto = texto + inst.getCodInstal();
+            // Lista vacía
+            if (!tieneElementos) {
+                return "-";
+            }
 
-            primero = false;
+            // DEVUELVE CÓDIGOS + TOTAL
+            return texto + " | Total: $" + total;
 
-            // SUMAMOS EL PRECIO REAL
-            total = total + inst.getPrecio30m();
-        }
-
-        // Lista vacía
-        if (!tieneElementos) {
+        } catch (Exception e) {
             return "-";
         }
-
-        // DEVUELVE CÓDIGOS + TOTAL
-        return texto + " | Total: $" + total;
-
-    } catch (Exception e) {
-        return "-";
     }
-}
 
     private double calcularMontoSesion(DiadeSpa dia, List<Instalacion> instalaciones) {
-    double total = 0.0;
+        double total = 0.0;
 
-    // 1) monto del pack 
-    if (dia != null) {
-        total += dia.getMonto();
-    }
-
-    // 2) instalaciones
-    if (instalaciones != null) {
-        for (Instalacion inst : instalaciones) {
-            total += inst.getPrecio30m();
+        // 1) monto del pack 
+        if (dia != null) {
+            total += dia.getMonto();
         }
+
+        // 2) instalaciones
+        if (instalaciones != null) {
+            for (Instalacion inst : instalaciones) {
+                total += inst.getPrecio30m();
+            }
+        }
+
+        // 3) cargo fijo siempre
+        total += 00.0;
+
+        return total;
     }
-
-    // 3) cargo fijo siempre
-    total += 00.0;
-
-    return total;
-}
-
-
-
-
 
     private void armarTabla() {
         modelo.addColumn("Código");
@@ -192,9 +188,9 @@ private String instalacionesToString(List<Instalacion> lista) {
 
         jComboBox3.removeAllItems();
         for (Masajista m : masData.listarMasajistas()) {
-             if (m.isEstado()) {
-        jComboBox3.addItem(m.getNombre());
-    }
+            if (m.isEstado()) {
+                jComboBox3.addItem(m.getNombre());
+            }
         }
 
         jComboBox4.removeAllItems();
@@ -202,63 +198,63 @@ private String instalacionesToString(List<Instalacion> lista) {
             jComboBox4.addItem(String.valueOf(d.getCodPack()));
         }
     }
-    
+
     private boolean validarCampos(boolean esModificacion) {
 
-    // Si es MODIFICAR, debemos validar el ID
-    if (esModificacion) {
-        if (jTextField1.getText().trim().isEmpty()) {
-            mostrarError("Debe ingresar el código de sesión para modificar.");
-            jTextField1.requestFocus();
+        // Si es MODIFICAR, debemos validar el ID
+        if (esModificacion) {
+            if (jTextField1.getText().trim().isEmpty()) {
+                mostrarError("Debe ingresar el código de sesión para modificar.");
+                jTextField1.requestFocus();
+                return false;
+            }
+        }
+
+        // VALIDAR FECHAS
+        if (jTextField2.getText().trim().isEmpty()) {
+            mostrarError("Debe ingresar la fecha y hora de inicio.");
+            jTextField2.requestFocus();
             return false;
         }
-    }
 
-    // VALIDAR FECHAS
-    if (jTextField2.getText().trim().isEmpty()) {
-        mostrarError("Debe ingresar la fecha y hora de inicio.");
-        jTextField2.requestFocus();
-        return false;
-    }
+        if (jTextField3.getText().trim().isEmpty()) {
+            mostrarError("Debe ingresar la fecha y hora de fin.");
+            jTextField3.requestFocus();
+            return false;
+        }
 
-    if (jTextField3.getText().trim().isEmpty()) {
-        mostrarError("Debe ingresar la fecha y hora de fin.");
-        jTextField3.requestFocus();
-        return false;
-    }
+        // TRATAMIENTO
+        if (jComboBox1.getSelectedIndex() == 0) {
+            mostrarError("Debe seleccionar un tratamiento.");
+            return false;
+        }
 
-    // TRATAMIENTO
-    if (jComboBox1.getSelectedIndex() == 0) {
-        mostrarError("Debe seleccionar un tratamiento.");
-        return false;
-    }
+        // CONSULTORIO
+        if (jComboBox2.getSelectedIndex() == 0) {
+            mostrarError("Debe seleccionar un consultorio.");
+            return false;
+        }
 
-    // CONSULTORIO
-    if (jComboBox2.getSelectedIndex() == 0) {
-        mostrarError("Debe seleccionar un consultorio.");
-        return false;
-    }
+        // DÍA DE SPA
+        if (jComboBox4.getSelectedIndex() == 0) {
+            mostrarError("Debe seleccionar el día de Spa.");
+            return false;
+        }
 
-    // DÍA DE SPA
-    if (jComboBox4.getSelectedIndex() == 0) {
-        mostrarError("Debe seleccionar el día de Spa.");
-        return false;
-    }
+        // INSTALACIONES
+        if (listaInstalaciones.getSelectedValuesList().isEmpty()) {
+            mostrarError("Debe seleccionar al menos una instalación.");
+            return false;
+        }
 
-    // INSTALACIONES
-    if (listaInstalaciones.getSelectedValuesList().isEmpty()) {
-        mostrarError("Debe seleccionar al menos una instalación.");
-        return false;
-    }
+        // MASAJISTA
+        if (jComboBox3.getSelectedIndex() == 0) {
+            mostrarError("Debe seleccionar un masajista.");
+            return false;
+        }
 
-    // MASAJISTA
-    if (jComboBox3.getSelectedIndex() == 0) {
-        mostrarError("Debe seleccionar un masajista.");
-        return false;
+        return true;
     }
-
-    return true;
-}
 
     private void limpiarTabla() {
         int filas = modelo.getRowCount() - 1;
@@ -269,7 +265,7 @@ private String instalacionesToString(List<Instalacion> lista) {
 
     private void cargarTabla() {
         limpiarTabla();
-         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         for (Sesion s : sesionData.listarSesiones()) {
             modelo.addRow(new Object[]{
                 s.getCodSesion(),
@@ -279,22 +275,22 @@ private String instalacionesToString(List<Instalacion> lista) {
                 s.getConsultorio().getNroConsultorio(),
                 s.getMasajista().getNombre(),
                 s.getDiadeSpa().getCodPack(),
-                s.isEstado() ? "Activo" : "Inactivo", 
+                s.isEstado() ? "Activo" : "Inactivo",
                 instalacionesToString(s.getInstalaciones())
             });
         }
         centrarColumnas();
     }
-    
-    private void centrarColumnas() {
-    javax.swing.table.DefaultTableCellRenderer centerRenderer =
-            new javax.swing.table.DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < jTable1.getColumnCount(); i++) {
-        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    private void centrarColumnas() {
+        javax.swing.table.DefaultTableCellRenderer centerRenderer
+                = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -898,194 +894,192 @@ private String instalacionesToString(List<Instalacion> lista) {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jBotonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonModificarActionPerformed
-       try {
+        try {
 
-        // 1. Validar código
-        int codigo = Integer.parseInt(jTextField1.getText().trim());
-        Sesion sesionExistente = sesionData.buscarPorCodSesion(codigo);
+            // 1. Validar código
+            int codigo = Integer.parseInt(jTextField1.getText().trim());
+            Sesion sesionExistente = sesionData.buscarPorCodSesion(codigo);
 
-        if (sesionExistente == null) {
-            mostrarError("No se encontró una sesión con el código: " + codigo);
+            if (sesionExistente == null) {
+                mostrarError("No se encontró una sesión con el código: " + codigo);
+                return;
+            }
+
+            // 2. Validar campos obligatorios
+            if (!validarCampos(true)) {
+                return;
+            }
+
+            // 3. Obtener objetos seleccionados
+            Tratamiento tratamiento = obtenerTratamientoSeleccionado();
+            Consultorio consultorio = obtenerConsultorioSeleccionado();
+            Masajista masajista = obtenerMasajistaSeleccionado();
+            DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
+
+            // 4. Validar fechas
+            String inicioStr = jTextField2.getText().trim();
+            String finStr = jTextField3.getText().trim();
+
+            LocalDateTime[] fechas = parsearFechas(inicioStr, finStr);
+            LocalDateTime inicio = fechas[0];
+            LocalDateTime fin = fechas[1];
+
+            if (inicio.isAfter(fin)) {
+                mostrarError("La fecha/hora de inicio debe ser anterior a la de fin.");
+                return;
+            }
+
+            // 5. validaciones de horarios 
+            if (sesionData.estaOcupadoMasajistaExcepto(codigo, masajista.getMatricula(), inicio, fin)) {
+                mostrarError("El masajista seleccionado ya está ocupado en esa franja horaria.");
+                return;
+            }
+
+            if (sesionData.estaOcupadoConsultorioExcepto(codigo, consultorio.getNroConsultorio(), inicio, fin)) {
+                mostrarError("El consultorio seleccionado ya está ocupado en esa franja horaria.");
+                return;
+            }
+
+            if (sesionData.estaOcupadoDiaSpaExcepto(codigo, diadeSpa.getCodPack(), inicio, fin)) {
+                mostrarError("El Día de Spa seleccionado ya está ocupado en esa franja horaria.");
+                return;
+            }
+
+            for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
+                if (sesionData.estaOcupadaInstalacionExcepto(codigo, ins.getCodInstal(), inicio, fin)) {
+                    mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
+                    return;
+                }
+            }
+
+            // 6. Actualizar valores de la sesión
+            sesionExistente.setFechaHoraInicio(inicio);
+            sesionExistente.setFechaHoraFin(fin);
+            sesionExistente.setTratamiento(tratamiento);
+            sesionExistente.setConsultorio(consultorio);
+            sesionExistente.setMasajista(masajista);
+            sesionExistente.setDiadeSpa(diadeSpa);
+            sesionExistente.setInstalaciones(obtenerInstalacionesSeleccionadas());
+            sesionExistente.setEstado(jCheckBox1.isSelected());
+
+            double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas());
+            JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
+
+            // reasignar el día de spa a la sesión
+            sesionExistente.setDiadeSpa(diadeSpa);
+
+            // 7. Guardar cambios
+            sesionData.editarSesion(sesionExistente);
+            mostrarMensaje("Sesión con código " + codigo + " modificada exitosamente.", "Modificación Exitosa");
+
+            limpiarCampos();
+            cargarTabla();
+
+        } catch (NumberFormatException e) {
+            mostrarError("Debe ingresar un código de sesión válido.");
+        } catch (DateTimeParseException e) {
+            mostrarError("Formato de fecha/hora inválido. Use dd-MM-yyyy HH:mm");
+        } catch (Exception e) {
+            mostrarError("Error al modificar la sesión: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jBotonModificarActionPerformed
+
+    private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
+        if (!validarCampos(false)) {
             return;
         }
 
-        // 2. Validar campos obligatorios
-        if (!validarCampos(true)) return;
-
-        // 3. Obtener objetos seleccionados
         Tratamiento tratamiento = obtenerTratamientoSeleccionado();
         Consultorio consultorio = obtenerConsultorioSeleccionado();
         Masajista masajista = obtenerMasajistaSeleccionado();
         DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
 
-        // 4. Validar fechas
         String inicioStr = jTextField2.getText().trim();
         String finStr = jTextField3.getText().trim();
 
-        LocalDateTime[] fechas = parsearFechas(inicioStr, finStr);
+        LocalDateTime[] fechas;
+        try {
+            fechas = parsearFechas(inicioStr, finStr);
+        } catch (DateTimeParseException ex) {
+            mostrarError("Formato de fecha incorrecto.");
+            return;
+        }
+
         LocalDateTime inicio = fechas[0];
         LocalDateTime fin = fechas[1];
 
-        if (inicio.isAfter(fin)) {
-            mostrarError("La fecha/hora de inicio debe ser anterior a la de fin.");
+        // Validar disponibilidad del masajista
+        if (sesionData.estaOcupadoMasajista(masajista.getMatricula(), inicio, fin)) {
+            mostrarError("El masajista seleccionado ya tiene una sesión en esta franja horaria.");
             return;
         }
 
-        // 5. validaciones de horarios 
-        if (sesionData.estaOcupadoMasajistaExcepto(codigo, masajista.getMatricula(), inicio, fin)) {
-            mostrarError("El masajista seleccionado ya está ocupado en esa franja horaria.");
+        //validar disponibilidad del consultorio
+        if (sesionData.estaOcupadoConsultorio(consultorio.getNroConsultorio(), inicio, fin)) {
+            mostrarError("El consultorio seleccionado está ocupado en esta franja horaria.");
+            return;
+        }
+        // validar disponibilidad del día de spa
+        if (sesionData.estaOcupadoDiaSpa(diadeSpa.getCodPack(), inicio, fin)) {
+            mostrarError("El Día de Spa seleccionado ya está asignado a otra sesión en ese horario.");
             return;
         }
 
-        if (sesionData.estaOcupadoConsultorioExcepto(codigo, consultorio.getNroConsultorio(), inicio, fin)) {
-            mostrarError("El consultorio seleccionado ya está ocupado en esa franja horaria.");
-            return;
-        }
-        
-        if (sesionData.estaOcupadoDiaSpaExcepto(codigo, diadeSpa.getCodPack(), inicio, fin)) {
-        mostrarError("El Día de Spa seleccionado ya está ocupado en esa franja horaria.");
-        return;
-        }
-        
         for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
-        if (sesionData.estaOcupadaInstalacionExcepto(codigo, ins.getCodInstal(), inicio, fin)) {
-         mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
-        return;
-    }
-}
+            if (sesionData.estaOcupadaInstalacion(ins.getCodInstal(), inicio, fin)) {
+                mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
+                return;
+            }
+        }
 
-        // 6. Actualizar valores de la sesión
-        sesionExistente.setFechaHoraInicio(inicio);
-        sesionExistente.setFechaHoraFin(fin);
-        sesionExistente.setTratamiento(tratamiento);
-        sesionExistente.setConsultorio(consultorio);
-        sesionExistente.setMasajista(masajista);
-        sesionExistente.setDiadeSpa(diadeSpa);
-        sesionExistente.setInstalaciones(obtenerInstalacionesSeleccionadas());
-        sesionExistente.setEstado(jCheckBox1.isSelected());
-        
+        // crear sesion
+        Sesion nuevaSesion = new Sesion(
+                inicio,
+                fin,
+                tratamiento,
+                consultorio,
+                masajista,
+                diadeSpa,
+                jCheckBox1.isSelected()
+        );
+
+        // ASIGNAR instalaciones seleccionadas antes de guardar
+        nuevaSesion.setInstalaciones(obtenerInstalacionesSeleccionadas());
+
         double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas());
         JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
 
-
-        // reasignar el día de spa a la sesión
-        sesionExistente.setDiadeSpa(diadeSpa);
-
-
-
-        // 7. Guardar cambios
-        sesionData.editarSesion(sesionExistente);
-        mostrarMensaje("Sesión con código " + codigo + " modificada exitosamente.", "Modificación Exitosa");
-
-        limpiarCampos();
+        sesionData.guardarSesion(nuevaSesion);
+        mostrarMensaje("Sesión registrada correctamente.", "Éxito");
         cargarTabla();
-
-    } catch (NumberFormatException e) {
-        mostrarError("Debe ingresar un código de sesión válido.");
-    } catch (DateTimeParseException e) {
-        mostrarError("Formato de fecha/hora inválido. Use dd-MM-yyyy HH:mm");
-    } catch (Exception e) {
-        mostrarError("Error al modificar la sesión: " + e.getMessage());
-    }
-    }//GEN-LAST:event_jBotonModificarActionPerformed
-
-    private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
-         if (!validarCampos(false)) return;
-
-    Tratamiento tratamiento = obtenerTratamientoSeleccionado();
-    Consultorio consultorio = obtenerConsultorioSeleccionado();
-    Masajista masajista = obtenerMasajistaSeleccionado();
-    DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
-
-    String inicioStr = jTextField2.getText().trim();
-    String finStr = jTextField3.getText().trim();
-
-    LocalDateTime[] fechas;
-    try {
-        fechas = parsearFechas(inicioStr, finStr);
-    } catch (DateTimeParseException ex) {
-        mostrarError("Formato de fecha incorrecto.");
-        return;
-    }
-
-    LocalDateTime inicio = fechas[0];
-    LocalDateTime fin = fechas[1];
-
-    // Validar disponibilidad del masajista
-    if (sesionData.estaOcupadoMasajista(masajista.getMatricula(), inicio, fin)) {
-        mostrarError("El masajista seleccionado ya tiene una sesión en esta franja horaria.");
-        return;
-    }
-
-    //validar disponibilidad del consultorio
-    if (sesionData.estaOcupadoConsultorio(consultorio.getNroConsultorio(), inicio, fin)) {
-        mostrarError("El consultorio seleccionado está ocupado en esta franja horaria.");
-        return;
-    }
-    // validar disponibilidad del día de spa
-    if (sesionData.estaOcupadoDiaSpa(diadeSpa.getCodPack(), inicio, fin)) {
-    mostrarError("El Día de Spa seleccionado ya está asignado a otra sesión en ese horario.");
-    return;
-    }
-    
-    for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
-        if (sesionData.estaOcupadaInstalacion(ins.getCodInstal(), inicio, fin)) {
-        mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
-        return;
-    }
-    }
-    
-
-    // crear sesion
-    Sesion nuevaSesion = new Sesion(
-        inicio,
-        fin,
-        tratamiento,
-        consultorio,
-        masajista,
-        diadeSpa,
-        jCheckBox1.isSelected()
-    );
-    
-    // ASIGNAR instalaciones seleccionadas antes de guardar
-     nuevaSesion.setInstalaciones(obtenerInstalacionesSeleccionadas());
-     
-    double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas());
-    JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
-
-
-
-    sesionData.guardarSesion(nuevaSesion);
-    mostrarMensaje("Sesión registrada correctamente.", "Éxito");
-    cargarTabla();
-    limpiarCampos();
+        limpiarCampos();
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
-   try {
-    int codigo = Integer.parseInt(jTextField1.getText().trim());
+        try {
+            int codigo = Integer.parseInt(jTextField1.getText().trim());
 
-    int confirmacion = JOptionPane.showConfirmDialog(
-        this,
-        "¿Está seguro de que desea ELIMINAR la sesión con código " + codigo + "?",
-        "Confirmar Eliminación",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE
-    );
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro de que desea ELIMINAR la sesión con código " + codigo + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
 
-    if (confirmacion != JOptionPane.YES_OPTION) {
-        return;
-    }
-   
-    sesionData.borrarSesion(codigo); 
-    JOptionPane.showMessageDialog(this, "Sesión eliminada correctamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
-    limpiarCampos();
-    cargarTabla();
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(this, "Debe ingresar el código de la sesión a eliminar.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(this, "Error al eliminar la sesión. Revise la consola por el detalle SQL.", "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
-}
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            sesionData.borrarSesion(codigo);
+            JOptionPane.showMessageDialog(this, "Sesión eliminada correctamente.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+            cargarTabla();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el código de la sesión a eliminar.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar la sesión. Revise la consola por el detalle SQL.", "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBotonEliminarActionPerformed
 
     private void jBotonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonNuevoActionPerformed
@@ -1096,8 +1090,8 @@ private String instalacionesToString(List<Instalacion> lista) {
         try {
             String codigoStr = jTextField1.getText().trim();
             if (codigoStr.isEmpty()) {
-                 JOptionPane.showMessageDialog(this, "Debe ingresar un código para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                 return;
+                JOptionPane.showMessageDialog(this, "Debe ingresar un código para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
             }
             int codigo = Integer.parseInt(codigoStr);
             Sesion s = sesionData.buscarPorCodSesion(codigo);
@@ -1111,26 +1105,26 @@ private String instalacionesToString(List<Instalacion> lista) {
                 jComboBox2.setSelectedItem(String.valueOf(s.getConsultorio().getNroConsultorio()));
                 jComboBox3.setSelectedItem(s.getMasajista().getNombre());
                 jComboBox4.setSelectedItem(String.valueOf(s.getDiadeSpa().getCodPack()));
-                
-                DefaultListModel<Instalacion> modeloLista =
-            (DefaultListModel<Instalacion>) listaInstalaciones.getModel();
 
-             // Traemos desde la BD las instalaciones de la sesión
-            List<Instalacion> instalacionesSesion = instalacionData.obtenerInstalacionesPorSesion(s.getCodSesion());
+                DefaultListModel<Instalacion> modeloLista
+                        = (DefaultListModel<Instalacion>) listaInstalaciones.getModel();
 
-            // Sacamos cualquier selección previa
-            listaInstalaciones.clearSelection();
+                // Traemos desde la BD las instalaciones de la sesión
+                List<Instalacion> instalacionesSesion = instalacionData.obtenerInstalacionesPorSesion(s.getCodSesion());
 
-            // Marcar en la JList las instalaciones que pertenecen a la sesión
-            for (int i = 0; i < modeloLista.getSize(); i++) {
-           Instalacion instLista = modeloLista.getElementAt(i);
+                // Sacamos cualquier selección previa
+                listaInstalaciones.clearSelection();
 
-           for (Instalacion instSesion : instalacionesSesion) {
-            if (instLista.getCodInstal() == instSesion.getCodInstal()) {
-                listaInstalaciones.addSelectionInterval(i, i); // seleccionar
-            }
-        }
-    }
+                // Marcar en la JList las instalaciones que pertenecen a la sesión
+                for (int i = 0; i < modeloLista.getSize(); i++) {
+                    Instalacion instLista = modeloLista.getElementAt(i);
+
+                    for (Instalacion instSesion : instalacionesSesion) {
+                        if (instLista.getCodInstal() == instSesion.getCodInstal()) {
+                            listaInstalaciones.addSelectionInterval(i, i); // seleccionar
+                        }
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró ninguna sesión con el código: " + codigo, "Búsqueda Fallida", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -1142,116 +1136,121 @@ private String instalacionesToString(List<Instalacion> lista) {
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private Tratamiento obtenerTratamientoSeleccionado() {
-    String nombreTratamiento = (String) jComboBox1.getSelectedItem();
-    return tratData.listarTratamientos().stream()
-           .filter(t -> t.getNombre().equals(nombreTratamiento))
-           .findFirst().orElse(null);
-}
+        String nombreTratamiento = (String) jComboBox1.getSelectedItem();
+        return tratData.listarTratamientos().stream()
+                .filter(t -> t.getNombre().equals(nombreTratamiento))
+                .findFirst().orElse(null);
+    }
 
     private Consultorio obtenerConsultorioSeleccionado() {
-    String nroConsultorioStr = (String) jComboBox2.getSelectedItem();
-    if (nroConsultorioStr == null || nroConsultorioStr.isEmpty()) return null;
-    try {
-        int nroConsultorio = Integer.parseInt(nroConsultorioStr);
-        return consulData.listarConsultorios().stream()
-               .filter(c -> c.getNroConsultorio() == nroConsultorio)
-               .findFirst().orElse(null);
-    } catch (NumberFormatException e) { return null; }
-}
+        String nroConsultorioStr = (String) jComboBox2.getSelectedItem();
+        if (nroConsultorioStr == null || nroConsultorioStr.isEmpty()) {
+            return null;
+        }
+        try {
+            int nroConsultorio = Integer.parseInt(nroConsultorioStr);
+            return consulData.listarConsultorios().stream()
+                    .filter(c -> c.getNroConsultorio() == nroConsultorio)
+                    .findFirst().orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     private Masajista obtenerMasajistaSeleccionado() {
-    String nombreMasajista = (String) jComboBox3.getSelectedItem();
-    return masData.listarMasajistas().stream()
-           .filter(m -> m.getNombre().equals(nombreMasajista))
-           .findFirst().orElse(null);
-}
+        String nombreMasajista = (String) jComboBox3.getSelectedItem();
+        return masData.listarMasajistas().stream()
+                .filter(m -> m.getNombre().equals(nombreMasajista))
+                .findFirst().orElse(null);
+    }
 
     private DiadeSpa obtenerDiadeSpaSeleccionado() {
-    String codPackStr = (String) jComboBox4.getSelectedItem();
-    if (codPackStr == null || codPackStr.isEmpty()) return null;
-    try {
-        int codPack = Integer.parseInt(codPackStr);
-        return diaSpaData.listarDiasDeSpa().stream()
-               .filter(d -> d.getCodPack() == codPack)
-               .findFirst().orElse(null);
-    } catch (NumberFormatException e) { return null; }
-}
+        String codPackStr = (String) jComboBox4.getSelectedItem();
+        if (codPackStr == null || codPackStr.isEmpty()) {
+            return null;
+        }
+        try {
+            int codPack = Integer.parseInt(codPackStr);
+            return diaSpaData.listarDiasDeSpa().stream()
+                    .filter(d -> d.getCodPack() == codPack)
+                    .findFirst().orElse(null);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     private List<Instalacion> obtenerInstalacionesSeleccionadas() {
-    return listaInstalaciones.getSelectedValuesList();
-}
-    
-    
-    
+        return listaInstalaciones.getSelectedValuesList();
+    }
+
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     private void mostrarError(String mensaje) {
-    JOptionPane.showMessageDialog(this, mensaje,"Error", JOptionPane.ERROR_MESSAGE);
-}
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
     private void mostrarMensaje(String mensaje, String titulo) {
-    JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
-}
+        JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
+    }
 
     private LocalDateTime[] parsearFechas(String inicioStr, String finStr) throws DateTimeParseException {
-      LocalDateTime inicio = LocalDateTime.parse(inicioStr, FORMATTER);
-    LocalDateTime fin = LocalDateTime.parse(finStr, FORMATTER);
-    return new LocalDateTime[]{inicio, fin};
-}
-    
-
-    
-     private void cargarListaInstalaciones() {
-          DefaultListModel<Instalacion> lm = new DefaultListModel<>();
-    for (Instalacion inst : instalacionData.listarInstalaciones()) {
-        if (inst.isEstado()) lm.addElement(inst);
+        LocalDateTime inicio = LocalDateTime.parse(inicioStr, FORMATTER);
+        LocalDateTime fin = LocalDateTime.parse(finStr, FORMATTER);
+        return new LocalDateTime[]{inicio, fin};
     }
-    listaInstalaciones.setModel(lm);
 
-    // Modo de selección (no usar MULTIPLE_INTERVAL_SELECTION)
-    listaInstalaciones.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    private void cargarListaInstalaciones() {
+        DefaultListModel<Instalacion> lm = new DefaultListModel<>();
+        for (Instalacion inst : instalacionData.listarInstalaciones()) {
+            if (inst.isEstado()) {
+                lm.addElement(inst);
+            }
+        }
+        listaInstalaciones.setModel(lm);
 
-    //SELECTION MODEL que hace toggle con un solo click
-    listaInstalaciones.setSelectionModel(new DefaultListSelectionModel() {
-        @Override
-        public void setSelectionInterval(int index0, int index1) {
-            if (index0 == index1) {
-                // Toggle: si está seleccionado, lo saco; si no, lo marco
-                if (isSelectedIndex(index0)) {
-                    super.removeSelectionInterval(index0, index0);
+        // Modo de selección (no usar MULTIPLE_INTERVAL_SELECTION)
+        listaInstalaciones.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        //SELECTION MODEL que hace toggle con un solo click
+        listaInstalaciones.setSelectionModel(new DefaultListSelectionModel() {
+            @Override
+            public void setSelectionInterval(int index0, int index1) {
+                if (index0 == index1) {
+                    // Toggle: si está seleccionado, lo saco; si no, lo marco
+                    if (isSelectedIndex(index0)) {
+                        super.removeSelectionInterval(index0, index0);
+                    } else {
+                        super.addSelectionInterval(index0, index0);
+                    }
                 } else {
-                    super.addSelectionInterval(index0, index0);
+                    // permite seleccionar varios si arrastra (opcional)
+                    super.setSelectionInterval(index0, index1);
                 }
-            } else {
-                // permite seleccionar varios si arrastra (opcional)
-                super.setSelectionInterval(index0, index1);
             }
-        }
-    });
+        });
 
-    //NECESARIO para que no robe foco y no active selección rara
-    listaInstalaciones.setFocusable(false);
+        //NECESARIO para que no robe foco y no active selección rara
+        listaInstalaciones.setFocusable(false);
 
-    //RENDERER con checkboxes — SIN ESTO NO FUNCIONA
-    listaInstalaciones.setCellRenderer(new CheckListRenderer());
-        }
-    
-     
-     private void soloFechaHora(javax.swing.JTextField campo) {
-    campo.addKeyListener(new java.awt.event.KeyAdapter() {
-        @Override
-        public void keyTyped(java.awt.event.KeyEvent evt) {
-            char c = evt.getKeyChar();
+        //RENDERER con checkboxes — SIN ESTO NO FUNCIONA
+        listaInstalaciones.setCellRenderer(new CheckListRenderer());
+    }
 
-            // Solo números, guiones, slash, espacio y dos puntos
-            if (!Character.isDigit(c) && c != '-' && c != '/' && c != ':' && c != ' ') {
-                evt.consume(); // Bloquea el carácter
+    private void soloFechaHora(javax.swing.JTextField campo) {
+        campo.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Solo números, guiones, slash, espacio y dos puntos
+                if (!Character.isDigit(c) && c != '-' && c != '/' && c != ':' && c != ' ') {
+                    evt.consume(); // Bloquea el carácter
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-  
-    
+
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package vista;
+
 import Modelo.DiadeSpa;
 import Modelo.Instalacion;
 import Modelo.Sesion;
@@ -17,28 +18,31 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.SwingConstants;
+
 /**
  *
  * @author Lulim
  */
 public class frmInforme extends javax.swing.JInternalFrame {
-     private DiadeSpaData diaSpaData = new DiadeSpaData();
-     private DefaultTableModel modelo;
+
+    private DiadeSpaData diaSpaData = new DiadeSpaData();
+    private DefaultTableModel modelo;
+
     /**
      * Creates new form frmInforme
      */
     public frmInforme() {
         initComponents();
         this.getContentPane().setBackground(new Color(245, 242, 232));
-         modelo = (DefaultTableModel) jTable1.getModel();
-         limpiarTabla();
-         cargarFechasDisponibles(); 
-         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        modelo = (DefaultTableModel) jTable1.getModel();
+        limpiarTabla();
+        cargarFechasDisponibles();
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-    for (int i = 0; i < jTable1.getColumnCount(); i++) {
-        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-    }
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
     /**
@@ -56,12 +60,14 @@ public class frmInforme extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
 
         jLabel1.setFont(new java.awt.Font("Century", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Informe Dia de Spa    ");
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -85,133 +91,137 @@ public class frmInforme extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Fecha", "Cliente", "Masajista", "Consultorio", "Tratamiento ", "Instalacion ", "Sesion ", "Monto Total"
+                "Fecha", "Hora Inicio", "Hora Fin", "Instalacion", "Tratamiento", "Masajista", "Consultorio", "Monto por sesión", "Monto Total"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 907, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(256, 256, 256)
+                        .addComponent(jLabel2)
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(42, 42, 42)
-                        .addComponent(jBotonBuscar))
-                    .addComponent(jLabel1))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 38, Short.MAX_VALUE))
+                        .addComponent(jBotonBuscar)))
+                .addGap(0, 24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jLabel1)
-                .addGap(34, 34, 34)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBotonBuscar))
-                .addGap(32, 32, 32)
+                .addGap(47, 47, 47)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
-          try {
-        String texto = (String) jComboBox1.getSelectedItem();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate fechaBuscada = LocalDate.parse(texto, formato);
-        cargarTablaPorFecha(fechaBuscada);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Formato inválido. Use dd-MM-yyyy");
+        try {
+            String texto = (String) jComboBox1.getSelectedItem();
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate fechaBuscada = LocalDate.parse(texto, formato);
+            cargarTablaPorFecha(fechaBuscada);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Formato inválido. Use dd-MM-yyyy");
+        }
     }
-    }     
 
     private void limpiarTabla() {
         modelo.setRowCount(0);
     }
-    
-    private void cargarFechasDisponibles() {
-    jComboBox1.removeAllItems();
-    List<DiadeSpa> lista = diaSpaData.listarDiasDeSpa();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    for (DiadeSpa d : lista) {
-        String fecha = d.getFechaHoraInicio().toLocalDate().format(formatter);
-        if (!contieneFecha(jComboBox1, fecha)) {
-            jComboBox1.addItem(fecha);
+    private void cargarFechasDisponibles() {
+        jComboBox1.removeAllItems();
+        List<DiadeSpa> lista = diaSpaData.listarDiasDeSpa();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        for (DiadeSpa d : lista) {
+            String fecha = d.getFechaHoraInicio().toLocalDate().format(formatter);
+            if (!contieneFecha(jComboBox1, fecha)) {
+                jComboBox1.addItem(fecha);
+            }
         }
     }
-}
-    
+
     // Método auxiliar para verificar si una fecha ya está en el JComboBox
     private boolean contieneFecha(JComboBox<String> comboBox, String fecha) {
-    for (int i = 0; i < comboBox.getItemCount(); i++) {
-        if (comboBox.getItemAt(i).equals(fecha)) {
-            return true;
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+            if (comboBox.getItemAt(i).equals(fecha)) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
     private void cargarTablaPorFecha(LocalDate fechaBuscada) {
         limpiarTabla();
 
-    List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
-    SesionData sesionData = new SesionData();
+        List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
+        SesionData sesionData = new SesionData();
 
-    for (DiadeSpa dia : dias) {
+        for (DiadeSpa dia : dias) {
 
-        List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
+            List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
 
-        for (Sesion s : sesiones) {
+            for (Sesion s : sesiones) {
 
-            String tratamiento = (s.getTratamiento() != null)
-                    ? s.getTratamiento().getNombre()
-                    : "-";
+                String tratamiento = (s.getTratamiento() != null)
+                        ? s.getTratamiento().getNombre()
+                        : "-";
 
-            // Obtener instalaciones
-            List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
-            String instalaciones = insts.stream()
-                    .map(Instalacion::getNombre)
-                    .reduce((a, b) -> a + ", " + b)
-                    .orElse("-");
-           
-            double montoTotal = sesionData.calcularCostoTotalSesion(s.getCodSesion());
+                // Obtener instalaciones
+                List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
+                String instalaciones = insts.stream()
+                        .map(Instalacion::getNombre)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("-");
 
-            modelo.addRow(new Object[]{
-                dia.getCodPack(),
-                dia.getFechaHoraInicio().toLocalDate(),
-                dia.getCliente().getNombreCompleto(),
+                double montoTotal = sesionData.calcularCostoTotalSesion(s.getCodSesion());
 
-                s.getMasajista().getNombre(),
-
-                s.getConsultorio().getNroConsultorio(),
-                tratamiento,
-                instalaciones,
-                s.getCodSesion(),
-                montoTotal
-            });
+                modelo.addRow(new Object[]{
+                    dia.getCodPack(),
+                    dia.getFechaHoraInicio().toLocalDate(),
+                    dia.getCliente().getNombreCompleto(),
+                    s.getMasajista().getNombre(),
+                    s.getConsultorio().getNroConsultorio(),
+                    tratamiento,
+                    instalaciones,
+                    s.getCodSesion(),
+                    montoTotal
+                });
+            }
         }
-    }
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBotonBuscar;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
