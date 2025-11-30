@@ -134,9 +134,10 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         //instalaciones
         if (instalaciones != null) {
             for (Instalacion inst : instalaciones) {
-                total += inst.getPrecio30m();
+                total = dia.getMonto() + inst.getPrecio30m();
             }
         }
+        diaSpaData.editarDiaDeSpaMonto(dia, total);
         return total;
     }
 
@@ -167,16 +168,19 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     private void cargarCombos() {
 
         jComboBox1.removeAllItems();
+        jComboBox1.addItem("Seleccione un tratamiento");
         for (Tratamiento t : tratData.listarTratamientos()) {
             jComboBox1.addItem(t.getNombre());
         }
 
         jComboBox2.removeAllItems();
+        jComboBox2.addItem("Seleccione un consultorio");
         for (Consultorio c : consulData.listarConsultorios()) {
             jComboBox2.addItem(String.valueOf(c.getNroConsultorio()));
         }
 
         jComboBox3.removeAllItems();
+        jComboBox3.addItem("Seleccione un masajista");
         for (Masajista m : masData.listarMasajistas()) {
             if (m.isEstado()) {
                 jComboBox3.addItem(m.getNombre());
@@ -184,6 +188,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         }
 
         jComboBox4.removeAllItems();
+        jComboBox4.addItem("Seleccione un dia de spa");
         for (DiadeSpa d : diaSpaData.listarDiasDeSpa()) {
             jComboBox4.addItem(String.valueOf(d.getCodPack()));
         }
@@ -238,6 +243,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         }
 
         // MASAJISTA
+        System.out.println("MASAJISTAAAAAA: " + jComboBox3);
+        System.out.println("MASAJISTAAAAAA INDEX: " + jComboBox3.getSelectedIndex());
+        System.out.println("MASAJISTAAAAAA ITEM: " + jComboBox3.getSelectedItem());
         if (jComboBox3.getSelectedIndex() == 0) {
             mostrarError("Debe seleccionar un masajista.");
             return false;
@@ -374,8 +382,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel3.setText("Día y hora inicio:");
+        jLabel3.setText("Fecha:");
 
+        jTextField2.setEditable(false);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -383,8 +392,9 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel4.setText("Día y hora fin:");
+        jLabel4.setText("Horario:");
 
+        jTextField3.setEditable(false);
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
@@ -431,6 +441,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jLabel9.setText("Estado:");
 
         jCheckBox1.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
+        jCheckBox1.setSelected(true);
         jCheckBox1.setText("Activo");
         jCheckBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -982,6 +993,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         Tratamiento tratamiento = obtenerTratamientoSeleccionado();
         Consultorio consultorio = obtenerConsultorioSeleccionado();
         Masajista masajista = obtenerMasajistaSeleccionado();
+        System.out.println("MASAJISTA SELECCIONADO: " + masajista);
         DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
 
         String inicioStr = jTextField2.getText().trim();
@@ -1240,6 +1252,12 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         });
     }
 
+    private void cargarFechasPorCod(int cod){
+        DiadeSpa dia = diaSpaData.buscarPorId(cod);
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        jTextField2.setText(dia.getFechaHoraInicio().toLocalDate().format(f)+"");
+        jTextField3.setText(dia.getFechaHoraInicio().toLocalTime()+" - "+dia.getFechaHoraFin().toLocalTime());
+    }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
@@ -1250,7 +1268,14 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
+        //DIA DE SPA
+        if (jComboBox4.getSelectedIndex() <= 0) {
+            return; //no procesa el Seleccione un dia de spa
+        }
+
+        String cod = jComboBox4.getSelectedItem().toString();
+
+        cargarFechasPorCod(Integer.parseInt(cod));
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

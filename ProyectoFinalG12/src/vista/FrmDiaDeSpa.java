@@ -263,12 +263,15 @@ try {
         jLabel6.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel6.setText("Monto:");
 
+        tfMonto.setEditable(false);
+        tfMonto.setText("40");
         tfMonto.setMinimumSize(new java.awt.Dimension(64, 26));
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel7.setText("Estado");
 
         checkEstado.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 12)); // NOI18N
+        checkEstado.setSelected(true);
         checkEstado.setText("Activo");
         checkEstado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
