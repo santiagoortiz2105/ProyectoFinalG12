@@ -79,7 +79,7 @@
                       <Component id="jCheckBoxEstado" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jComboBoxCosto" max="32767" attributes="0"/>
-                  <Component id="jComboBox2" max="32767" attributes="0"/>
+                  <Component id="jTextField3" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Component id="jBotonBuscar" min="-2" pref="101" max="-2" attributes="0"/>
@@ -137,7 +137,7 @@
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -218,7 +218,7 @@
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="5">
-            <StringItem index="0" value="Seleccione una opcion"/>
+            <StringItem index="0" value="Seleccione una opci&#xf3;n"/>
             <StringItem index="1" value="Facial"/>
             <StringItem index="2" value="Corporal"/>
             <StringItem index="3" value="Relajacion "/>
@@ -478,12 +478,11 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxCosto">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
+          <StringArray count="4">
             <StringItem index="0" value="Seleccione un costo"/>
             <StringItem index="1" value="5"/>
-            <StringItem index="2" value="8"/>
-            <StringItem index="3" value="10"/>
-            <StringItem index="4" value="15"/>
+            <StringItem index="2" value="10"/>
+            <StringItem index="3" value="15"/>
           </StringArray>
         </Property>
       </Properties>
@@ -494,20 +493,13 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox2">
+    <Component class="javax.swing.JTextField" name="jTextField3">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
-        </Property>
+        <Property name="text" type="java.lang.String" value="10 minutos"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField3ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
