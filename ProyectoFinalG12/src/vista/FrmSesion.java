@@ -18,7 +18,9 @@ import Persistencia.DiadeSpaData;
 import Persistencia.InstalacionData;
 import java.awt.Color;
 import java.awt.Component;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -1195,9 +1197,19 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private LocalDateTime[] parsearFechas(String inicioStr, String finStr) throws DateTimeParseException {
-        LocalDateTime inicio = LocalDateTime.parse(inicioStr, FORMATTER);
-        LocalDateTime fin = LocalDateTime.parse(finStr, FORMATTER);
+    private LocalDateTime[] parsearFechas(String fechaStr, String horarioStr) throws DateTimeParseException {
+        // Parsear la fecha (dd-MM-yyyy)
+        LocalDate fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        // Parsear el horario (HH:mm - HH:mm)
+        String[] horarios = horarioStr.split(" - ");
+        LocalTime horaInicio = LocalTime.parse(horarios[0], DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime horaFin = LocalTime.parse(horarios[1], DateTimeFormatter.ofPattern("HH:mm"));
+
+        // Combinar fecha y horario
+        LocalDateTime inicio = LocalDateTime.of(fecha, horaInicio);
+        LocalDateTime fin = LocalDateTime.of(fecha, horaFin);
+
         return new LocalDateTime[]{inicio, fin};
     }
 
@@ -1254,9 +1266,18 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
     private void cargarFechasPorCod(int cod){
         DiadeSpa dia = diaSpaData.buscarPorId(cod);
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        jTextField2.setText(dia.getFechaHoraInicio().toLocalDate().format(f)+"");
-        jTextField3.setText(dia.getFechaHoraInicio().toLocalTime()+" - "+dia.getFechaHoraFin().toLocalTime());
+        // Formatear solo la fecha (sin hora)
+        DateTimeFormatter fechaFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // Formatear solo el horario (sin fecha)
+        DateTimeFormatter horarioFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        // Asignar solo la fecha a jTextField2
+        jTextField2.setText(dia.getFechaHoraInicio().format(fechaFormatter));
+
+        // Asignar solo el horario a jTextField3 (inicio - fin)
+        String horarioInicio = dia.getFechaHoraInicio().format(horarioFormatter);
+        String horarioFin = dia.getFechaHoraFin().format(horarioFormatter);
+        jTextField3.setText(horarioInicio + " - " + horarioFin);
     }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
