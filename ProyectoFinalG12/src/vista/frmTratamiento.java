@@ -28,8 +28,10 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         modeloTabla = (DefaultTableModel) jTable2.getModel();
         cargarTabla();
         cargarCombo();
+        cargarComboDuracion(); 
         this.getContentPane().setBackground(new Color(245, 242, 232));
         centrarColumnas();
+        jComboBoxCosto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un costo", "5", "8", "12", "15" }));
     }
 
     /**
@@ -52,9 +54,7 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jCheckBoxEstado = new javax.swing.JCheckBox();
         jBotonGuardar = new javax.swing.JButton();
@@ -66,6 +66,8 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         jTable2 = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
+        jComboBoxCosto = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -111,14 +113,8 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel6.setText("Duración:");
 
-        jTextField3.setEditable(false);
-        jTextField3.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField3.setText("5 a 10 minutos");
-
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel7.setText("Costo:");
-
-        jTextField4.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel8.setText("Estado: ");
@@ -211,6 +207,15 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         jTextArea2.setRows(5);
         jScrollPane4.setViewportView(jTextArea2);
 
+        jComboBoxCosto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un costo", "5", "8", "10", "15" }));
+        jComboBoxCosto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCostoActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -231,17 +236,16 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
                             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField3)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField2)
-                        .addComponent(jTextField1)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jComboBox1, 0, 200, Short.MAX_VALUE)
+                    .addComponent(jTextField2)
+                    .addComponent(jTextField1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(74, 74, 74)
-                        .addComponent(jCheckBoxEstado)))
+                        .addComponent(jCheckBoxEstado))
+                    .addComponent(jComboBoxCosto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(45, 45, 45)
                 .addComponent(jBotonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
@@ -285,15 +289,15 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(31, 31, 31)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addGap(18, 18, Short.MAX_VALUE)
+                    .addComponent(jLabel7)
+                    .addComponent(jComboBoxCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jCheckBoxEstado))
@@ -319,8 +323,8 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
             String nombre = jTextField2.getText().trim();
             String tipo = (String) jComboBox1.getSelectedItem();
             String detalle = jTextArea2.getText().trim();
-            int duracion = Integer.parseInt(jTextField3.getText().trim());
-            double costo = Double.parseDouble(jTextField4.getText().trim());
+            int duracion = Integer.parseInt((String) jComboBox2.getSelectedItem());
+            double costo =  Double.parseDouble((String) jComboBoxCosto.getSelectedItem());
             boolean activo = jCheckBoxEstado.isSelected();
 
             Tratamiento t = new Tratamiento(nombre, tipo, detalle, duracion, costo, activo);
@@ -345,8 +349,8 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
                 t.setNombre(jTextField2.getText().trim());
                 t.setTipo((String) jComboBox1.getSelectedItem());
                 t.setDetalle(jTextArea2.getText().trim());
-                t.setDuracion_min(Integer.parseInt(jTextField3.getText().trim()));
-                t.setCosto(Double.parseDouble(jTextField4.getText().trim()));
+                t.setDuracion_min(Integer.parseInt((String) jComboBox2.getSelectedItem()));
+                t.setCosto(Double.parseDouble((String) jComboBoxCosto.getSelectedItem()));
                 t.setActivo(jCheckBoxEstado.isSelected());
 
                 tratamientoData.editarTratamiento(t);
@@ -386,8 +390,8 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
                 jTextField2.setText(t.getNombre());
                 jComboBox1.setSelectedItem(t.getTipo());
                 jTextArea2.setText(t.getDetalle());
-                jTextField3.setText(String.valueOf(t.getDuracion_min()));
-                jTextField4.setText(String.valueOf(t.getCosto()));
+                jComboBox2.setSelectedItem(String.valueOf(t.getDuracion_min()));
+                jComboBoxCosto.setSelectedItem(String.valueOf(t.getCosto()));
                 jCheckBoxEstado.setSelected(t.isActivo());
             } else {
                 JOptionPane.showMessageDialog(this, "Tratamiento no encontrado.");
@@ -400,6 +404,10 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     private void jCheckBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxEstadoActionPerformed
 
     }//GEN-LAST:event_jCheckBoxEstadoActionPerformed
+
+    private void jComboBoxCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCostoActionPerformed
+
+    }//GEN-LAST:event_jComboBoxCostoActionPerformed
 
     private void cargarTabla() {
         modeloTabla.setRowCount(0);
@@ -457,47 +465,21 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
             return false;
         }
 
-        //campo duracion
-        String durTxt = jTextField3.getText().trim();
-        if (durTxt.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar la duración en minutos.");
-            return false;
-        }
-        if (!durTxt.matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "La duración debe ser numérica.");
-            return false;
-        }
-        int duracion = Integer.parseInt(durTxt);
-        if (duracion <= 0) {
-            JOptionPane.showMessageDialog(this, "La duración debe ser mayor a 0.");
-            return false;
-        }
-
         //campo costo
-        String costoTxt = jTextField4.getText().trim();
-        if (costoTxt.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un costo.");
+        String costoSeleccionado = (String) jComboBoxCosto.getSelectedItem();
+        if (costoSeleccionado == null || costoSeleccionado.equals("Seleccione un costo")) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un costo.");
             return false;
         }
-        if (!costoTxt.matches("\\d+(\\.\\d+)?")) {
-            JOptionPane.showMessageDialog(this, "Costo inválido. Ej: 100 - 150.50");
-            return false;
-        }
-        double costo = Double.parseDouble(costoTxt);
-        if (costo <= 0) {
-            JOptionPane.showMessageDialog(this, "El costo debe ser mayor a 0.");
-            return false;
-        }
-
         return true;
     }
-
+        
     private void limpiarCampos() {
         jTextField1.setText("");
         jTextField2.setText("");
         jTextArea2.setText("");
-        jTextField3.setText("");
-        jTextField4.setText("");
+        jComboBox2.setSelectedIndex(0);
+        jComboBoxCosto.setSelectedIndex(0);
         jCheckBoxEstado.setSelected(false);
     }
 
@@ -506,9 +488,18 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         jComboBox1.addItem("Seleccione una opción");
         jComboBox1.addItem("Facial");
         jComboBox1.addItem("Corporal");
-        jComboBox1.addItem("Relajacion ");
+        jComboBox1.addItem("Relajacion");
         jComboBox1.addItem("Estetico");
     }
+    
+    private void cargarComboDuracion() {
+    jComboBox2.removeAllItems();
+    jComboBox2.addItem("Seleccione una duración");
+    jComboBox2.addItem("5");
+    jComboBox2.addItem("10");
+    jComboBox2.addItem("15");
+    jComboBox2.addItem("30");
+}
 
     private void centrarColumnas() {
         javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
@@ -528,6 +519,8 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton jBotonNuevo;
     private javax.swing.JCheckBox jCheckBoxEstado;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBoxCosto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -544,7 +537,5 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

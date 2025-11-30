@@ -266,6 +266,11 @@ try {
         tfMonto.setEditable(false);
         tfMonto.setText("40");
         tfMonto.setMinimumSize(new java.awt.Dimension(64, 26));
+        tfMonto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfMontoActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel7.setText("Estado");
@@ -642,6 +647,10 @@ try {
     private void cbClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbClienteActionPerformed
+
+    private void tfMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfMontoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfMontoActionPerformed
 
     private void centrarColumnas() {
         javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
