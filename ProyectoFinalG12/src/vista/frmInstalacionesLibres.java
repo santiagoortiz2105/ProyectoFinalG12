@@ -250,16 +250,16 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
 
     private void cargarFranjas() {
         cbFranja.removeAllItems();
-        cbFranja.addItem("09:00 - 11:00");
+        cbFranja.addItem("Seleccione una franja horaria");
+        cbFranja.addItem("08:00 - 10:00");
         cbFranja.addItem("11:00 - 13:00");
-        cbFranja.addItem("13:00 - 15:00");
-        cbFranja.addItem("15:00 - 17:00");
+        cbFranja.addItem("14:00 - 16:00");
         cbFranja.addItem("17:00 - 19:00");
-        cbFranja.addItem("19:00 - 21:00");
     }
 
     private void cargarMeses() {
         cbMes.removeAllItems();
+        cbMes.addItem("Selecciones un mes");
         cbMes.addItem("Enero");
         cbMes.addItem("Febrero");
         cbMes.addItem("Marzo");

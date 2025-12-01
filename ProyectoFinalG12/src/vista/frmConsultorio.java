@@ -276,7 +276,8 @@ public class frmConsultorio extends javax.swing.JInternalFrame {
 
         int id = Integer.parseInt(tfnroconsultorio.getText());
         c.setNroConsultorio(id);
-
+       
+        JOptionPane.showMessageDialog(this, "Consultorio modificado correctamente.");
         cData.editarConsultorio(c);
         cargarTabla();
         limpiarCampos();
