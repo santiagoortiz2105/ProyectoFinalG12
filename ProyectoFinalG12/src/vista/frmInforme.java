@@ -87,13 +87,13 @@ public class frmInforme extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Horario", "Instalacion", "Tratamiento", "Masajista", "Consultorio", "Monto por sesión", "Costo por Tratamiento"
+                "Fecha", "Horario", "Instalacion", "Tratamiento", "Masajista", "Consultorio", "Monto por sesión"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -166,6 +166,10 @@ public class frmInforme extends javax.swing.JInternalFrame {
         }
     }
     private void jBotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscarActionPerformed
+        if (jComboBox1.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         try {
             String texto = (String) jComboBox1.getSelectedItem();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -184,6 +188,7 @@ public class frmInforme extends javax.swing.JInternalFrame {
 
     private void cargarFechasDisponibles() {
         jComboBox1.removeAllItems();
+        jComboBox1.addItem("Seleccione una fecha");
         List<DiadeSpa> lista = diaSpaData.listarDiasDeSpa();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -208,29 +213,24 @@ public class frmInforme extends javax.swing.JInternalFrame {
     private void cargarTablaPorFecha(LocalDate fechaBuscada) {
         limpiarTabla();
         List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
-
         DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        double totalAcumulado = 0; // Variable para acumular el total
 
         for (DiadeSpa dia : dias) {
             List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
-            System.out.println("DIA DE SPA, SUPUESTO MONTO TOTAL: " + dia.getMonto());
             for (Sesion s : sesiones) {
                 // Obtener tratamiento
                 String tratamiento = (s.getTratamiento() != null) ? s.getTratamiento().getNombre() : "-";
-
                 // Obtener instalaciones
                 List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
                 String instalaciones = insts.stream()
                         .map(Instalacion::getNombre)
                         .reduce((a, b) -> a + ", " + b)
                         .orElse("-");
-
                 // Obtener horario
                 String horario = s.getFechaHoraInicio().format(horaFormatter) + " - " + s.getFechaHoraFin().format(horaFormatter);
-
-                // Calcular monto por sesión (solo instalaciones)
-                double montoSesion = insts.stream().mapToDouble(Instalacion::getPrecio30m).sum();
-
+                // Calcular monto por sesión (instalaciones + tratamiento)
+                double montoSesion = insts.stream().mapToDouble(Instalacion::getPrecio30m).sum() + s.getTratamiento().getCosto();
                 // Agregar fila a la tabla
                 modelo.addRow(new Object[]{
                     s.getFechaHoraInicio().toLocalDate(), // Fecha
@@ -239,34 +239,35 @@ public class frmInforme extends javax.swing.JInternalFrame {
                     tratamiento, // Tratamiento
                     s.getMasajista().getNombre(), // Masajista
                     s.getConsultorio().getNroConsultorio(), // Consultorio
-                    "$" + montoSesion
+                    "$" + montoSesion // Monto por sesión (instalaciones + tratamiento)
                 });
+                // Acumular el monto de la sesión + $40 fijos
+                totalAcumulado += montoSesion + 40;
             }
-            lbTotal.setText("TOTAL = " + dia.getMonto() + "");
         }
+        // Asignar el total acumulado al lbTotal
+        lbTotal.setText("TOTAL = $" + totalAcumulado);
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private void cargarTablaPorCod(String cod) {
         limpiarTabla();
         List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(Integer.parseInt(cod));
         DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        double totalAcumulado = 0; // Variable para acumular el total
+
         for (Sesion s : sesiones) {
             // Obtener tratamiento
             String tratamiento = (s.getTratamiento() != null) ? s.getTratamiento().getNombre() : "-";
-
             // Obtener instalaciones
             List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
             String instalaciones = insts.stream()
                     .map(Instalacion::getNombre)
                     .reduce((a, b) -> a + ", " + b)
                     .orElse("-");
-
             // Obtener horario
             String horario = s.getFechaHoraInicio().format(horaFormatter) + " - " + s.getFechaHoraFin().format(horaFormatter);
-
-            // Calcular monto por sesión (solo instalaciones)
-            double montoSesion = insts.stream().mapToDouble(Instalacion::getPrecio30m).sum();
-
+            // Calcular monto por sesión (instalaciones + tratamiento)
+            double montoSesion = insts.stream().mapToDouble(Instalacion::getPrecio30m).sum() + s.getTratamiento().getCosto();
             // Agregar fila a la tabla
             modelo.addRow(new Object[]{
                 s.getFechaHoraInicio().toLocalDate(), // Fecha
@@ -275,11 +276,13 @@ public class frmInforme extends javax.swing.JInternalFrame {
                 tratamiento, // Tratamiento
                 s.getMasajista().getNombre(), // Masajista
                 s.getConsultorio().getNroConsultorio(), // Consultorio
-                "$" + montoSesion
+                "$" + montoSesion // Monto por sesión (instalaciones + tratamiento)
             });
+            // Acumular el monto de la sesión + $40 fijos
+            totalAcumulado += montoSesion + 40;
         }
-        DiadeSpa dia = diaSpaData.buscarPorId(Integer.parseInt(cod));
-        lbTotal.setText("TOTAL = " + dia.getMonto() + "");
+        // Asignar el total acumulado al lbTotal
+        lbTotal.setText("TOTAL = $" + totalAcumulado);
     }
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
