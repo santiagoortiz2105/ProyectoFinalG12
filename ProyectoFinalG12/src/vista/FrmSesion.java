@@ -131,12 +131,11 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         }
     }
 
-    private double calcularMontoSesion(DiadeSpa dia, List<Instalacion> instalaciones) {
-        double total = 0.0;
-        //instalaciones
+    private double calcularMontoSesion(DiadeSpa dia, List<Instalacion> instalaciones,Tratamiento tratamiento) {
+        double total = tratamiento.getCosto();
         if (instalaciones != null) {
             for (Instalacion inst : instalaciones) {
-                total = dia.getMonto() + inst.getPrecio30m();
+                total += inst.getPrecio30m();
             }
         }
         diaSpaData.editarDiaDeSpaMonto(dia, total);
@@ -172,7 +171,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         jComboBox1.removeAllItems();
         jComboBox1.addItem("Seleccione un tratamiento");
         for (Tratamiento t : tratData.listarTratamientos()) {
-            jComboBox1.addItem(t.getNombre());
+            String textoTratamiento = String.format("%s - $%.2f (%d min)", t.getNombre(), t.getCosto(),t.getDuracion_min());
+            jComboBox1.addItem(textoTratamiento);
         }
 
         jComboBox2.removeAllItems();
@@ -271,7 +271,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 s.getCodSesion(),
                 s.getFechaHoraInicio().format(formatter),
                 s.getFechaHoraFin().format(formatter),
-                s.getTratamiento().getNombre(),
+                String.format("%s - $%.2f (%d min)", s.getTratamiento().getNombre(), s.getTratamiento().getCosto(), s.getTratamiento().getDuracion_min()),
                 s.getConsultorio().getNroConsultorio(),
                 s.getMasajista().getNombre(),
                 s.getDiadeSpa().getCodPack(),
@@ -782,7 +782,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                                 .addComponent(jCheckBox1)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField2)
                                     .addComponent(jTextField3)
@@ -811,13 +811,13 @@ public class FrmSesion extends javax.swing.JInternalFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 358, Short.MAX_VALUE)
+                    .addGap(0, 362, Short.MAX_VALUE)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 358, Short.MAX_VALUE)))
+                    .addGap(0, 362, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -965,7 +965,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
             sesionExistente.setInstalaciones(obtenerInstalacionesSeleccionadas());
             sesionExistente.setEstado(jCheckBox1.isSelected());
 
-            double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas());
+            double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas(),tratamiento);
             JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
 
             // reasignar el día de spa a la sesión
@@ -1050,7 +1050,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         // ASIGNAR instalaciones seleccionadas antes de guardar
         nuevaSesion.setInstalaciones(obtenerInstalacionesSeleccionadas());
 
-        double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas());
+        double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas(),tratamiento);
         JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
 
         sesionData.guardarSesion(nuevaSesion);
@@ -1105,7 +1105,8 @@ public class FrmSesion extends javax.swing.JInternalFrame {
                 jTextField2.setText(s.getFechaHoraInicio().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
                 jTextField3.setText(s.getFechaHoraFin().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
                 jCheckBox1.setSelected(s.isEstado());
-                jComboBox1.setSelectedItem(s.getTratamiento().getNombre());
+                String textoTratamiento = String.format("%s - $%.2f (%d min)", s.getTratamiento().getNombre(), s.getTratamiento().getCosto(), s.getTratamiento().getDuracion_min());
+                jComboBox1.setSelectedItem(textoTratamiento);
                 jComboBox2.setSelectedItem(String.valueOf(s.getConsultorio().getNroConsultorio()));
                 jComboBox3.setSelectedItem(s.getMasajista().getNombre());
                 jComboBox4.setSelectedItem(String.valueOf(s.getDiadeSpa().getCodPack()));
@@ -1140,7 +1141,15 @@ public class FrmSesion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private Tratamiento obtenerTratamientoSeleccionado() {
-        String nombreTratamiento = (String) jComboBox1.getSelectedItem();
+        String textoSeleccionado = (String) jComboBox1.getSelectedItem();
+        if (textoSeleccionado == null || textoSeleccionado.equals("Seleccione un tratamiento")) {
+            return null;
+        }
+
+        // Extraer solo el nombre del tratamiento (sin el precio y duración)
+        String nombreTratamiento = textoSeleccionado.split(" - ")[0].trim();
+
+        // Buscar el tratamiento por nombre
         return tratData.listarTratamientos().stream()
                 .filter(t -> t.getNombre().equals(nombreTratamiento))
                 .findFirst().orElse(null);
