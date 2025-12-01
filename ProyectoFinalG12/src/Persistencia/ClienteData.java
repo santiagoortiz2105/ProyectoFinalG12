@@ -223,4 +223,37 @@ public class ClienteData {
     return cliente;
 }
       
+    public List<Cliente> listarClientesActivos() {
+    List<Cliente> clientes = new ArrayList<>();
+
+    String sql = "SELECT * FROM cliente WHERE estado = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            Cliente c = new Cliente();
+
+            c.setCodCli(rs.getInt("codCli"));
+            c.setDni(rs.getString("dni"));
+            c.setNombreCompleto(rs.getString("nombreCompleto"));
+            c.setTelefono(rs.getString("telefono"));
+            c.setEdad(rs.getInt("edad"));
+            c.setAfecciones(rs.getString("afecciones"));
+            c.setEstado(rs.getBoolean("estado"));
+
+            clientes.add(c);
+        }
+
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al listar clientes activos: " + ex.getMessage());
+    }
+
+    return clientes;
+}
+
 }

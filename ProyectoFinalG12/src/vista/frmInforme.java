@@ -87,13 +87,13 @@ public class frmInforme extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Horario", "Instalacion", "Tratamiento", "Masajista", "Consultorio", "Monto por sesión"
+                "Fecha", "Horario", "Instalacion", "Tratamiento", "Masajista", "Consultorio", "Monto por sesión", "Costo por Tratamiento"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

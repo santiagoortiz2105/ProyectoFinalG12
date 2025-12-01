@@ -80,9 +80,12 @@ public class Cliente {
         this.estado = estado;
     }
     
-    @Override
-    public String toString() {
-    return codCli + " - " + nombreCompleto + " (" + dni + ")";
+   @Override
+public String toString() {
+    if (codCli == 0) {
+        return "Seleccione un cliente";
+    }
+    return nombreCompleto + " (" + dni + ")";
 }
     
 }

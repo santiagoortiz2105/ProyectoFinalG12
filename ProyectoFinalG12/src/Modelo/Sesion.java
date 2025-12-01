@@ -20,6 +20,8 @@ public class Sesion {
     private DiadeSpa diadeSpa;
     private boolean estado;
     private List<Instalacion> instalaciones; 
+    private double montoTotal;
+    private double montoInstalaciones;
     
     //Constructor vacio 
       public Sesion() {
@@ -113,6 +115,12 @@ public class Sesion {
     public void setInstalaciones(List<Instalacion> instalaciones) {
         this.instalaciones = instalaciones;
     }
+    
+    public double getMontoInstalaciones() { return montoInstalaciones; }
+    public void setMontoInstalaciones(double m) { this.montoInstalaciones = m; }
+
+    public double getMontoTotal() { return montoTotal; }
+    public void setMontoTotal(double monto) { this.montoTotal = monto; }
     
      @Override
     public String toString() {

@@ -188,4 +188,34 @@ public class ConsultorioData {
     return lista;
 }
     
+    public List<Consultorio> listarConsultoriosActivos() {
+    List<Consultorio> consultorios = new ArrayList<>();
+
+    String sql = "SELECT * FROM consultorio WHERE apto = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Consultorio c = new Consultorio();
+
+            c.setNroConsultorio(rs.getInt("nroConsultorio"));
+            c.setUsos(rs.getString("usos"));
+            c.setEquipamiento(rs.getString("equipamiento"));
+            c.setApto(rs.getBoolean("apto"));
+
+            consultorios.add(c);
+        }
+
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al listar consultorios activos: " + ex.getMessage());
+    }
+
+    return consultorios;
+}
+
+
 }

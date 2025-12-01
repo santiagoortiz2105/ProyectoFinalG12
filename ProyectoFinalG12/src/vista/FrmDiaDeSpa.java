@@ -31,11 +31,19 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
     }
 
     private void cargarClientes() {
-        cbCliente.removeAllItems();
-        List<Cliente> lista = clienteData.listarClientes();
+          cbCliente.removeAllItems();
+        // Agregar cliente “placeholder”
+        Cliente placeholder = new Cliente();
+        placeholder.setCodCli(0);
+        cbCliente.addItem(placeholder);
+        
+
+        List<Cliente> lista = clienteData.listarClientesActivos();
         for (Cliente c : lista) {
             cbCliente.addItem(c);
         };
+        
+         cbCliente.setSelectedIndex(0);
     }
 
     private void armarTabla() {
@@ -66,7 +74,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         jTextField1.setText("");
         tfDia.setText("");
         taPref.setText("");
-        tfMonto.setText("");
+        tfMonto.setText("40");
         checkEstado.setSelected(false);
     }
     

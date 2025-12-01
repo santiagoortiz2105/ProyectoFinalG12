@@ -225,5 +225,35 @@ public class TratamientoData {
     return tratamientos;
 }
     
+    public List<Tratamiento> listarTratamientosActivos() {
+    List<Tratamiento> tratamientos = new ArrayList<>();
+
+    String sql = "SELECT * FROM tratamiento WHERE activo = 1";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Tratamiento t = new Tratamiento();
+            t.setCodTratam(rs.getInt("codTratam"));
+            t.setNombre(rs.getString("nombre"));
+            t.setTipo(rs.getString("tipo"));
+            t.setDetalle(rs.getString("detalle"));
+            t.setDuracion_min(rs.getInt("duracion_min"));
+            t.setCosto(rs.getDouble("costo"));
+            t.setActivo(rs.getBoolean("activo"));
+
+            tratamientos.add(t);
+        }
+
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al listar tratamientos activos: " + ex.getMessage());
+    }
+
+    return tratamientos;
+}
+
    
 }
