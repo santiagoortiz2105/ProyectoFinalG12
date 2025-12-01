@@ -93,50 +93,34 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         soloFechaHora(jTextField3);
     }
 
-    private String instalacionesToString(List<Instalacion> lista) {
+    private String instalacionesToString(List<Instalacion> lista,Tratamiento tratamiento) {
         String texto = "";
         boolean primero = true;
         boolean tieneElementos = false;
         double total = 0;
-
         try {
-
             for (Instalacion inst : lista) {
-
                 tieneElementos = true;
-
                 if (!primero) {
                     texto = texto + ", ";
                 }
-
                 // AGREGO EL CÓDIGO DE LA INSTALACIÓN
                 texto = texto + inst.getCodInstal();
-
                 primero = false;
-
                 // SUMAMOS EL PRECIO REAL
                 total = total + inst.getPrecio30m();
             }
-
             // Lista vacía
             if (!tieneElementos) {
                 return "-";
             }
-
             // DEVUELVE CÓDIGOS + TOTAL
             return texto + " | Total: $" + total;
-
         } catch (Exception e) {
             return "-";
         }
     }
-    private double calcularSubtotalInstalaciones(List<Instalacion> lista) {
-    double total = 0;
-    for (Instalacion inst : lista) {
-        total += inst.getPrecio30m();
-    }
-    return total;
-}
+    
 
 private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratamiento t) {
     double total = 40; // monto fijo del día de spa
@@ -277,35 +261,30 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
     }
 
     private void cargarTabla() {
-    limpiarTabla();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-    
-    for (Sesion s : sesionData.listarSesiones()) {
+        limpiarTabla();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        for (Sesion s : sesionData.listarSesiones()) {
+            double montoInstalaciones = 0;
+            for (Instalacion inst : s.getInstalaciones()) {
+                montoInstalaciones += inst.getPrecio30m();
+            }
+            double montoTratamiento = s.getTratamiento().getCosto();
+            double montoTotal = montoInstalaciones + montoTratamiento + 40; // 40 USD del Día de Spa
 
-        String instalacStr = s.getInstalaciones().stream()
-            .map(i -> String.valueOf(i.getCodInstal()))
-            .collect(Collectors.joining(", "))
-            + " | Subtotal: " + s.getMontoInstalaciones();
-
-        modelo.addRow(new Object[]{
-            s.getCodSesion(),
-            s.getFechaHoraInicio().format(formatter),
-            s.getFechaHoraFin().format(formatter),
-            String.format("%s - $%.2f (%d min)",
-                s.getTratamiento().getNombre(),
-                s.getTratamiento().getCosto(),
-                s.getTratamiento().getDuracion_min()
-            ),
-            s.getConsultorio().getNroConsultorio(),
-            s.getMasajista().getNombre(),
-            s.getDiadeSpa().getCodPack(),
-            s.isEstado() ? "Activo" : "Inactivo",
-            instalacStr,
-            s.getMontoTotal()
-        });
-    }
-    
-    centrarColumnas();
+            modelo.addRow(new Object[]{
+                s.getCodSesion(),
+                s.getFechaHoraInicio().format(formatter),
+                s.getFechaHoraFin().format(formatter),
+                String.format("%s - $%.2f (%d min)", s.getTratamiento().getNombre(), s.getTratamiento().getCosto(), s.getTratamiento().getDuracion_min()),
+                s.getConsultorio().getNroConsultorio(),
+                s.getMasajista().getNombre(),
+                s.getDiadeSpa().getCodPack(),
+                s.isEstado() ? "Activo" : "Inactivo",
+                instalacionesToString(s.getInstalaciones(), s.getTratamiento()),
+                String.format("$%.2f", montoTotal) // Muestra el monto total en la tabla
+            });
+        }
+        centrarColumnas();
 }
 
     private void centrarColumnas() {
@@ -991,24 +970,6 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
             sesionExistente.setInstalaciones(obtenerInstalacionesSeleccionadas());
             sesionExistente.setEstado(jCheckBox1.isSelected());
 
-           
-            // Cálculo subtotal instalaciones
-            double subtotalInst = calcularSubtotalInstalaciones(obtenerInstalacionesSeleccionadas());
-            sesionExistente.setMontoInstalaciones(subtotalInst);
-
-            double montoFinal = subtotalInst + tratamiento.getCosto() + 40;
-            sesionExistente.setMontoTotal(montoFinal);
-
-            JOptionPane.showMessageDialog(this, "Monto total calculado: $" + montoFinal);
-            System.out.println("Subtotal instalaciones: " + subtotalInst);
-            System.out.println("Monto total: " + montoFinal);            
-           
-
-            // reasignar el día de spa a la sesión
-            sesionExistente.setDiadeSpa(diadeSpa);
-            
-           
-
             // 7. Guardar cambios
             sesionData.editarSesion(sesionExistente);
             mostrarMensaje("Sesión con código " + codigo + " modificada exitosamente.", "Modificación Exitosa");
@@ -1087,18 +1048,9 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
     List<Instalacion> instalaciones = obtenerInstalacionesSeleccionadas();
     nuevaSesion.setInstalaciones(instalaciones);
 
-    
-    // Subtotal instalaciones
-double subtotalInst = calcularSubtotalInstalaciones(obtenerInstalacionesSeleccionadas());
-nuevaSesion.setMontoInstalaciones(subtotalInst);
-
-// Total general
-double total = subtotalInst + tratamiento.getCosto() + 40;
-nuevaSesion.setMontoTotal(total);
-
-    System.out.println("Subtotal instalaciones: " + subtotalInst);
-    System.out.println("Monto total: " + total);
-    JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
+   
+        double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas(), tratamiento);
+        JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
   
     // GUARDAR EN BD
     sesionData.guardarSesion(nuevaSesion);
