@@ -296,6 +296,7 @@ public class frmMasajista extends javax.swing.JInternalFrame {
             masajistaData.editarMasajista(m);
             cargarTabla();
             limpiarCampos();
+            JOptionPane.showMessageDialog(this, "Cliente modificado correctamente.");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
         }
@@ -451,8 +452,8 @@ public class frmMasajista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Debe ingresar un teléfono.");
             return false;
         }
-        if (!telefono.matches("\\d{6,15}")) {
-            JOptionPane.showMessageDialog(this, "El teléfono debe ser numérico de 6 a 15 dígitos.");
+        if (!telefono.matches("\\d{6,10}")) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe ser numérico de 6 a 10 dígitos.");
             return false;
         }
 

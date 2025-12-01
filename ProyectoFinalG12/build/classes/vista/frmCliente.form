@@ -163,6 +163,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tfdni">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfdniActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>

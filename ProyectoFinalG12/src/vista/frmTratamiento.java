@@ -490,8 +490,10 @@ public class frmTratamiento extends javax.swing.JInternalFrame {
         jTextField2.setText("");
         jTextArea2.setText("");
         jTextField3.setText("10");
+        jComboBox1.setSelectedIndex(0); 
         jComboBoxCosto.setSelectedIndex(0);
         jCheckBoxEstado.setSelected(false);
+        
     }
 
     private void cargarCombo() {

@@ -180,6 +180,7 @@ try {
 
     private void cargarMeses() {
         cbMes.removeAllItems();
+        cbMes.addItem("Seleccione un mes");
         cbMes.addItem("Enero");
         cbMes.addItem("Febrero");
         cbMes.addItem("Marzo");
@@ -196,6 +197,7 @@ try {
     
     private void cargarHorarios() {
         cbFranja.removeAllItems();
+        cbFranja.addItem("Seleccione una franja horaria");
         cbFranja.addItem("08:00 - 10:00");
         cbFranja.addItem("11:00 - 13:00");
         cbFranja.addItem("14:00 - 16:00");

@@ -26,6 +26,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
         initComponents();
         cargarTabla();
         centrarColumnas();
+        agregarValidaciones();
     }
 
     /**
@@ -75,6 +76,12 @@ public class frmCliente extends javax.swing.JInternalFrame {
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel3.setText("DNI:");
+
+        tfdni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfdniActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel4.setText("Nombre Completo:");
@@ -286,6 +293,39 @@ public class frmCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void agregarValidaciones() {
+
+        // DNI: solo números y máximo 8
+        tfdni.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // si no es número o ya tiene 8 dígitos → bloquear
+                if (!Character.isDigit(c) || tfdni.getText().length() >= 8) {
+                    evt.consume();
+                }
+            }
+        });
+        // SOLO NÚMEROS PARA TELÉFONO
+        tfTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // si NO es número → bloquear
+                if (!Character.isDigit(c)) {
+                    evt.consume();
+                }
+                if (!Character.isDigit(c) || tfTelefono.getText().length() >= 10) {
+                    evt.consume();
+                }
+            }
+        });
+
+    }
+    
+    
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         if (tfCodigoCliente.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el código del cliente a buscar.");
@@ -360,31 +400,33 @@ public class frmCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-     
-    if (tfCodigoCliente.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Seleccione un cliente primero.");
-        return;
-    }
+        if (!validarCampos()) {
+            return;
+        }
+        if (tfCodigoCliente.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente primero.");
+            return;
+        }
 
-    try {
+        try {
 
-        Cliente c = new Cliente();
-        c.setCodCli(Integer.parseInt(tfCodigoCliente.getText()));
-        c.setDni(tfdni.getText());
-        c.setNombreCompleto(tfNombreCompleto.getText());
-        c.setTelefono(tfTelefono.getText());
-        c.setEdad(Integer.parseInt(tfEdad.getText()));
-        c.setAfecciones(taAfecciones.getText());
-        c.setEstado(cbEstado.isSelected());   
+            Cliente c = new Cliente();
+            c.setCodCli(Integer.parseInt(tfCodigoCliente.getText()));
+            c.setDni(tfdni.getText());
+            c.setNombreCompleto(tfNombreCompleto.getText());
+            c.setTelefono(tfTelefono.getText());
+            c.setEdad(Integer.parseInt(tfEdad.getText()));
+            c.setAfecciones(taAfecciones.getText());
+            c.setEstado(cbEstado.isSelected());
 
-        clienteData.editarCliente(c);
+            clienteData.editarCliente(c);
 
-        JOptionPane.showMessageDialog(this, "Cliente modificado correctamente.");
-        cargarTabla();
+            JOptionPane.showMessageDialog(this, "Cliente modificado correctamente.");
+            cargarTabla();
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al modificar cliente.");
-    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al modificar cliente.");
+        }
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
@@ -411,6 +453,10 @@ public class frmCliente extends javax.swing.JInternalFrame {
     private void cbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoActionPerformed
 
     }//GEN-LAST:event_cbEstadoActionPerformed
+
+    private void tfdniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfdniActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfdniActionPerformed
 
     private void cargarTabla() {
 
@@ -469,8 +515,8 @@ public class frmCliente extends javax.swing.JInternalFrame {
 
         //campo telefono
         String tel = tfTelefono.getText().trim();
-        if (!tel.isEmpty() && !tel.matches("\\d{6,15}")) {
-            JOptionPane.showMessageDialog(this, "El teléfono debe ser numérico de 6 a 15 dígitos.");
+        if (!tel.isEmpty() && !tel.matches("\\d{6,10}")) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe ser numérico de 6 a 10 dígitos.");
             return false;
         }
 
