@@ -44,6 +44,7 @@ public class SesionData {
 
     // Guardar Sesión
     public void guardarSesion(Sesion s) {
+        System.out.println("Sesion de guardar sesion: "+s);
         String sql = "INSERT INTO sesion(fechaHoraInicio, fechaHoraFin, codTratam, nroConsultorio, matricula, codPack, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

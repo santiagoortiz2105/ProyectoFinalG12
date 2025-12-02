@@ -93,7 +93,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         soloFechaHora(jTextField3);
     }
 
-    private String instalacionesToString(List<Instalacion> lista,Tratamiento tratamiento) {
+    private String instalacionesToString(List<Instalacion> lista, Tratamiento tratamiento) {
         String texto = "";
         boolean primero = true;
         boolean tieneElementos = false;
@@ -120,23 +120,20 @@ public class FrmSesion extends javax.swing.JInternalFrame {
             return "-";
         }
     }
-    
 
-private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratamiento t) {
-    double total = 40; // monto fijo del día de spa
+    private double calcularMontoSesion(List<Instalacion> insts, Tratamiento t) {
+        double total = 0;
 
-    if (t != null) {
-        total += t.getCosto();
+        if (t != null) {
+            total += t.getCosto();
+        }
+
+        for (Instalacion inst : insts) {
+            total += inst.getPrecio30m();
+        }
+
+        return total;
     }
-
-    for (Instalacion inst : insts) {
-        total += inst.getPrecio30m();
-    }
-
-    return total;
-}
-
-   
 
     private void armarTabla() {
         modelo.addColumn("Código");
@@ -168,7 +165,7 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
         jComboBox1.removeAllItems();
         jComboBox1.addItem("Seleccione un tratamiento");
         for (Tratamiento t : tratData.listarTratamientosActivos()) {
-            String textoTratamiento = String.format("%s - $%.2f (%d min)", t.getNombre(), t.getCosto(),t.getDuracion_min());
+            String textoTratamiento = String.format("%s - $%.2f (%d min)", t.getNombre(), t.getCosto(), t.getDuracion_min());
             jComboBox1.addItem(textoTratamiento);
         }
 
@@ -269,7 +266,7 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
                 montoInstalaciones += inst.getPrecio30m();
             }
             double montoTratamiento = s.getTratamiento().getCosto();
-            double montoTotal = montoInstalaciones + montoTratamiento + 40; // 40 USD del Día de Spa
+            double montoTotal = montoInstalaciones + montoTratamiento;
 
             modelo.addRow(new Object[]{
                 s.getCodSesion(),
@@ -285,7 +282,7 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
             });
         }
         centrarColumnas();
-}
+    }
 
     private void centrarColumnas() {
         javax.swing.table.DefaultTableCellRenderer centerRenderer
@@ -787,7 +784,7 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
                                 .addComponent(jCheckBox1)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField2)
                                     .addComponent(jTextField3)
@@ -815,14 +812,14 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
                         .addContainerGap())))
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 362, Short.MAX_VALUE)
+                    .addGap(0, 390, Short.MAX_VALUE)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 362, Short.MAX_VALUE)))
+                    .addGap(0, 391, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -987,77 +984,73 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
     }//GEN-LAST:event_jBotonModificarActionPerformed
 
     private void jBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonGuardarActionPerformed
-          if (!validarCampos(false)) {
-        return;
-    }
-
-    Tratamiento tratamiento = obtenerTratamientoSeleccionado();
-    Consultorio consultorio = obtenerConsultorioSeleccionado();
-    Masajista masajista = obtenerMasajistaSeleccionado();
-    DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
-
-    String inicioStr = jTextField2.getText().trim();
-    String finStr = jTextField3.getText().trim();
-
-    LocalDateTime[] fechas;
-    try {
-        fechas = parsearFechas(inicioStr, finStr);
-    } catch (DateTimeParseException ex) {
-        mostrarError("Formato de fecha incorrecto.");
-        return;
-    }
-
-    LocalDateTime inicio = fechas[0];
-    LocalDateTime fin = fechas[1];
-
-    // VALIDACIONES
-    if (sesionData.estaOcupadoMasajista(masajista.getMatricula(), inicio, fin)) {
-        mostrarError("El masajista seleccionado ya tiene una sesión en esta franja horaria.");
-        return;
-    }
-
-    if (sesionData.estaOcupadoConsultorio(consultorio.getNroConsultorio(), inicio, fin)) {
-        mostrarError("El consultorio seleccionado está ocupado en esta franja horaria.");
-        return;
-    }
-
-    if (sesionData.estaOcupadoDiaSpa(diadeSpa.getCodPack(), inicio, fin)) {
-        mostrarError("El Día de Spa seleccionado ya está asignado a otra sesión en ese horario.");
-        return;
-    }
-
-    for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
-        if (sesionData.estaOcupadaInstalacion(ins.getCodInstal(), inicio, fin)) {
-            mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
+        if (!validarCampos(false)) {
             return;
         }
-    }
 
-    // CREAR SESION
-    Sesion nuevaSesion = new Sesion(
-            inicio,
-            fin,
-            tratamiento,
-            consultorio,
-            masajista,
-            diadeSpa,
-            jCheckBox1.isSelected()
-    );
+        Tratamiento tratamiento = obtenerTratamientoSeleccionado();
+        System.out.println("Tratamientos: "+tratamiento);
+        Consultorio consultorio = obtenerConsultorioSeleccionado();
+        Masajista masajista = obtenerMasajistaSeleccionado();
+        DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
 
-    // ASIGNAR INSTALACIONES
-    List<Instalacion> instalaciones = obtenerInstalacionesSeleccionadas();
-    nuevaSesion.setInstalaciones(instalaciones);
+        String inicioStr = jTextField2.getText().trim();
+        String finStr = jTextField3.getText().trim();
 
-   
-        double total = calcularMontoSesion(diadeSpa, obtenerInstalacionesSeleccionadas(), tratamiento);
+        LocalDateTime[] fechas;
+        try {
+            fechas = parsearFechas(inicioStr, finStr);
+        } catch (DateTimeParseException ex) {
+            mostrarError("Formato de fecha incorrecto.");
+            return;
+        }
+
+        LocalDateTime inicio = fechas[0];
+        LocalDateTime fin = fechas[1];
+
+        // VALIDACIONES
+        if (sesionData.estaOcupadoMasajista(masajista.getMatricula(), inicio, fin)) {
+            mostrarError("El masajista seleccionado ya tiene una sesión en esta franja horaria.");
+            return;
+        }
+
+        if (sesionData.estaOcupadoConsultorio(consultorio.getNroConsultorio(), inicio, fin)) {
+            mostrarError("El consultorio seleccionado está ocupado en esta franja horaria.");
+            return;
+        }
+
+        for (Instalacion ins : obtenerInstalacionesSeleccionadas()) {
+            if (sesionData.estaOcupadaInstalacion(ins.getCodInstal(), inicio, fin)) {
+                mostrarError("La instalación " + ins.getNombre() + " está ocupada en esa franja horaria.");
+                return;
+            }
+        }
+
+        // CREAR SESION
+        Sesion nuevaSesion = new Sesion(
+                inicio,
+                fin,
+                tratamiento,
+                consultorio,
+                masajista,
+                diadeSpa,
+                jCheckBox1.isSelected()
+        );
+
+        // ASIGNAR INSTALACIONES
+        List<Instalacion> instalaciones = obtenerInstalacionesSeleccionadas();
+        nuevaSesion.setInstalaciones(instalaciones);
+
+        double total = calcularMontoSesion(obtenerInstalacionesSeleccionadas(), tratamiento);
         JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
-  
-    // GUARDAR EN BD
-    sesionData.guardarSesion(nuevaSesion);
+        System.out.println("DIA DE SPA MONTO: "+diadeSpa.getMonto());
+        System.out.println("NUEVA SESION: "+nuevaSesion);
+        // GUARDAR EN BD
+        sesionData.guardarSesion(nuevaSesion);
 
-    mostrarMensaje("Sesión registrada correctamente.", "Éxito");
-    cargarTabla();
-    limpiarCampos();
+        mostrarMensaje("Sesión registrada correctamente.", "Éxito");
+        cargarTabla();
+        limpiarCampos();
     }//GEN-LAST:event_jBotonGuardarActionPerformed
 
     private void jBotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonEliminarActionPerformed
@@ -1142,18 +1135,19 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
     private Tratamiento obtenerTratamientoSeleccionado() {
+        System.out.println("Entrando a obtener tratamientos...");
         String textoSeleccionado = (String) jComboBox1.getSelectedItem();
         if (textoSeleccionado == null || textoSeleccionado.equals("Seleccione un tratamiento")) {
+            JOptionPane.showMessageDialog(this, "Seleccione un tratamiento");
             return null;
         }
 
         // Extraer solo el nombre del tratamiento (sin el precio y duración)
         String nombreTratamiento = textoSeleccionado.split(" - ")[0].trim();
+        System.out.println("Nombre del tratamiento: "+nombreTratamiento);
 
         // Buscar el tratamiento por nombre
-        return tratData.listarTratamientos().stream()
-                .filter(t -> t.getNombre().equals(nombreTratamiento))
-                .findFirst().orElse(null);
+        return tratData.traerTratamientoPorNombre(nombreTratamiento);
     }
 
     private Consultorio obtenerConsultorioSeleccionado() {
@@ -1274,7 +1268,7 @@ private double calcularMontoSesion(DiadeSpa ds, List<Instalacion> insts, Tratami
         });
     }
 
-    private void cargarFechasPorCod(int cod){
+    private void cargarFechasPorCod(int cod) {
         DiadeSpa dia = diaSpaData.buscarPorId(cod);
         // Formatear solo la fecha (sin hora)
         DateTimeFormatter fechaFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

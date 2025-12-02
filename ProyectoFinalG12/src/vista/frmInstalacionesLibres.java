@@ -199,11 +199,15 @@ public class frmInstalacionesLibres extends javax.swing.JInternalFrame {
             int anio = Integer.parseInt(anioTxt);
 
             //mes del combobox
-            int mes = cbMes.getSelectedIndex() + 1;
+            if(cbMes.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Elija un mes.");
+                return;
+            }
+            int mes = cbMes.getSelectedIndex();
 
             //hacemos la fecha
             LocalDate fecha = LocalDate.of(anio, mes, dia);
-
+            System.out.println("Fecha prueba: "+fecha);
             //vemos que la fecha no sea del pasado
             if (fecha.isBefore(LocalDate.now())) {
                 JOptionPane.showMessageDialog(this, "La fecha no puede ser del pasado.");

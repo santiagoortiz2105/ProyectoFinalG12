@@ -117,8 +117,13 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
                 return;
             }
             int anio = Integer.parseInt(anioTxt);
-
-            int mes = cbMes.getSelectedIndex() + 1;
+            
+            //valido mes
+            if(cbMes.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Elija un mes");
+                return;
+            }
+            int mes = cbMes.getSelectedIndex();
 
             //proceso la franja
             String franja = cbFranja.getSelectedItem().toString();

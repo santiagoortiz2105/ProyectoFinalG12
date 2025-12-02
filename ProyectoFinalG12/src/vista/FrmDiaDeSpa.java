@@ -31,19 +31,18 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
     }
 
     private void cargarClientes() {
-          cbCliente.removeAllItems();
+        cbCliente.removeAllItems();
         // Agregar cliente “placeholder”
         Cliente placeholder = new Cliente();
         placeholder.setCodCli(0);
         cbCliente.addItem(placeholder);
-        
 
         List<Cliente> lista = clienteData.listarClientesActivos();
         for (Cliente c : lista) {
             cbCliente.addItem(c);
         };
-        
-         cbCliente.setSelectedIndex(0);
+
+        cbCliente.setSelectedIndex(0);
     }
 
     private void armarTabla() {
@@ -77,95 +76,95 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         tfMonto.setText("40");
         checkEstado.setSelected(false);
     }
-    
+
     private boolean validarCampos() {
 
-    //Dia
-    if (tfDia.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar un día.");
-        return false;
-    }
-    try {
-        int dia = Integer.parseInt(tfDia.getText());
-        if (dia < 1 || dia > 31) {
-            JOptionPane.showMessageDialog(this, "El día debe estar entre 1 y 31.");
+        //Dia
+        if (tfDia.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un día.");
             return false;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El día debe ser un número válido.");
-        return false;
-    }
+        try {
+            int dia = Integer.parseInt(tfDia.getText());
+            if (dia < 1 || dia > 31) {
+                JOptionPane.showMessageDialog(this, "El día debe estar entre 1 y 31.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El día debe ser un número válido.");
+            return false;
+        }
 
-    //Año
-    String textoAnio = tfAnio.getText().trim();
+        //Año
+        String textoAnio = tfAnio.getText().trim();
 
-if (textoAnio.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Debe ingresar un año.");
-    return false;
-}
+        if (textoAnio.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un año.");
+            return false;
+        }
 
 // Debe tener 4 dígitos
-if (!textoAnio.matches("\\d{4}")) {
-    JOptionPane.showMessageDialog(this, "El año debe tener exactamente 4 dígitos.");
-    return false;
-}
-
-try {
-    int anio = Integer.parseInt(textoAnio);
-
-    // No puede ser menor a 2025
-    if (anio < 2025) {
-        JOptionPane.showMessageDialog(this, "El año no puede ser menor a 2025.");
-        return false;
-    }
-
-    // No puede ser mayor a 2026
-    if (anio > 2026) {
-        JOptionPane.showMessageDialog(this, "El año no puede superar 2026.");
-        return false;
-    }
-
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(this, "El año debe ser un número.");
-    return false;
-    }
-
-    //Horario
-    if (cbFranja.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar una franja horaria.");
-        return false;
-    }
-
-    //Preferencias
-    if (taPref.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar preferencias.");
-        return false;
-    }
-
-    //Cliente
-    if (cbCliente.getSelectedItem() == null) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.");
-        return false;
-    }
-
-    //Monto
-    if (tfMonto.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar un monto.");
-        return false;
-    }
-    try {
-        double monto = Double.parseDouble(tfMonto.getText());
-        if (monto <= 0) {
-            JOptionPane.showMessageDialog(this, "El monto debe ser mayor a cero.");
+        if (!textoAnio.matches("\\d{4}")) {
+            JOptionPane.showMessageDialog(this, "El año debe tener exactamente 4 dígitos.");
             return false;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El monto debe ser numérico.");
-        return false;
-    }
 
-    return true;
-}
+        try {
+            int anio = Integer.parseInt(textoAnio);
+
+            // No puede ser menor a 2025
+            if (anio < 2025) {
+                JOptionPane.showMessageDialog(this, "El año no puede ser menor a 2025.");
+                return false;
+            }
+
+            // No puede ser mayor a 2026
+            if (anio > 2026) {
+                JOptionPane.showMessageDialog(this, "El año no puede superar 2026.");
+                return false;
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El año debe ser un número.");
+            return false;
+        }
+
+        //Horario
+        if (cbFranja.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una franja horaria.");
+            return false;
+        }
+
+        //Preferencias
+        if (taPref.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar preferencias.");
+            return false;
+        }
+
+        //Cliente
+        if (cbCliente.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.");
+            return false;
+        }
+
+        //Monto
+        if (tfMonto.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un monto.");
+            return false;
+        }
+        try {
+            double monto = Double.parseDouble(tfMonto.getText());
+            if (monto <= 0) {
+                JOptionPane.showMessageDialog(this, "El monto debe ser mayor a cero.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El monto debe ser numérico.");
+            return false;
+        }
+
+        return true;
+    }
 
     @SuppressWarnings("unchecked")
 
@@ -194,7 +193,7 @@ try {
         cbMes.addItem("Noviembre");
         cbMes.addItem("Diciembre");
     }
-    
+
     private void cargarHorarios() {
         cbFranja.removeAllItems();
         cbFranja.addItem("Seleccione una franja horaria");
@@ -202,7 +201,7 @@ try {
         cbFranja.addItem("11:00 - 13:00");
         cbFranja.addItem("14:00 - 16:00");
         cbFranja.addItem("17:00 - 19:00");
-}
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -503,40 +502,40 @@ try {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //boton modificar
-         if (!validarCampos()) {
-        return;
-    }
+        if (!validarCampos()) {
+            return;
+        }
 
-    if (jTextField1.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar el código del Día de Spa para modificar.");
-        return;
-    }
+        if (jTextField1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el código del Día de Spa para modificar.");
+            return;
+        }
 
-    System.out.println("Código del Día de Spa a modificar: " + jTextField1.getText()); // Mensaje de depuración
+        System.out.println("Código del Día de Spa a modificar: " + jTextField1.getText()); // Mensaje de depuración
 
-    FechaSpa resultado = obtenerFechasSpa();
-    if (resultado == null) {
-        return;
-    }
+        FechaSpa resultado = obtenerFechasSpa();
+        if (resultado == null) {
+            return;
+        }
 
-    DiadeSpa d = new DiadeSpa();
-    d.setCodPack(Integer.parseInt(jTextField1.getText()));
-    d.setFechaHoraInicio(resultado.inicio);
-    d.setFechaHoraFin(resultado.fin);
-    d.setPreferencias(taPref.getText());
-    d.setCliente((Cliente) cbCliente.getSelectedItem());
-    d.setMonto(Double.parseDouble(tfMonto.getText()));
-    d.setEstado(checkEstado.isSelected());
+        DiadeSpa d = new DiadeSpa();
+        d.setCodPack(Integer.parseInt(jTextField1.getText()));
+        d.setFechaHoraInicio(resultado.inicio);
+        d.setFechaHoraFin(resultado.fin);
+        d.setPreferencias(taPref.getText());
+        d.setCliente((Cliente) cbCliente.getSelectedItem());
+        d.setMonto(Double.parseDouble(tfMonto.getText()));
+        d.setEstado(checkEstado.isSelected());
 
-    diaData.editarDiaDeSpa(d);
-    cargarTabla();
+        diaData.editarDiaDeSpa(d);
+        cargarTabla();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //boton guardar
         if (!validarCampos()) {
-         return;
-         }
+            return;
+        }
         try {
             //validacion de fecha y horario
             FechaSpa resultado = obtenerFechasSpa();
@@ -673,11 +672,31 @@ try {
 
     private FechaSpa obtenerFechasSpa() {
         try {
-            int dia = Integer.parseInt(tfDia.getText().trim());
-            int mes = cbMes.getSelectedIndex() + 1;
+            //validamos dia
+            String diaTxt = tfDia.getText().trim();
+            if (!diaTxt.matches("\\d{2}")) {
+                JOptionPane.showMessageDialog(this, "El día debe tener dos dígitos (01-31)");
+                return null;
+            }
+            int dia = Integer.parseInt(diaTxt);
+            if (dia < 1 || dia > 31) {
+                JOptionPane.showMessageDialog(this, "Día fuera de rango");
+                return null;
+            }
+            
+            //validamos mes
+            if (cbMes.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(this, "Por favor seleccioná un mes válido.");
+                return null;
+            }
+            int mes = cbMes.getSelectedIndex();
             int anio = Integer.parseInt(tfAnio.getText().trim());
 
             LocalDate fecha = LocalDate.of(anio, mes, dia);
+            if (fecha.isBefore(LocalDate.now())) {
+                JOptionPane.showMessageDialog(this, "La fecha no puede ser del pasado.");
+                return null;
+            }
 
             String franja = (String) cbFranja.getSelectedItem();
             String[] partes = franja.split(" - ");
@@ -687,16 +706,23 @@ try {
 
             LocalDateTime inicio = LocalDateTime.of(fecha, horaInicio);
             LocalDateTime fin = LocalDateTime.of(fecha, horaFin);
+            LocalDateTime ahora = LocalDateTime.now();
+            if (inicio.toLocalDate().isEqual(LocalDate.now()) && inicio.isBefore(ahora)) {
+                JOptionPane.showMessageDialog(this, "La hora seleccionada no puede ser anterior a la actual.");
+                return null;
+            }
             return new FechaSpa(inicio, fin);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Datos de fecha u horario inválidos");
+            JOptionPane.showMessageDialog(this, "Datos de fecha u horario inválidos. Error: " + e.getMessage());
             return null;
         }
     }
 
     private static class FechaSpa {
+
         LocalDateTime inicio;
         LocalDateTime fin;
+
         FechaSpa(LocalDateTime i, LocalDateTime f) {
             inicio = i;
             fin = f;
