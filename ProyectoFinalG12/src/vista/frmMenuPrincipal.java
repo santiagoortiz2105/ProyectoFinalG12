@@ -393,12 +393,10 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         frame.setLocation(x, y);
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
 
-        // Look & Feel moderno
+        //como configurar para tener flatlafen
+        //Look & Feel moderno
         try {
             javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
 

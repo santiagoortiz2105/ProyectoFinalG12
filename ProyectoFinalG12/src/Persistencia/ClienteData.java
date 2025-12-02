@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class ClienteData {
 
@@ -86,18 +87,15 @@ public class ClienteData {
 
             if (exito == 1) {
                 System.out.println("Cliente modificado exitosamente.");
-                //para cuando haya vistas
-                //JOptionPane.showMessageDialog(null, "Cliente modificado exitosamente.");
+                JOptionPane.showMessageDialog(null, "Cliente modificado exitosamente.");
             } else {
                 System.out.println("No se encontró el cliente.");
-                //para cuando haya vistas
-                //JOptionPane.showMessageDialog(null, "El cliente no existe");
+                JOptionPane.showMessageDialog(null, "El cliente no existe");
             }
 
         } catch (SQLException ex) {
             System.out.println("Error al acceder a la tabla Cliente.");
-            //para cuando haya vistas
-            //JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Cliente. " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Cliente. " + ex.getMessage());
         }
 
     }
@@ -152,14 +150,12 @@ public class ClienteData {
             ps.close();
             if (fila == 1) {
                 System.out.println("El cliente se habilitó exitosamente.");
-                //para cuando haya vistas
-                //JOptionPane.showMessageDialog(null, "El cliente se habilitó exitosamente.");
+                JOptionPane.showMessageDialog(null, "El cliente se habilitó exitosamente.");
             }
 
         } catch (SQLException e) {
             System.out.println("Error al acceder a la tabla Cliente.");
-            //para cuando haya vistas
-            //JOptionPane.showMessageDialog(null, " Error al acceder a la tabla Cliente.");
+            JOptionPane.showMessageDialog(null, " Error al acceder a la tabla Cliente.");
         }
     }
 
@@ -183,14 +179,12 @@ public class ClienteData {
                 cliente.setEstado(rs.getBoolean("estado"));
             } else {
                 System.out.println("No se encontró el cliente.");
-                //para cuando haya vistas
-                //JOptionPane.showMessageDialog(null, "No se encontró el cliente.");
+                JOptionPane.showMessageDialog(null, "No se encontró el cliente.");
             }
             ps.close();
         } catch (SQLException ex) {
             System.out.println("Error al acceder a la tabla Cliente");
-            //para cuando haya vistas
-            //JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Cliente. " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Cliente. " + ex.getMessage());
         }
 
         return cliente;

@@ -24,7 +24,6 @@ public class DiadeSpaData {
         clienteData = new ClienteData();
     }
 
-    //Guardar DiadeSpa
     public void guardarDiaDeSpa(DiadeSpa d) {
         String sql = "INSERT INTO dia_de_spa (fechaHoraInicio, fechaHoraFin, preferencias, codCli, monto, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try {
@@ -49,7 +48,6 @@ public class DiadeSpaData {
         }
     }
 
-    //Listar DiadeSpa
     public List<DiadeSpa> listarDiasDeSpa() {
         List<DiadeSpa> lista = new ArrayList<>();
         String sql = "SELECT * FROM dia_de_spa";
@@ -75,7 +73,6 @@ public class DiadeSpaData {
         return lista;
     }
 
-    //Editar DiadeSpa
     public void editarDiaDeSpa(DiadeSpa d) {
         String sql = "UPDATE dia_de_spa SET fechaHoraInicio=?, fechaHoraFin=?, preferencias=?, codCli=?, monto=?, estado=? WHERE codPack=?";
         try {
@@ -107,7 +104,6 @@ public class DiadeSpaData {
         }
     }
 
-    //Editar DiadeSpa monto
     public void editarDiaDeSpaMonto(DiadeSpa d, double monto) {
         String sql = "UPDATE dia_de_spa SET monto=? WHERE codPack=?";
         try {
@@ -134,7 +130,6 @@ public class DiadeSpaData {
         }
     }
 
-    //Deshabilitar DiadeSpa
     public void deshabilitarDiaDeSpa(int codPack) {
         String sql = "DELETE FROM dia_de_spa WHERE codPack = ?";
         try {
@@ -153,7 +148,6 @@ public class DiadeSpaData {
         }
     }
 
-    //Habilitar DiadeSpa
     public void habilitarDiaDeSpa(int codPack) {
         String sql = "UPDATE dia_de_spa SET estado = 1 WHERE codPack = ? AND estado = 0";
         try {
@@ -170,7 +164,6 @@ public class DiadeSpaData {
         }
     }
 
-    //Buscar DiadeSpa por id
     public DiadeSpa buscarPorId(int codPack) {
         DiadeSpa d = null;
         String sql = "SELECT * FROM dia_de_spa WHERE codPack = ?";

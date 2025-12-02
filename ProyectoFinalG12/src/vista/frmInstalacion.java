@@ -282,7 +282,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
             double precio = Double.parseDouble(jTextField3.getText().trim());
             boolean estado = jCheckBoxEstado.isSelected();
 
-            // Armo de cero la instalación con lo que está en los campos
+            //armo de cero la instalacion con lo que está en los campos
             Instalacion i = new Instalacion();
             i.setCodInstal(codigo);
             i.setNombre(nombre);
@@ -313,7 +313,7 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
 
             int codigo = Integer.parseInt(texto);
 
-            // Confirmación
+            //confirmacion
             int opc = JOptionPane.showConfirmDialog(this,
                     "¿Seguro que quiere eliminar la instalación con código: " + codigo + "?",
                     "Confirmar eliminación",
@@ -382,11 +382,11 @@ public class frmInstalacion extends javax.swing.JInternalFrame {
             Instalacion i = null;
 
             if (!textoCodigo.isEmpty()) {
-                // Buscar por código si se escribió uno
+                //buscamos por codigo si se escribio uno
                 int codigo = Integer.parseInt(textoCodigo);
                 i = instalacionData.buscarPorCodigo(codigo);
             } else if (!nombreTexto.isEmpty()) {
-                // Si no hay código, busca por nombre
+                //si no hay codigo, busca por nombre
                 i = instalacionData.buscarPorNombre(nombreTexto);
             } else {
                 JOptionPane.showMessageDialog(this, "Ingrese un código o nombre para buscar.");

@@ -22,7 +22,6 @@ public class MasajistaData {
         con = Conexion.getConexion();
     }
 
-    //Guardar masajista
     public void guardarMasajista(Masajista m) {
         String sql = "INSERT INTO masajista(nombre, apellido, telefono, especialidad, estado) VALUES (?,?,?,?,?)";
         try {
@@ -45,7 +44,6 @@ public class MasajistaData {
         }
     }
 
-    //Listar a todos los masajistas
     public List<Masajista> listarMasajistas() {
         List<Masajista> masajistas = new ArrayList<>();
         String sql = "SELECT * FROM masajista";
@@ -68,7 +66,6 @@ public class MasajistaData {
         }
         return masajistas;
     }
-    //Editar masajista
 
     public void editarMasajista(Masajista m) {
         String sql = "UPDATE masajista SET nombre=?, apellido=?, telefono=?, especialidad=?, estado=? WHERE matricula=?";
@@ -93,7 +90,6 @@ public class MasajistaData {
         }
     }
 
-    //Deshabilitar masajista
     public void deshabilitarMasajista(int matricula) {
         String sql = "DELETE FROM masajista WHERE matricula = ?";
         try {
@@ -109,7 +105,6 @@ public class MasajistaData {
         }
     }
 
-    //Habilitar masajista 
     public void habilitarMasajista(int matricula) {
         String sql = "UPDATE masajista SET estado=1 WHERE matricula=? AND estado=0";
         try {
@@ -125,7 +120,6 @@ public class MasajistaData {
         }
     }
 
-    //Buscar masajista por matricula 
     public Masajista buscarPorMatricula(int matricula) {
         Masajista m = null;
         String sql = "SELECT * FROM masajista WHERE matricula=?";
@@ -181,21 +175,18 @@ public class MasajistaData {
     }
 
     public List<Masajista> obtenerMasajistasLibres(LocalDateTime fechaHoraBuscada) {
-
+        //obsoleto, ya no usamos este metodo
         LocalDate fecha = fechaHoraBuscada.toLocalDate();
         LocalTime hora = fechaHoraBuscada.toLocalTime();
 
-        // ✔ Antes de 15:00 → TODOS están libres
         if (hora.isBefore(LocalTime.of(15, 0))) {
             return listarMasajistasQueTrabajanEseDia(fecha);
         }
 
-        // ✔ Después de 17:00 → TODOS están libres
         if (hora.isAfter(LocalTime.of(17, 0))) {
             return listarMasajistasQueTrabajanEseDia(fecha);
         }
 
-        // ✔ Entre 15 y 17 → filtrar
         List<Masajista> libres = new ArrayList<>();
 
         String sql = "SELECT m.* FROM masajista m "
@@ -348,7 +339,7 @@ public class MasajistaData {
     }
 
     public void eliminarMasajista(int matricula) {
-        // 1) Verificar si tiene sesiones asociadas
+        //verificamos si tiene sesiones asociadas
         String verificarSql = "SELECT COUNT(*) FROM sesion WHERE matricula = ?";
 
         try (PreparedStatement psVerificar = con.prepareStatement(verificarSql)) {
@@ -369,7 +360,7 @@ public class MasajistaData {
             return;
         }
 
-        // 2) Eliminar si no tiene dependencias
+        //eliminamos si no tiene dependencias
         String sql = "DELETE FROM masajista WHERE matricula = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {

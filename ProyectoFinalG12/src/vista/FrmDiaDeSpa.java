@@ -32,7 +32,6 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void cargarClientes() {
         cbCliente.removeAllItems();
-        // Agregar cliente “placeholder”
         Cliente placeholder = new Cliente();
         placeholder.setCodCli(0);
         cbCliente.addItem(placeholder);
@@ -79,7 +78,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
 
     private boolean validarCampos() {
 
-        //Dia
+        //dia
         if (tfDia.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe ingresar un día.");
             return false;
@@ -95,7 +94,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
             return false;
         }
 
-        //Año
+        //año
         String textoAnio = tfAnio.getText().trim();
 
         if (textoAnio.isEmpty()) {
@@ -103,7 +102,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
             return false;
         }
 
-// Debe tener 4 dígitos
+        //debe tener 4 digitos
         if (!textoAnio.matches("\\d{4}")) {
             JOptionPane.showMessageDialog(this, "El año debe tener exactamente 4 dígitos.");
             return false;
@@ -112,13 +111,13 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
         try {
             int anio = Integer.parseInt(textoAnio);
 
-            // No puede ser menor a 2025
+            //no puede ser menor a 2025
             if (anio < 2025) {
                 JOptionPane.showMessageDialog(this, "El año no puede ser menor a 2025.");
                 return false;
             }
 
-            // No puede ser mayor a 2026
+            //no puede ser mayor a 2026
             if (anio > 2026) {
                 JOptionPane.showMessageDialog(this, "El año no puede superar 2026.");
                 return false;
@@ -129,25 +128,25 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
             return false;
         }
 
-        //Horario
+        //horario
         if (cbFranja.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar una franja horaria.");
             return false;
         }
 
-        //Preferencias
+        //preferencias
         if (taPref.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe ingresar preferencias.");
             return false;
         }
 
-        //Cliente
+        //cliente
         if (cbCliente.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente.");
             return false;
         }
 
-        //Monto
+        //monto
         if (tfMonto.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe ingresar un monto.");
             return false;
@@ -169,6 +168,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
 
     private LocalDateTime convertirFecha() {
+        //obsoleto, lo usabamos antes
         try {
             return LocalDateTime.parse(tfDia.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
         } catch (Exception e) {
@@ -684,7 +684,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
                 return null;
             }
 
-            //validamos mes
+            //mes
             if (cbMes.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(this, "Por favor seleccioná un mes válido.");
                 return null;

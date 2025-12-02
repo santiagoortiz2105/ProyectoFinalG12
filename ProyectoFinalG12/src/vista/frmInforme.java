@@ -141,7 +141,7 @@ public class frmInforme extends javax.swing.JInternalFrame {
         List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
         jComboBox2.addItem("Seleccione un Dia de Spa");
         for (DiadeSpa dia : dias) {
-            // Verificar si el Día de Spa tiene sesiones asociadas
+            //verificamos si el Dia de Spa tiene sesiones asociadas
             List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
             if (!sesiones.isEmpty()) {
                 String item = "Día de Spa Cod. " + dia.getCodPack() + " - " + dia.getCliente().getNombreCompleto();
@@ -184,7 +184,7 @@ public class frmInforme extends javax.swing.JInternalFrame {
         }
     }
 
-    // Método auxiliar para verificar si una fecha ya está en el JComboBox
+    //metodo auxiliar para verificar si una fecha ya está en el combobox
     private boolean contieneFecha(JComboBox<String> comboBox, String fecha) {
         for (int i = 0; i < comboBox.getItemCount(); i++) {
             if (comboBox.getItemAt(i).equals(fecha)) {
@@ -198,38 +198,31 @@ public class frmInforme extends javax.swing.JInternalFrame {
         limpiarTabla();
         List<DiadeSpa> dias = diaSpaData.obtenerDiasPorFecha(fechaBuscada);
         DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        double totalAcumulado = 0; // Variable para acumular el total
+        double totalAcumulado = 0;
 
         for (DiadeSpa dia : dias) {
             List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(dia.getCodPack());
             for (Sesion s : sesiones) {
-                // Obtener tratamiento
                 String tratamiento = (s.getTratamiento() != null) ? s.getTratamiento().getNombre() : "-";
-                // Obtener instalaciones
                 List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
                 String instalaciones = insts.stream()
                         .map(Instalacion::getNombre)
                         .reduce((a, b) -> a + ", " + b)
                         .orElse("-");
-                // Obtener horario
                 String horario = s.getFechaHoraInicio().format(horaFormatter) + " - " + s.getFechaHoraFin().format(horaFormatter);
-                // Calcular monto por sesión (instalaciones + tratamiento)
                 double montoSesion = insts.stream().mapToDouble(Instalacion::getPrecio30m).sum() + s.getTratamiento().getCosto();
-                // Agregar fila a la tabla
                 modelo.addRow(new Object[]{
-                    s.getFechaHoraInicio().toLocalDate(), // Fecha
-                    horario, // Horario
-                    instalaciones, // Instalación
-                    tratamiento, // Tratamiento
-                    s.getMasajista().getNombre(), // Masajista
-                    s.getConsultorio().getNroConsultorio(), // Consultorio
-                    "$" + montoSesion // Monto por sesión (instalaciones + tratamiento)
+                    s.getFechaHoraInicio().toLocalDate(),
+                    horario,
+                    instalaciones,
+                    tratamiento,
+                    s.getMasajista().getNombre(),
+                    s.getConsultorio().getNroConsultorio(),
+                    "$" + montoSesion
                 });
-                // Acumular el monto de la sesión + $40 fijos
                 totalAcumulado += montoSesion + 40;
             }
         }
-        // Asignar el total acumulado al lbTotal
         lbTotal.setText("TOTAL = $" + totalAcumulado);
     }//GEN-LAST:event_jBotonBuscarActionPerformed
 
@@ -237,37 +230,35 @@ public class frmInforme extends javax.swing.JInternalFrame {
         limpiarTabla();
         List<Sesion> sesiones = sesionData.listarSesionesPorDiaSpa(Integer.parseInt(cod));
         DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        double totalAcumulado = 0; // Variable para acumular el total
+        double totalAcumulado = 0;
 
         for (Sesion s : sesiones) {
-            // Obtener tratamiento
+            //obtenemos tratamiento
             String tratamiento = (s.getTratamiento() != null) ? s.getTratamiento().getNombre() : "-";
-            // Obtener instalaciones
+            //obtenemos instalaciones
             List<Instalacion> insts = sesionData.obtenerInstalacionesDeSesion(s.getCodSesion());
             String instalaciones = insts.stream()
                     .map(Instalacion::getNombre)
                     .reduce((a, b) -> a + ", " + b)
                     .orElse("-");
-            // Obtener horario
+            //obtenemos horario
             String horario = s.getFechaHoraInicio().format(horaFormatter) + " - " + s.getFechaHoraFin().format(horaFormatter);
-            // Calcular monto por sesión (instalaciones + tratamiento)
+            //calculamos monto por sesión (instalaciones + tratamiento)
             double montoSesion = insts.stream().mapToDouble(Instalacion::getPrecio30m).sum() + s.getTratamiento().getCosto();
-            // Agregar fila a la tabla
+            //agregamos fila a la tabla
             modelo.addRow(new Object[]{
-                s.getFechaHoraInicio().toLocalDate(), // Fecha
-                horario, // Horario
-                instalaciones, // Instalación
-                tratamiento, // Tratamiento
-                s.getMasajista().getNombre(), // Masajista
-                s.getConsultorio().getNroConsultorio(), // Consultorio
-                "$" + montoSesion // Monto por sesión (instalaciones + tratamiento)
+                s.getFechaHoraInicio().toLocalDate(), //fecha
+                horario, //horario
+                instalaciones, //instalacion
+                tratamiento, //tratamiento
+                s.getMasajista().getNombre(), //masajista
+                s.getConsultorio().getNroConsultorio(), //consultorio
+                "$" + montoSesion //monto por sesion (instalaciones + tratamiento)
             });
-            System.out.println("COD: " + cod);
             DiadeSpa dia = diaSpaData.buscarPorId(Integer.parseInt(cod));
-            System.out.println("DIA: " + dia);
             totalAcumulado = dia.getMonto();
         }
-        // Asignar el total acumulado al lbTotal
+        //asignar el total acumulado al lbTotal
         lbTotal.setText("TOTAL = $" + totalAcumulado);
     }
 

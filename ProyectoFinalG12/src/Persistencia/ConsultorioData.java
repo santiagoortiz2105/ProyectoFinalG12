@@ -20,7 +20,6 @@ public class ConsultorioData {
         con = Conexion.getConexion();
     }
 
-    // Guardar consultorio
     public void guardarConsultorio(Consultorio c) {
         String sql = "INSERT INTO consultorio(usos, equipamiento, apto) VALUES (?,?,?)";
         try {
@@ -41,7 +40,6 @@ public class ConsultorioData {
         }
     }
 
-    // Listar consultorios
     public List<Consultorio> listarConsultorios() {
         List<Consultorio> consultorios = new ArrayList<>();
         String sql = "SELECT * FROM consultorio";
@@ -65,7 +63,6 @@ public class ConsultorioData {
         return consultorios;
     }
 
-    // Editar consultorio
     public void editarConsultorio(Consultorio c) {
         String sql = "UPDATE consultorio SET usos=?, equipamiento=?, apto=? WHERE nroConsultorio=?";
         try {
@@ -87,7 +84,6 @@ public class ConsultorioData {
         }
     }
 
-    // Deshabilitar consultorio
     public void deshabilitarConsultorio(int id) {
         String sql = "DELETE FROM consultorio WHERE nroConsultorio = ?";
         try {
@@ -105,7 +101,6 @@ public class ConsultorioData {
         }
     }
 
-    // Habilitar consultorio
     public void habilitarConsultorio(int id) {
         String sql = "UPDATE consultorio SET apto = 1 WHERE nroConsultorio = ? AND apto = 0";
         try {
@@ -122,7 +117,6 @@ public class ConsultorioData {
         }
     }
 
-    // Buscar consultorio por ID
     public Consultorio buscarConsultorioPorId(int id) {
         Consultorio c = null;
         String sql = "SELECT * FROM consultorio WHERE nroConsultorio = ?";

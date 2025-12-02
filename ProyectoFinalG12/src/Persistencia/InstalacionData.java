@@ -21,7 +21,6 @@ public class InstalacionData {
         con = Conexion.getConexion();
     }
 
-    //Guardar Instalacion
     public void guardarInstalacion(Instalacion i) {
         String sql = "INSERT INTO instalacion(nombre, detalledeuso, precio30m, estado) VALUES (?, ?, ?, ?)";
         try {
@@ -46,7 +45,6 @@ public class InstalacionData {
         }
     }
 
-    //Listar Instalacion 
     public List<Instalacion> listarInstalaciones() {
         List<Instalacion> instalaciones = new ArrayList<>();
         String sql = "SELECT * FROM instalacion";
@@ -71,7 +69,6 @@ public class InstalacionData {
         return instalaciones;
     }
 
-    //Editar Instalacion 
     public void editarInstalacion(Instalacion i) {
         String sql = "UPDATE instalacion SET nombre=?, detalledeuso=?, precio30m=?, estado=? WHERE codInstal=?";
         try {
@@ -95,7 +92,6 @@ public class InstalacionData {
         }
     }
 
-    //Deshabilitar Instalacion 
     public void deshabilitarInstalacion(int id) {
         String sql = "DELETE FROM instalacion WHERE codInstal = ?";
         try {
@@ -114,7 +110,6 @@ public class InstalacionData {
         }
     }
 
-    //Habilitar Instalacion 
     public void habilitarInstalacion(int id) {
         String sql = "UPDATE instalacion SET estado = 1 WHERE codInstal = ? AND estado = 0";
         try {
@@ -131,7 +126,6 @@ public class InstalacionData {
         }
     }
 
-    //Buscar Instalacion por id
     public Instalacion buscarPorNombre(String nombre) {
         Instalacion i = null;
         String sql = "SELECT * FROM instalacion WHERE nombre = ?";
@@ -155,7 +149,6 @@ public class InstalacionData {
         return i;
     }
 
-    //Buscar instalacion por codigo 
     public Instalacion buscarPorCodigo(int codInstal) {
         Instalacion i = null;
         String sql = "SELECT * FROM instalacion WHERE codInstal = ?";
@@ -180,7 +173,6 @@ public class InstalacionData {
         return i;
     }
 
-    //Listar Instalacion Mas Solicitada
     public List<Instalacion> listarInstalacionesMasSolicitadas() {
 
         List<Instalacion> lista = new ArrayList<>();

@@ -18,7 +18,6 @@ public class TratamientoData {
         con = Conexion.getConexion();
     }
 
-    //Guardar tratamiento 
     public void guardarTratamiento(Tratamiento t) {
         String sql = "INSERT INTO tratamiento(nombre, tipo, detalle, duracion_min, costo, activo) VALUES (?,?,?,?,?,?)";
         try {
@@ -42,7 +41,6 @@ public class TratamientoData {
         }
     }
 
-    //Listar tratamiento
     public List<Tratamiento> listarTratamientos() {
         List<Tratamiento> tratamientos = new ArrayList<>();
         String sql = "SELECT * FROM tratamiento";
@@ -95,7 +93,6 @@ public class TratamientoData {
         return t;
     }
 
-    //Editar tratamiento
     public void editarTratamiento(Tratamiento t) {
         String sql = "UPDATE tratamiento SET nombre=?, tipo=?, detalle=?, duracion_min=?, costo=?, activo=? WHERE codTratam=?";
         try {
@@ -121,7 +118,6 @@ public class TratamientoData {
         }
     }
 
-    //Deshabilitar tratamiento
     public void deshabilitarTratamiento(int id) {
         String sql = "DELETE FROM tratamiento WHERE codTratam = ?";
         try {
@@ -140,7 +136,6 @@ public class TratamientoData {
         }
     }
 
-    //Habilitar tratamiento 
     public void habilitarTratamiento(int id) {
         String sql = "UPDATE tratamiento SET activo = 1 WHERE codTratam = ? AND activo = 0";
         try {
@@ -157,7 +152,6 @@ public class TratamientoData {
         }
     }
 
-    //Buscar tratamiento por id 
     public Tratamiento buscarPorId(int id) {
         Tratamiento t = null;
         String sql = "SELECT * FROM tratamiento WHERE codTratam = ?";
@@ -183,7 +177,6 @@ public class TratamientoData {
         return t;
     }
 
-    //Listar Tratamientos mas sesionados
     public List<Tratamiento> listarTratamientosMasSesionados() {
         List<Tratamiento> tratamientos = new ArrayList<>();
 

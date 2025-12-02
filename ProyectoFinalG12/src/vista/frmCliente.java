@@ -279,25 +279,23 @@ public class frmCliente extends javax.swing.JInternalFrame {
 
     private void agregarValidaciones() {
 
-        // DNI: solo números y máximo 8
+        //dni
         tfdni.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
 
-                // si no es número o ya tiene 8 dígitos → bloquear
                 if (!Character.isDigit(c) || tfdni.getText().length() >= 8) {
                     evt.consume();
                 }
             }
         });
-        // SOLO NÚMEROS PARA TELÉFONO
+        //telefono
         tfTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
 
-                // si NO es número → bloquear
                 if (!Character.isDigit(c)) {
                     evt.consume();
                 }

@@ -30,7 +30,6 @@ public class SesionData {
         diaSpaData = new DiadeSpaData();
     }
 
-    // Guardar Sesión
     public void guardarSesion(Sesion s) {
         System.out.println("Sesion de guardar sesion: " + s);
         String sql = "INSERT INTO sesion(fechaHoraInicio, fechaHoraFin, codTratam, nroConsultorio, matricula, codPack, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -82,7 +81,6 @@ public class SesionData {
         }
     }
 
-    // Listar Sesiones
     public List<Sesion> listarSesiones() {
         List<Sesion> sesiones = new ArrayList<>();
         String sql = "SELECT * FROM sesion";
@@ -113,7 +111,6 @@ public class SesionData {
         return sesiones;
     }
 
-    // Editar Sesión
     public void editarSesion(Sesion s) {
         String sql = "UPDATE sesion SET fechaHoraInicio=?, fechaHoraFin=?, codTratam=?, nroConsultorio=?, matricula=?, codPack=?, estado=? WHERE codSesion=?";
         try {
@@ -156,7 +153,6 @@ public class SesionData {
         }
     }
 
-    // Deshabilitar Sesión
     public void deshabilitarSesion(int codSesion) {
         String sql = "DELETE FROM sesion WHERE codSesion = ?";
         try {
@@ -176,7 +172,6 @@ public class SesionData {
 
     }
 
-    // Habilitar Sesión
     public void habilitarSesion(int codSesion) {
         String sql = "UPDATE sesion SET estado = 1 WHERE codSesion = ? AND estado = 0";
         try {
@@ -193,7 +188,6 @@ public class SesionData {
         }
     }
 
-    // Buscar por ID
     public Sesion buscarPorCodSesion(int codSesion) {
         Sesion s = null;
         String sql = "SELECT * FROM sesion WHERE codSesion = ?";
@@ -505,7 +499,7 @@ public class SesionData {
         double total = 0.0;
 
         try {
-            // Sumar instalaciones
+            //sumamos instalaciones
             String sqlInst = "SELECT precio30m FROM instalacion "
                     + "JOIN sesion_instalacion ON instalacion.codInstal = sesion_instalacion.codInstal "
                     + "WHERE sesion_instalacion.codSesion = ?";
@@ -522,7 +516,7 @@ public class SesionData {
             rsInst.close();
             psInst.close();
 
-            // Sumar Tratamiento (usa 'costo', NO 'precio')
+            //sumamos tratamiento
             String sqlTrat = "SELECT t.costo FROM tratamiento t "
                     + "JOIN sesion s ON s.codTratam = t.codTratam "
                     + "WHERE s.codSesion = ?";
@@ -546,7 +540,6 @@ public class SesionData {
         return total;
     }
 
-    //Masajistas disponibles
     public boolean masajistaDisponible(int matricula, LocalDateTime inicio, LocalDateTime fin) {
         String sql = "SELECT * FROM sesion WHERE matricula = ? AND estado = 1 AND "
                 + "( (fechaHoraInicio <= ? AND fechaHoraFin > ?) "
@@ -580,12 +573,11 @@ public class SesionData {
         }
     }
 
-    //Dia de spa Ocupado
     public boolean estaOcupadoDiaSpa(int codPack, LocalDateTime inicio, LocalDateTime fin) {
         String sql = "SELECT COUNT(*) FROM sesion "
                 + "WHERE codPack = ? AND "
                 + "((fechaHoraInicio < ? AND fechaHoraFin > ?) OR "
-                + // se superponen
+                + //se superponen
                 "(fechaHoraInicio >= ? AND fechaHoraInicio < ?))";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -630,7 +622,6 @@ public class SesionData {
         }
         return false;
     }
-//Eliminar Sesion
 
     public void borrarSesion(int codSesion) {
         borrarInstalacionesDeSesion(codSesion);
