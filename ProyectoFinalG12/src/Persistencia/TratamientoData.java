@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Persistencia;
 
 import Modelo.Conexion;
@@ -14,10 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Lulim
- */
 public class TratamientoData {
 
     private Connection con;
@@ -77,8 +69,8 @@ public class TratamientoData {
         }
         return tratamientos;
     }
-    
-    public Tratamiento traerTratamientoPorNombre(String nombre){
+
+    public Tratamiento traerTratamientoPorNombre(String nombre) {
         Tratamiento t = null;
         String sql = "SELECT * FROM tratamiento WHERE nombre = ?";
         try {

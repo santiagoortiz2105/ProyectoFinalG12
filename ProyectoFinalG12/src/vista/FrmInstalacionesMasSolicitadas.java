@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package vista;
+
 import Modelo.Instalacion;
 import Persistencia.InstalacionData;
 import java.util.List;
@@ -12,70 +9,64 @@ import java.awt.Color;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.SwingConstants;
 
-/**
- *
- * @author santi
- */
 public class FrmInstalacionesMasSolicitadas extends javax.swing.JInternalFrame {
+
     private InstalacionData instalacionData;
     private DefaultTableModel modelo;
-    /**
-     * Creates new form FrmInstalacionesMasSolicitas
-     */
+
     public FrmInstalacionesMasSolicitadas() {
         initComponents();
         this.getContentPane().setBackground(new Color(245, 242, 232));
-        modelo = new DefaultTableModel(); 
+        modelo = new DefaultTableModel();
         instalacionData = new InstalacionData();
-        jTable1.setModel(modelo);      
+        jTable1.setModel(modelo);
         armarTabla();
     }
-    
-     private void armarTabla() {
+
+    private void armarTabla() {
         modelo.setRowCount(0);
         modelo.setColumnCount(0);
 
         modelo.addColumn("Código");
         modelo.addColumn("Nombre");
         modelo.addColumn("Reservas");
-        
+
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
-        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-    }
-    }
-    
-        private void cargarInstalaciones() {
-
-    modelo.setRowCount(0);
-
-    InstalacionData idata = new InstalacionData();
-    List<Instalacion> lista;   
-
-    try {
-        lista = idata.listarInstalacionesMasSolicitadas(); // ← acá solo se asigna
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error cargando datos.");
-        return;
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
-    if (lista.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "No hay datos para mostrar.");
-        return;
-    }
-     lista.sort((a, b) -> Integer.compare(a.getCodInstal(), b.getCodInstal()));
+    private void cargarInstalaciones() {
 
-    for (Instalacion ins : lista) {
-        Object[] fila = new Object[3];
-        fila[0] = ins.getCodInstal();
-        fila[1] = ins.getNombre();
-        fila[2] = ins.getCantidadReservas();
-        modelo.addRow(fila);
-    }
-}
+        modelo.setRowCount(0);
 
+        InstalacionData idata = new InstalacionData();
+        List<Instalacion> lista;
+
+        try {
+            lista = idata.listarInstalacionesMasSolicitadas(); // ← acá solo se asigna
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error cargando datos.");
+            return;
+        }
+
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay datos para mostrar.");
+            return;
+        }
+        lista.sort((a, b) -> Integer.compare(a.getCodInstal(), b.getCodInstal()));
+
+        for (Instalacion ins : lista) {
+            Object[] fila = new Object[3];
+            fila[0] = ins.getCodInstal();
+            fila[1] = ins.getNombre();
+            fila[2] = ins.getCantidadReservas();
+            modelo.addRow(fila);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package vista;
 
 import java.awt.Color;
@@ -16,19 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author santi
- */
 public class frmMasajistasLibres extends javax.swing.JInternalFrame {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     private MasajistaData masajistaData;
     private DefaultTableModel modelo;
 
-    /**
-     * Creates new form frmMasajistasLibres
-     */
     public frmMasajistasLibres() {
         initComponents();
         this.getContentPane().setBackground(new Color(245, 242, 232));
@@ -117,9 +106,9 @@ public class frmMasajistasLibres extends javax.swing.JInternalFrame {
                 return;
             }
             int anio = Integer.parseInt(anioTxt);
-            
+
             //valido mes
-            if(cbMes.getSelectedIndex()==0){
+            if (cbMes.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(this, "Elija un mes");
                 return;
             }

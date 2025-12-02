@@ -1,43 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
-/**
- *
- * @author Lulim
- */
 public class Instalacion {
+
     private int codInstal;
     private String nombre;
     private String detalledeuso;
     private double precio30m;
     private boolean estado;
     private int cantidadReservas;
-    
+
     //Constructor vacio 
-       public Instalacion() {
+    public Instalacion() {
         this.estado = true;
     }
-       
+
     //Constructor con id
     public Instalacion(int codInstal) {
         this.codInstal = codInstal;
     }
-    
-       
+
     //Constructor
-       
     public Instalacion(String nombre, String detalledeuso, double precio30m, boolean estado) {
         this.nombre = nombre;
         this.detalledeuso = detalledeuso;
         this.precio30m = precio30m;
         this.estado = estado;
     }
-    
-    //Getters y Setters 
 
+    //Getters y Setters 
     public int getCodInstal() {
         return codInstal;
     }
@@ -77,20 +67,18 @@ public class Instalacion {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
+
     public int getCantidadReservas() {
-    return cantidadReservas;
+        return cantidadReservas;
     }
 
     public void setCantidadReservas(int cantidadReservas) {
-    this.cantidadReservas = cantidadReservas;
-    } 
+        this.cantidadReservas = cantidadReservas;
+    }
 
     @Override
     public String toString() {
-        return nombre + " ($" + precio30m + ")" ;
+        return nombre + " ($" + precio30m + ")";
     }
-    
-    
-    
+
 }

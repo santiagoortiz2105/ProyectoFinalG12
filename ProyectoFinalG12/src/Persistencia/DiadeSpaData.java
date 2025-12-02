@@ -1,29 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Persistencia;
 
 import Modelo.Cliente;
 import Modelo.Conexion;
 import Modelo.DiadeSpa;
-import Modelo.Sesion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Lulim
- */
 public class DiadeSpaData {
 
     private Connection con;
@@ -117,7 +106,7 @@ public class DiadeSpaData {
             JOptionPane.showMessageDialog(null, "Error al editar Día de Spa: " + ex.getMessage());
         }
     }
-    
+
     //Editar DiadeSpa monto
     public void editarDiaDeSpaMonto(DiadeSpa d, double monto) {
         String sql = "UPDATE dia_de_spa SET monto=? WHERE codPack=?";
@@ -237,6 +226,43 @@ public class DiadeSpaData {
         }
 
         return lista;
+    }
+
+    public void actualizarMonto(double montoTotal, int codPack) {
+        String sql = "UPDATE dia_de_spa SET monto = ? WHERE codPack = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setDouble(1, montoTotal);
+            ps.setInt(2, codPack);
+            int fila = ps.executeUpdate();
+
+            if (fila == 1) {
+                System.out.println("Monto del día de spa actualizado correctamente.");
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al actualizar el monto del día de spa: " + ex.getMessage());
+        }
+    }
+
+    public int contarInstalacionesPorDiaDeSpa(int codPack) {
+        String sql = """
+        SELECT COUNT(si.codInstal)
+        FROM sesion s
+        JOIN sesion_instalacion si ON s.codSesion = si.codSesion
+        WHERE s.codPack = ?
+        """;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codPack);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

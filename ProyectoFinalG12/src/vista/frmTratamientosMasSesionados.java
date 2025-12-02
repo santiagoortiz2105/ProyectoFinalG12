@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package vista;
+
 import Modelo.Tratamiento;
 import Persistencia.TratamientoData;
 import java.util.List;
@@ -10,21 +7,16 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
 import java.util.Objects;
-/**
- *
- * @author santi
- */
+
 public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
 
     private TratamientoData tratamientoData = null;
     private DefaultTableModel modelo = new DefaultTableModel();
-    /**
-     * Creates new form frmTramientosMasSesionados
-     */
+
     public frmTratamientosMasSesionados() {
         initComponents();
-         this.getContentPane().setBackground(new Color(245, 242, 232));
-          try {
+        this.getContentPane().setBackground(new Color(245, 242, 232));
+        try {
             tratamientoData = new TratamientoData();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this,
@@ -34,11 +26,10 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
 
         jTable1.setModel(modelo);
         armarTabla();
-         centrarColumnas();
+        centrarColumnas();
     }
-    
-    
-     private void armarTabla() {
+
+    private void armarTabla() {
         modelo.setRowCount(0);
         modelo.setColumnCount(0);
 
@@ -46,39 +37,39 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
         modelo.addColumn("Nombre");
         modelo.addColumn("Sesiones");
     }
-     
+
     private void cargarTabla() {
-    modelo.setRowCount(0);
+        modelo.setRowCount(0);
 
-    if (Objects.isNull(tratamientoData)) {
-        JOptionPane.showMessageDialog(this, "No está disponible TratamientoData.");
-        return;
-    }
-
-    try {
-        List<Tratamiento> lista = tratamientoData.listarTratamientosMasSesionados();
-
-        if (Objects.isNull(lista) || lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay datos para mostrar.");
+        if (Objects.isNull(tratamientoData)) {
+            JOptionPane.showMessageDialog(this, "No está disponible TratamientoData.");
             return;
         }
 
-        for (Tratamiento t : lista) {
-            if (Objects.nonNull(t)) {
-                modelo.addRow(new Object[]{
-                    t.getCodTratam(),
-                    t.getNombre(),
-                    t.getCantidadSesiones()
-                });
-            }
-        }
-         centrarColumnas();
+        try {
+            List<Tratamiento> lista = tratamientoData.listarTratamientosMasSesionados();
 
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
+            if (Objects.isNull(lista) || lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay datos para mostrar.");
+                return;
+            }
+
+            for (Tratamiento t : lista) {
+                if (Objects.nonNull(t)) {
+                    modelo.addRow(new Object[]{
+                        t.getCodTratam(),
+                        t.getNombre(),
+                        t.getCantidadSesiones()
+                    });
+                }
+            }
+            centrarColumnas();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
+        }
     }
-    }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,14 +148,14 @@ public class frmTratamientosMasSesionados extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void centrarColumnas() {
-    javax.swing.table.DefaultTableCellRenderer centerRenderer =
-            new javax.swing.table.DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+        javax.swing.table.DefaultTableCellRenderer centerRenderer
+                = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 
-    for (int i = 0; i < jTable1.getColumnCount(); i++) {
-        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
-/**
- *
- * @author Lulim
- */
 public class Tratamiento {
-    
+
     private int codTratam; //Autoincremental
     private String nombre; //varchar
     private String tipo;   //varchar
@@ -17,16 +9,14 @@ public class Tratamiento {
     private int duracion_min; //int 
     private double costo;     //decimal
     private boolean activo;   //tinyint 
-    private int cantidadSesiones; 
+    private int cantidadSesiones;
 
     //Constructor vacio
-
     public Tratamiento() {
-         this.activo = true;
+        this.activo = true;
     }
-    
-    //Constructor 
 
+    //Constructor 
     public Tratamiento(String nombre, String tipo, String detalle, int duracion_min, double costo, boolean activo) {
         this.nombre = nombre;
         this.tipo = tipo;
@@ -35,9 +25,8 @@ public class Tratamiento {
         this.costo = costo;
         this.activo = activo;
     }
-    
-    //Getters y Setters
 
+    //Getters y Setters
     public int getCodTratam() {
         return codTratam;
     }
@@ -95,16 +84,16 @@ public class Tratamiento {
     }
 
     public int getCantidadSesiones() {
-    return cantidadSesiones;
+        return cantidadSesiones;
     }
 
     public void setCantidadSesiones(int cantidadSesiones) {
-    this.cantidadSesiones = cantidadSesiones;
+        this.cantidadSesiones = cantidadSesiones;
     }
-    
+
     @Override
     public String toString() {
-          return nombre + " (" + tipo + ")";
+        return nombre + " (" + tipo + ")";
     }
-    
+
 }

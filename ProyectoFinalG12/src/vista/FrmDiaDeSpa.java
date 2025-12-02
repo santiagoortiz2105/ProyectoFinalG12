@@ -683,7 +683,7 @@ public class FrmDiaDeSpa extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Día fuera de rango");
                 return null;
             }
-            
+
             //validamos mes
             if (cbMes.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(this, "Por favor seleccioná un mes válido.");

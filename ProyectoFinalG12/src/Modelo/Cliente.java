@@ -1,6 +1,7 @@
 package Modelo;
 
 public class Cliente {
+
     private int codCli;             //Int AutoIncremental Clave Primaria
     private String dni;              // Varchar Unique
     private String nombreCompleto;   // Varchar
@@ -8,11 +9,11 @@ public class Cliente {
     private int edad;                // Int
     private String afecciones;       // Text
     private boolean estado;          // Boolean 
-    
+
     //Constructor vacio 
     public Cliente() {
     }
- 
+
     //Cosntructor
     public Cliente(String dni, String nombreCompleto, String telefono, int edad, String afecciones, boolean estado) {
         this.dni = dni;
@@ -79,13 +80,13 @@ public class Cliente {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
-   @Override
-public String toString() {
-    if (codCli == 0) {
-        return "Seleccione un cliente";
+
+    @Override
+    public String toString() {
+        if (codCli == 0) {
+            return "Seleccione un cliente";
+        }
+        return nombreCompleto + " (" + dni + ")";
     }
-    return nombreCompleto + " (" + dni + ")";
-}
-    
+
 }

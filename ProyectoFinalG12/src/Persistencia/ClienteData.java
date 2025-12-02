@@ -9,9 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class ClienteData {
+
     private Connection con;
 
     public ClienteData() {
@@ -67,7 +67,7 @@ public class ClienteData {
         }
         return clientes;
     }
-    
+
     public void editarCliente(Cliente cliente) {
 
         String sql = "UPDATE cliente SET dni=?, nombreCompleto=?, telefono=?, edad=?, afecciones=?, estado=? WHERE codCli=?";
@@ -101,46 +101,46 @@ public class ClienteData {
         }
 
     }
-    
+
     public void eliminarCliente(int id) {
-    String sql = "DELETE FROM cliente WHERE codCli = ?";
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, id);
+        String sql = "DELETE FROM cliente WHERE codCli = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
 
-        int fila = ps.executeUpdate();
+            int fila = ps.executeUpdate();
 
-        if (fila == 1) {
-            System.out.println("Cliente ELIMINADO de forma permanente.");
-        } else {
-            System.out.println("No se encontró el cliente con ese ID.");
+            if (fila == 1) {
+                System.out.println("Cliente ELIMINADO de forma permanente.");
+            } else {
+                System.out.println("No se encontró el cliente con ese ID.");
+            }
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar cliente: " + e.getMessage());
         }
-
-        ps.close();
-    } catch (SQLException e) {
-        System.out.println("Error al eliminar cliente: " + e.getMessage());
     }
-}
-    
+
     public void deshabilitarCliente(int id) {
-    String sql = "UPDATE cliente SET activo = 0 WHERE codCli = ?";
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, id);
-        int fila = ps.executeUpdate();
+        String sql = "UPDATE cliente SET activo = 0 WHERE codCli = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            int fila = ps.executeUpdate();
 
-        if (fila == 1) {
-            System.out.println("El cliente fue deshabilitado.");
-        } else {
-            System.out.println("No se encontró el cliente con ese ID.");
+            if (fila == 1) {
+                System.out.println("El cliente fue deshabilitado.");
+            } else {
+                System.out.println("No se encontró el cliente con ese ID.");
+            }
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("Error al deshabilitar cliente: " + e.getMessage());
         }
-
-        ps.close();
-    } catch (SQLException e) {
-        System.out.println("Error al deshabilitar cliente: " + e.getMessage());
     }
-}
-    
+
     public void habilitarCliente(int id) {
 
         try {
@@ -162,7 +162,7 @@ public class ClienteData {
             //JOptionPane.showMessageDialog(null, " Error al acceder a la tabla Cliente.");
         }
     }
-    
+
     public Cliente clienteXDni(String dni) {
         Cliente cliente = null;
         String sql = "SELECT * FROM cliente WHERE dni=?";
@@ -195,65 +195,65 @@ public class ClienteData {
 
         return cliente;
     }
-    
+
     public Cliente buscarClientePorid(int codCli) {
-    Cliente cliente = null;
-    String sql = "SELECT * FROM cliente WHERE codCli=?";
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, codCli);
-        ResultSet rs = ps.executeQuery();
+        Cliente cliente = null;
+        String sql = "SELECT * FROM cliente WHERE codCli=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, codCli);
+            ResultSet rs = ps.executeQuery();
 
-        if (rs.next()) {
-            cliente = new Cliente();
-            cliente.setCodCli(rs.getInt("codCli"));
-            cliente.setDni(rs.getString("dni"));
-            cliente.setNombreCompleto(rs.getString("nombreCompleto"));
-            cliente.setTelefono(rs.getString("telefono"));
-            cliente.setEdad(rs.getInt("edad"));
-            cliente.setAfecciones(rs.getString("afecciones"));
-            cliente.setEstado(rs.getBoolean("estado"));
-        } else {
-            System.out.println("No se encontró el cliente con codCli: " + codCli);
+            if (rs.next()) {
+                cliente = new Cliente();
+                cliente.setCodCli(rs.getInt("codCli"));
+                cliente.setDni(rs.getString("dni"));
+                cliente.setNombreCompleto(rs.getString("nombreCompleto"));
+                cliente.setTelefono(rs.getString("telefono"));
+                cliente.setEdad(rs.getInt("edad"));
+                cliente.setAfecciones(rs.getString("afecciones"));
+                cliente.setEstado(rs.getBoolean("estado"));
+            } else {
+                System.out.println("No se encontró el cliente con codCli: " + codCli);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al acceder a la tabla Cliente: " + ex.getMessage());
         }
-        ps.close();
-    } catch (SQLException ex) {
-        System.out.println("Error al acceder a la tabla Cliente: " + ex.getMessage());
+        return cliente;
     }
-    return cliente;
-}
-      
+
     public List<Cliente> listarClientesActivos() {
-    List<Cliente> clientes = new ArrayList<>();
+        List<Cliente> clientes = new ArrayList<>();
 
-    String sql = "SELECT * FROM cliente WHERE estado = 1";
+        String sql = "SELECT * FROM cliente WHERE estado = 1";
 
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
+            while (rs.next()) {
 
-            Cliente c = new Cliente();
+                Cliente c = new Cliente();
 
-            c.setCodCli(rs.getInt("codCli"));
-            c.setDni(rs.getString("dni"));
-            c.setNombreCompleto(rs.getString("nombreCompleto"));
-            c.setTelefono(rs.getString("telefono"));
-            c.setEdad(rs.getInt("edad"));
-            c.setAfecciones(rs.getString("afecciones"));
-            c.setEstado(rs.getBoolean("estado"));
+                c.setCodCli(rs.getInt("codCli"));
+                c.setDni(rs.getString("dni"));
+                c.setNombreCompleto(rs.getString("nombreCompleto"));
+                c.setTelefono(rs.getString("telefono"));
+                c.setEdad(rs.getInt("edad"));
+                c.setAfecciones(rs.getString("afecciones"));
+                c.setEstado(rs.getBoolean("estado"));
 
-            clientes.add(c);
+                clientes.add(c);
+            }
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al listar clientes activos: " + ex.getMessage());
         }
 
-        ps.close();
-
-    } catch (SQLException ex) {
-        System.out.println("Error al listar clientes activos: " + ex.getMessage());
+        return clientes;
     }
-
-    return clientes;
-}
 
 }

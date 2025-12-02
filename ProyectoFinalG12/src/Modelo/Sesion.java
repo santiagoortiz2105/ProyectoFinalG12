@@ -1,16 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-/**
- *
- * @author Lulim
- */
+
 public class Sesion {
+
     private int codSesion;
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
@@ -19,16 +14,16 @@ public class Sesion {
     private Masajista masajista;
     private DiadeSpa diadeSpa;
     private boolean estado;
-    private List<Instalacion> instalaciones; 
-    
+    private List<Instalacion> instalaciones;
+
     //Constructor vacio 
-      public Sesion() {
-         this.estado = true;
-         this.instalaciones = new ArrayList<>();
+    public Sesion() {
+        this.estado = true;
+        this.instalaciones = new ArrayList<>();
     }
-      
+
     //Constructor
-      public Sesion(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Tratamiento tratamiento, Consultorio consultorio, Masajista masajista, DiadeSpa diadeSpa, boolean estado) {
+    public Sesion(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Tratamiento tratamiento, Consultorio consultorio, Masajista masajista, DiadeSpa diadeSpa, boolean estado) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
         this.tratamiento = tratamiento;
@@ -37,11 +32,10 @@ public class Sesion {
         this.diadeSpa = diadeSpa;
         this.estado = estado;
         this.instalaciones = new ArrayList<>();
-    
-    }
-     
-    //Getters y Setters 
 
+    }
+
+    //Getters y Setters 
     public int getCodSesion() {
         return codSesion;
     }
@@ -113,10 +107,10 @@ public class Sesion {
     public void setInstalaciones(List<Instalacion> instalaciones) {
         this.instalaciones = instalaciones;
     }
-    
-     @Override
+
+    @Override
     public String toString() {
         return "Sesión #" + codSesion + " - " + tratamiento.getNombre() + " (" + fechaHoraInicio + ")";
     }
-    
+
 }

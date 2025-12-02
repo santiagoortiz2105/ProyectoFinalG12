@@ -1,24 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
-/**
- *
- * @author Lulim
- */
 public class Masajista {
-    
+
     private int matricula;    //Autoincremental
     private String nombre;    //varchar
     private String apellido;  //varchar
     private String telefono;  //varchar
     private String especialidad; //Enum
     private boolean estado;      //tinyint
-    
-    //Constructor vacio
 
+    //Constructor vacio
     public Masajista() {
         this.estado = true;
     }
@@ -31,9 +22,8 @@ public class Masajista {
         this.especialidad = especialidad;
         this.estado = estado;
     }
-    
-   //Getters y Setters 
 
+    //Getters y Setters 
     public int getMatricula() {
         return matricula;
     }
@@ -81,7 +71,7 @@ public class Masajista {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
+
     @Override
     public String toString() {
         return nombre + " " + apellido + " (" + especialidad + ")";

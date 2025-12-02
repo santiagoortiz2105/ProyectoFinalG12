@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Persistencia;
+
 import Modelo.Conexion;
 import Modelo.Consultorio;
 import java.sql.Timestamp;
@@ -14,18 +11,16 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-/**
- *
- * @author Lulim
- */
+
 public class ConsultorioData {
+
     private Connection con;
 
     public ConsultorioData() {
         con = Conexion.getConexion();
     }
-    
-     // Guardar consultorio
+
+    // Guardar consultorio
     public void guardarConsultorio(Consultorio c) {
         String sql = "INSERT INTO consultorio(usos, equipamiento, apto) VALUES (?,?,?)";
         try {
@@ -95,19 +90,19 @@ public class ConsultorioData {
     // Deshabilitar consultorio
     public void deshabilitarConsultorio(int id) {
         String sql = "DELETE FROM consultorio WHERE nroConsultorio = ?";
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, id);
-        int fila = ps.executeUpdate();
-        if (fila == 1) {
-            System.out.println("Consultorio eliminado correctamente.");
-        } else {
-            System.out.println("No se encontró el consultorio.");
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            int fila = ps.executeUpdate();
+            if (fila == 1) {
+                System.out.println("Consultorio eliminado correctamente.");
+            } else {
+                System.out.println("No se encontró el consultorio.");
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al eliminar consultorio: " + ex.getMessage());
         }
-        ps.close();
-    } catch (SQLException ex) {
-        System.out.println("Error al eliminar consultorio: " + ex.getMessage());
-    }
     }
 
     // Habilitar consultorio
@@ -151,11 +146,11 @@ public class ConsultorioData {
         }
         return c;
     }
-    
-    public List<Consultorio> getConsultoriosLibres(LocalDateTime inicio, LocalDateTime fin) {
-    List<Consultorio> lista = new ArrayList<>();
 
-    String sql = """
+    public List<Consultorio> getConsultoriosLibres(LocalDateTime inicio, LocalDateTime fin) {
+        List<Consultorio> lista = new ArrayList<>();
+
+        String sql = """
         SELECT *
         FROM consultorio c
         WHERE c.apto = 1
@@ -167,55 +162,54 @@ public class ConsultorioData {
           )
     """;
 
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setTimestamp(1, Timestamp.valueOf(fin));
-        ps.setTimestamp(2, Timestamp.valueOf(inicio));
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setTimestamp(1, Timestamp.valueOf(fin));
+            ps.setTimestamp(2, Timestamp.valueOf(inicio));
 
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Consultorio c = new Consultorio();
-            c.setNroConsultorio(rs.getInt("nroConsultorio"));
-            c.setUsos(rs.getString("usos"));
-            c.setEquipamiento(rs.getString("equipamiento"));
-            c.setApto(rs.getBoolean("apto"));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Consultorio c = new Consultorio();
+                c.setNroConsultorio(rs.getInt("nroConsultorio"));
+                c.setUsos(rs.getString("usos"));
+                c.setEquipamiento(rs.getString("equipamiento"));
+                c.setApto(rs.getBoolean("apto"));
 
-            lista.add(c);
+                lista.add(c);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener consultorios libres: " + ex.getMessage());
         }
-    } catch (SQLException ex) {
-        System.out.println("Error al obtener consultorios libres: " + ex.getMessage());
+
+        return lista;
     }
 
-    return lista;
-}
-    
     public List<Consultorio> listarConsultoriosActivos() {
-    List<Consultorio> consultorios = new ArrayList<>();
+        List<Consultorio> consultorios = new ArrayList<>();
 
-    String sql = "SELECT * FROM consultorio WHERE apto = 1";
+        String sql = "SELECT * FROM consultorio WHERE apto = 1";
 
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
-            Consultorio c = new Consultorio();
+            while (rs.next()) {
+                Consultorio c = new Consultorio();
 
-            c.setNroConsultorio(rs.getInt("nroConsultorio"));
-            c.setUsos(rs.getString("usos"));
-            c.setEquipamiento(rs.getString("equipamiento"));
-            c.setApto(rs.getBoolean("apto"));
+                c.setNroConsultorio(rs.getInt("nroConsultorio"));
+                c.setUsos(rs.getString("usos"));
+                c.setEquipamiento(rs.getString("equipamiento"));
+                c.setApto(rs.getBoolean("apto"));
 
-            consultorios.add(c);
+                consultorios.add(c);
+            }
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al listar consultorios activos: " + ex.getMessage());
         }
 
-        ps.close();
-
-    } catch (SQLException ex) {
-        System.out.println("Error al listar consultorios activos: " + ex.getMessage());
+        return consultorios;
     }
-
-    return consultorios;
-}
-
 
 }

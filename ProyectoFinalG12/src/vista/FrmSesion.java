@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package vista;
 
 import Modelo.Sesion;
@@ -23,11 +19,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import java.util.stream.Collectors;
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JCheckBox;
@@ -36,10 +29,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author santi
- */
 public class FrmSesion extends javax.swing.JInternalFrame {
 
     private class CheckListRenderer extends JCheckBox implements ListCellRenderer<Object> {
@@ -95,27 +84,27 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
     private String instalacionesToString(List<Instalacion> lista, Tratamiento tratamiento) {
         String texto = "";
-    boolean primero = true;
-    boolean tieneElementos = false;
-    try {
-        for (Instalacion inst : lista) {
-            tieneElementos = true;
-            if (!primero) {
-                texto = texto + ", ";
+        boolean primero = true;
+        boolean tieneElementos = false;
+        try {
+            for (Instalacion inst : lista) {
+                tieneElementos = true;
+                if (!primero) {
+                    texto = texto + ", ";
+                }
+                // AGREGO EL NOMBRE DE LA INSTALACIÓN
+                texto = texto + inst.getNombre();
+                primero = false;
             }
-            // AGREGO EL NOMBRE DE LA INSTALACIÓN
-            texto = texto + inst.getNombre();
-            primero = false;
-        }
-        // Lista vacía
-        if (!tieneElementos) {
+            // Lista vacía
+            if (!tieneElementos) {
+                return "-";
+            }
+            // DEVUELVE SOLO LOS NOMBRES
+            return texto;
+        } catch (Exception e) {
             return "-";
         }
-        // DEVUELVE SOLO LOS NOMBRES
-        return texto;
-    } catch (Exception e) {
-        return "-";
-    }
     }
 
     private double calcularMontoSesion(List<Instalacion> insts, Tratamiento t) {
@@ -984,7 +973,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         }
 
         Tratamiento tratamiento = obtenerTratamientoSeleccionado();
-        System.out.println("Tratamientos: "+tratamiento);
+        System.out.println("Tratamientos: " + tratamiento);
         Consultorio consultorio = obtenerConsultorioSeleccionado();
         Masajista masajista = obtenerMasajistaSeleccionado();
         DiadeSpa diadeSpa = obtenerDiadeSpaSeleccionado();
@@ -1035,14 +1024,22 @@ public class FrmSesion extends javax.swing.JInternalFrame {
         // ASIGNAR INSTALACIONES
         List<Instalacion> instalaciones = obtenerInstalacionesSeleccionadas();
         nuevaSesion.setInstalaciones(instalaciones);
+        int instalacionesEnDb = diaSpaData.contarInstalacionesPorDiaDeSpa(diadeSpa.getCodPack());
+        System.out.println("CANTIDAD DE INSTALACIONES EN LA DB: " + instalacionesEnDb);
+        System.out.println("CANTIDAD DE INSTALACIONES SELECCIONADAS AHORA: " + instalaciones.size());
+        if (instalacionesEnDb + instalaciones.size() > 3) {
+            mostrarError("El dia de spa solo puede tener 3 instalaciones o menos.");
+            return;
+        }
 
         double total = calcularMontoSesion(obtenerInstalacionesSeleccionadas(), tratamiento);
-        JOptionPane.showMessageDialog(this, "Monto total calculado: $" + total);
-        System.out.println("DIA DE SPA MONTO: "+diadeSpa.getMonto());
-        System.out.println("NUEVA SESION: "+nuevaSesion);
+        System.out.println("DIA DE SPA MONTO: " + diadeSpa.getMonto());
+        double montoTotal = total + diadeSpa.getMonto();
+        diaSpaData.actualizarMonto(montoTotal, diadeSpa.getCodPack());
+
         // GUARDAR EN BD
         sesionData.guardarSesion(nuevaSesion);
-
+        JOptionPane.showMessageDialog(this, "Monto total de la sesión: $" + total);
         mostrarMensaje("Sesión registrada correctamente.", "Éxito");
         cargarTabla();
         limpiarCampos();
@@ -1139,7 +1136,7 @@ public class FrmSesion extends javax.swing.JInternalFrame {
 
         // Extraer solo el nombre del tratamiento (sin el precio y duración)
         String nombreTratamiento = textoSeleccionado.split(" - ")[0].trim();
-        System.out.println("Nombre del tratamiento: "+nombreTratamiento);
+        System.out.println("Nombre del tratamiento: " + nombreTratamiento);
 
         // Buscar el tratamiento por nombre
         return tratData.traerTratamientoPorNombre(nombreTratamiento);

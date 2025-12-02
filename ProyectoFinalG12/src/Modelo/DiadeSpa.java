@@ -1,17 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Lulim
- */
 public class DiadeSpa {
+
     private int codPack;
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
@@ -20,8 +14,7 @@ public class DiadeSpa {
     private double monto;
     private boolean estado;
     private List<Sesion> sesiones;
-    
-    
+
     public DiadeSpa() {
         this.estado = true;
         this.sesiones = new ArrayList<>();
@@ -52,7 +45,7 @@ public class DiadeSpa {
     public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
         this.fechaHoraInicio = fechaHoraInicio;
     }
-    
+
     public LocalDateTime getFechaHoraFin() {
         return fechaHoraFin;
     }
